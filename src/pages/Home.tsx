@@ -120,7 +120,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", position: "relative", zIndex: 1 }}>
       {/* Hero */}
-      <section style={{
+      <section className="hero-section" style={{
         minHeight: "85vh",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
@@ -161,7 +161,7 @@ export default function Home() {
 
         <h1 style={{
           fontFamily: "'Poppins', 'Inter', sans-serif",
-          fontSize: "clamp(48px, 8vw, 92px)",
+          fontSize: "clamp(34px, 8vw, 92px)",
           fontWeight: 800, lineHeight: 1.05,
           color: "#ffffff", letterSpacing: "-3px", margin: 0,
           textShadow: "0 0 80px rgba(79, 127, 255, 0.15), 0 0 40px rgba(45, 212, 191, 0.1)",
@@ -306,7 +306,7 @@ export default function Home() {
           </div>
 
           {/* What I Do Card & Grid */}
-          <div ref={whatHero.ref} style={{
+          <div ref={whatHero.ref} className="what-i-do-card" style={{
             padding: "36px 32px",
             background: "rgba(15, 15, 15, 0.75)",
             backdropFilter: "blur(20px)",
@@ -360,8 +360,8 @@ export default function Home() {
       </section>
 
       {/* Stats Bar */}
-      <section style={{ padding: "40px 24px", maxWidth: "1100px", margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "20px" }}>
+      <section className="hero-section" style={{ padding: "40px 24px", maxWidth: "1100px", margin: "0 auto" }}>
+        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))", gap: "16px" }}>
           {stats.map((stat, i) => {
             const statVis = useVisible(i * 120);
             return (
@@ -405,14 +405,14 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Preview */}
-      <section style={{ padding: "60px 24px", maxWidth: "1100px", margin: "0 auto" }}>
+      <section className="hero-section" style={{ padding: "60px 24px", maxWidth: "1100px", margin: "0 auto" }}>
         <div ref={featHero.ref} style={{ marginBottom: "40px", opacity: featHero.visible ? 1 : 0, transform: featHero.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Selected Work</div>
           <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, color: "#ffffff", margin: "0 0 12px" }}>Featured Projects</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginBottom: "32px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "20px", marginBottom: "32px" }}>
           {featured.map((p) => (
-            <div key={p.id} style={{
+            <div key={p.id} className="card-body" style={{
               padding: "24px", background: "rgba(15, 15, 15, 0.7)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "18px",
               transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
               cursor: "pointer",

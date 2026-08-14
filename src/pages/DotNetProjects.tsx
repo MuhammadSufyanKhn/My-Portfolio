@@ -9,21 +9,25 @@ export default function DotNetProjects() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "110px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
         <div ref={hero.ref} style={{ marginBottom: "56px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
             <div style={{ padding: "8px 14px", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "100px", fontSize: "12px", fontWeight: 700, color: "#818cf8", letterSpacing: "2px", textTransform: "uppercase" }}>.NET / C#</div>
           </div>
-          <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1 }}>.NET Projects</h1>
-          <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "520px", lineHeight: 1.7 }}>Backend systems built with ASP.NET Core, Entity Framework Core, and SQL Server.</p>
+          <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#ffffff", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1 }}>
+            .NET / C# <span style={{ background: "linear-gradient(135deg, #818cf8 0%, #6366f1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Projects</span>
+          </h1>
+          <p style={{ fontSize: "16px", color: "#a1a1aa", maxWidth: "560px", lineHeight: 1.7, margin: 0 }}>
+            Enterprise web applications built with ASP.NET Core MVC, Entity Framework Core, and SQL Server.
+          </p>
         </div>
 
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "48px", padding: "20px 24px", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "16px" }}>
+        <div className="stats-summary-banner" style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "48px", padding: "16px 18px", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "16px" }}>
           {[
             { label: "Total Projects", value: projects.dotnet.length, icon: "📦" },
             { label: "Completed", value: projects.dotnet.filter(p => p.status === "Completed").length, icon: "✅" },
             { label: "In Progress", value: projects.dotnet.filter(p => p.status === "In Progress").length, icon: "🚧" },
-            { label: "Tech Stack", value: "ASP.NET Core + EF + SQL", icon: "⚡" },
+            { label: "Tech Stack", value: "ASP.NET Core", icon: "⚡" },
           ].map((stat) => (
             <div key={stat.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <span style={{ fontSize: "16px" }}>{stat.icon}</span>
@@ -36,7 +40,7 @@ export default function DotNetProjects() {
         </div>
 
         {/* Grid Row Layout matching Semester & Python Projects */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "24px" }}>
           {projects.dotnet.map((project, i) => (
             <DotNetProjectCard key={project.id} project={project} index={i} onSelect={() => setSelected(project)} />
           ))}
@@ -54,25 +58,27 @@ function DotNetProjectCard({ project, index, onSelect }: { project: typeof proje
   return (
     <div
       ref={ref}
+      className="project-card"
       onClick={onSelect}
       style={{
-        background: "rgba(15, 15, 15, 0.75)", backdropFilter: "blur(20px)",
         border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px",
-        overflow: "hidden", cursor: "pointer", transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
-        opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
+        overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s ease",
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
-        display: "flex", flexDirection: "column", justifyContent: "space-between",
       }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLElement).style.borderColor = "rgba(99, 102, 241, 0.35)";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.08)";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
       }}
     >
-      <div style={{ padding: "28px" }}>
+      <div style={{
+        background: "rgba(15, 15, 15, 0.75)", backdropFilter: "blur(20px)",
+        transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
+        opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
+        display: "flex", flexDirection: "column", justifyContent: "space-between",
+      }}>
+      <div className="project-card-content" style={{ padding: "28px" }}>
         {/* Compact Header Block */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "8px" }}>
           <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "18px", fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>{project.title}</h3>
@@ -102,7 +108,7 @@ function DotNetProjectCard({ project, index, onSelect }: { project: typeof proje
       </div>
 
       {/* Standardized Button Footer */}
-      <div style={{ padding: "0 28px 24px", display: "flex", gap: "10px" }}>
+      <div className="project-card-footer" style={{ padding: "0 28px 24px", display: "flex", gap: "10px" }}>
         {project.github && project.github !== "#" && (
           <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", flex: 1 }} onClick={e => e.stopPropagation()}>
             <button style={{
@@ -134,6 +140,7 @@ function DotNetProjectCard({ project, index, onSelect }: { project: typeof proje
         >
           View Details →
         </button>
+      </div>
       </div>
     </div>
   );

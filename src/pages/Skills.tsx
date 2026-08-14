@@ -26,14 +26,14 @@ export default function Skills() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{ marginBottom: "64px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.97)", transition: "all 0.9s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}>Technical Expertise</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#ffffff", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease 0.3s" }}>Skills & Technologies</h1>
           <p style={{ fontSize: "16px", color: "#94a3b8", maxWidth: "500px", lineHeight: 1.7, opacity: hero.visible ? 1 : 0, transition: "opacity 0.6s ease 0.5s" }}>A comprehensive breakdown of my technical skills, software engineering fundamentals, and core tools.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px", marginBottom: "80px" }}>
+        <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "24px", marginBottom: "80px" }}>
           {skillSections.map((section, sIdx) => (
             <SkillSectionCard key={section.key} section={section} sectionIndex={sIdx} skillItems={skills[section.key as keyof typeof skills] || []} />
           ))}
@@ -44,7 +44,7 @@ export default function Skills() {
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#8b5cf6", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Human Skills</div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 800, color: "#ffffff", margin: "0 0 32px", letterSpacing: "-1px" }}>Soft Skills</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
+          <div className="soft-skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
             {softSkills.map((skill, i) => (
               <SoftSkillCard key={skill.name} skill={skill} index={i} />
             ))}
@@ -62,6 +62,7 @@ function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: n
   return (
     <div
       ref={ref}
+      className="soft-skill-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -91,6 +92,7 @@ function SkillSectionCard({ section, sectionIndex, skillItems }: { section: type
   return (
     <div
       ref={ref}
+      className="skill-section-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -121,14 +123,14 @@ function SkillSectionCard({ section, sectionIndex, skillItems }: { section: type
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         {skillItems.map((skill, i) => (
-          <SkillBar key={skill.name} skill={skill} index={i} visible={visible} sectionColor={section.color} />
+          <SkillBar key={skill.name} skill={skill} index={i} visible={visible} />
         ))}
       </div>
     </div>
   );
 }
 
-function SkillBar({ skill, index, visible, sectionColor }: { skill: { name: string; level: number; color: string }; index: number; visible: boolean; sectionColor: string }) {
+function SkillBar({ skill, index, visible }: { skill: { name: string; level: number; color: string }; index: number; visible: boolean }) {
   const [hovered, setHovered] = useState(false);
 
   return (

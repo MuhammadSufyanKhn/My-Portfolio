@@ -7,7 +7,7 @@ export default function Experience() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "110px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{ marginBottom: "56px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}>Work History</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#ffffff", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease 0.3s" }}>Experience</h1>
@@ -143,6 +143,11 @@ function ExperienceCard({ exp, index }: { exp: typeof experience[0]; index: numb
         @keyframes expGradient {
           0% { background-position: 0% 50%; }
           100% { background-position: 200% 50%; }
+        }
+        @media (max-width: 480px) {
+          .exp-card-body {
+            padding: 16px 14px !important;
+          }
         }
       `}</style>
     </div>

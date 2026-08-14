@@ -47,7 +47,7 @@ export default function About() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{
           opacity: hero.visible ? 1 : 0,
           transform: hero.visible ? "translateY(0)" : "translateY(30px)",
@@ -117,7 +117,7 @@ export default function About() {
         {/* Technical Focus Areas */}
         <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Passions</div>
         <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, color: "#ffffff", margin: "0 0 40px", letterSpacing: "-1px" }}>Technical Focus Areas</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "16px" }}>
           {interests.map((item, i) => (
             <InterestCard key={item.title} item={item} index={i} />
           ))}

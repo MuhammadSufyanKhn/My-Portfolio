@@ -31,7 +31,7 @@ export default function Education() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{ marginBottom: "64px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Academic Background</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: 0, letterSpacing: "-2px", lineHeight: 1.1 }}>Education</h1>
@@ -78,7 +78,7 @@ export default function Education() {
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#6366f1", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Academic Progress</div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px", letterSpacing: "-1px" }}>Semester by Semester</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 130px), 1fr))", gap: "12px" }}>
             {semesters.map((sem, i) => (
               <SemesterCard key={sem.num} sem={sem} index={i} />
             ))}
@@ -91,7 +91,7 @@ export default function Education() {
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#f59e0b", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Curriculum</div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px", letterSpacing: "-1px" }}>Relevant Coursework</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 220px), 1fr))", gap: "12px" }}>
             {coursework.map((course, i) => (
               <CourseworkCard key={course.name} course={course} index={i} />
             ))}
@@ -104,7 +104,7 @@ export default function Education() {
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#ec4899", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Highlights</div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px", letterSpacing: "-1px" }}>Achievements</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
+          <div className="achievements-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "16px" }}>
             {[
               { icon: "🎓", title: "Scholarship Every Semester", desc: "Awarded a scholarship in every completed semester.", color: "#f59e0b" },
               { icon: "🏆", title: "Best Semester Project OOP", desc: "Best Semester Project Award in Object-Oriented Programming during the 2nd semester.", color: "#10b981" },

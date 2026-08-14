@@ -67,6 +67,7 @@ export default function Navbar() {
           maxWidth: "1200px",
         }}
         ref={dropdownRef}
+        className="nav-root-bar"
       >
         <div style={{
           background: scrolled ? "rgba(10, 10, 15, 0.92)" : "rgba(12, 12, 18, 0.8)",
@@ -82,7 +83,7 @@ export default function Navbar() {
             ? "0 12px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(56, 189, 248, 0.12)"
             : "0 4px 24px rgba(0, 0, 0, 0.35)",
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}>
+        }} className="nav-inner-bar">
           {/* Brand Logo */}
           <Link to="/" style={{ textDecoration: "none", flexShrink: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -412,6 +413,19 @@ export default function Navbar() {
         }
         @media (max-width: 480px) {
           .nav-brand-text { display: none !important; }
+          .nav-root-bar {
+            width: calc(100% - 16px) !important;
+            top: 10px !important;
+          }
+          .nav-inner-bar {
+            padding: 8px 12px !important;
+          }
+        }
+        @media (max-width: 399px) {
+          .nav-root-bar {
+            width: calc(100% - 12px) !important;
+            top: 8px !important;
+          }
         }
       `}</style>
     </>

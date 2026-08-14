@@ -10,7 +10,7 @@ export default function Certifications() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{ marginBottom: "48px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.97)", transition: "all 0.9s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#f59e0b", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}>Credentials</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 12px", letterSpacing: "-2px", lineHeight: 1.1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease 0.3s" }}>Certifications</h1>
@@ -19,7 +19,7 @@ export default function Certifications() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "20px" }}>
+        <div className="certs-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 270px), 1fr))", gap: "20px" }}>
           {certifications.map((cert, i) => (
             <CertCard key={cert.id} cert={cert} index={i} onPreview={() => setPreview(cert)} />
           ))}
@@ -45,6 +45,7 @@ function CertCard({ cert, index, onPreview }: { cert: typeof certifications[0]; 
   return (
     <div
       ref={ref}
+      className="cert-card"
       onClick={onPreview}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

@@ -12,8 +12,8 @@ export default function ProjectModal({ project, onClose }: { project: any; onClo
   }, [onClose]);
 
   return createPortal(
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 99990, background: "rgba(0, 0, 0, 0.85)", backdropFilter: "blur(16px)", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "90px 20px 30px 20px", overflowY: "auto", opacity: visible ? 1 : 0, transition: "opacity 0.25s ease-out" }} onClick={onClose}>
-      <div style={{ background: "#0d0d12", border: "1px solid rgba(255, 255, 255, 0.14)", borderRadius: "20px", maxWidth: "640px", width: "100%", maxHeight: "calc(100vh - 120px)", display: "flex", flexDirection: "column", boxShadow: "0 25px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(56, 189, 248, 0.15)", transform: visible ? "scale(1) translateY(0)" : "scale(0.95) translateY(12px)", transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)", overflow: "hidden" }} onClick={e => e.stopPropagation()}>
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 99990, background: "rgba(0, 0, 0, 0.85)", backdropFilter: "blur(16px)", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "90px 20px 30px 20px", overflowY: "auto", opacity: visible ? 1 : 0, transition: "opacity 0.25s ease-out" }} onClick={onClose} className="project-modal-backdrop">
+      <div style={{ background: "#0d0d12", border: "1px solid rgba(255, 255, 255, 0.14)", borderRadius: "20px", maxWidth: "640px", width: "100%", maxHeight: "calc(100vh - 110px)", display: "flex", flexDirection: "column", boxShadow: "0 25px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(56, 189, 248, 0.15)", transform: visible ? "scale(1) translateY(0)" : "scale(0.95) translateY(12px)", transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)", overflow: "hidden" }} onClick={e => e.stopPropagation()}>
         <div style={{ padding: "16px 24px", background: "linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)", borderBottom: "1px solid rgba(255, 255, 255, 0.1)", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ fontSize: "20px" }}>🚀</span>
@@ -24,7 +24,7 @@ export default function ProjectModal({ project, onClose }: { project: any; onClo
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.08)"}
           >×</button>
         </div>
-        <div style={{ padding: "24px 28px", overflowY: "auto", flex: 1 }}>
+        <div style={{ padding: "24px 28px", overflowY: "auto", flex: 1 }} className="project-modal-body">
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", flexWrap: "wrap" }}>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "22px", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "-0.5px" }}>{project.title}</h2>
             {project.status === "In Progress" && <span style={{ padding: "3px 10px", borderRadius: "100px", background: "rgba(249, 115, 22, 0.15)", border: "1px solid rgba(249, 115, 22, 0.3)", color: "#f97316", fontSize: "11px", fontWeight: 700 }}>🚧 In Progress</span>}
@@ -85,6 +85,16 @@ export default function ProjectModal({ project, onClose }: { project: any; onClo
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width: 480px) {
+          .project-modal-backdrop {
+            padding: 70px 10px 20px !important;
+          }
+          .project-modal-body {
+            padding: 16px !important;
+          }
+        }
+      `}</style>
     </div>,
     document.body
   );

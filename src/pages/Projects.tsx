@@ -21,7 +21,7 @@ export default function Projects() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "110px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
         <div ref={hero.ref} style={{ marginBottom: "48px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Portfolio</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1 }}>All Projects</h1>
@@ -29,12 +29,12 @@ export default function Projects() {
         </div>
 
         {/* Stats Summary Banner */}
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "40px", padding: "20px 24px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: "16px" }}>
+        <div className="stats-summary-banner" style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "40px", padding: "16px 18px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: "16px" }}>
           {[
             { label: "Total Projects", value: allProjects.length, icon: "📦" },
             { label: "Completed", value: allProjects.filter(p => p.status === "Completed").length, icon: "✅" },
             { label: "In Progress", value: allProjects.filter(p => p.status === "In Progress").length, icon: "🚧" },
-            { label: "Tech Stack", value: "C# .NET + Python + Assembly", icon: "⚡" },
+            { label: "Tech Stack", value: ".NET / Python / Asm", icon: "⚡" },
           ].map((stat) => (
             <div key={stat.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <span style={{ fontSize: "16px" }}>{stat.icon}</span>
@@ -47,7 +47,7 @@ export default function Projects() {
         </div>
 
         {/* Filter Tabs */}
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "40px" }}>
+        <div className="filter-tabs-container" style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "40px" }}>
           {[
             { id: "all", label: "All Projects", count: allProjects.length },
             { id: "dotnet", label: ".NET Core", count: projects.dotnet.length },
@@ -74,7 +74,7 @@ export default function Projects() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "24px" }}>
           {filtered.map((project, i) => (
             <ProjectCard key={project.id + project.title} project={project} index={i} onClick={() => setSelected(project)} />
           ))}
@@ -93,22 +93,25 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
   const btnShadow = "0 4px 14px rgba(59, 130, 246, 0.35)";
 
   return (
-    <div ref={ref} style={{
-      background: "rgba(15, 15, 15, 0.75)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px",
-      overflow: "hidden", cursor: "pointer", transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
-      opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
-      boxShadow: "0 4px 20px rgba(0,0,0,0.3)", display: "flex", flexDirection: "column", justifyContent: "space-between",
+    <div ref={ref} className="project-card" style={{
+      border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px",
+      overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
     }} onClick={onClick}
       onMouseEnter={e => {
         (e.currentTarget as HTMLElement).style.borderColor = "rgba(56, 189, 248, 0.3)";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.08)";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
       }}
     >
-      <div style={{ padding: "28px" }}>
+      <div style={{
+        background: "rgba(15, 15, 15, 0.75)", backdropFilter: "blur(20px)",
+        transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
+        opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
+        display: "flex", flexDirection: "column", justifyContent: "space-between",
+      }}>
+      <div className="project-card-content" style={{ padding: "28px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "8px" }}>
           <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "18px", fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>{project.title}</h3>
           <span style={{ padding: "3px 10px", borderRadius: "100px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8", fontSize: "11px", fontWeight: 700, flexShrink: 0 }}>
@@ -126,7 +129,7 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
         </div>
       </div>
 
-      <div style={{ padding: "0 28px 24px", display: "flex", gap: "10px" }}>
+      <div className="project-card-footer" style={{ padding: "0 28px 24px", display: "flex", gap: "10px" }}>
         {project.github && project.github !== "#" && (
           <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", flex: 1 }} onClick={e => e.stopPropagation()}>
             <button style={{
@@ -157,6 +160,7 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
         >
           View Details →
         </button>
+      </div>
       </div>
     </div>
   );

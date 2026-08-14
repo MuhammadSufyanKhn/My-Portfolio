@@ -22,7 +22,7 @@ export default function Internship() {
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         {/* Animated Hero */}
         <div ref={hero.ref} style={{ marginBottom: "64px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}>Hire Me</div>
@@ -35,7 +35,7 @@ export default function Internship() {
         </div>
 
         {/* Reason Cards with staggered animations */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px", marginBottom: "64px" }}>
+        <div className="internship-reasons-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "20px", marginBottom: "64px" }}>
           {reasons.map((r, i) => (
             <ReasonCard key={r.title} reason={r} index={i} />
           ))}
@@ -53,7 +53,7 @@ export default function Internship() {
           opacity: ctaVis.visible ? 1 : 0,
           transform: ctaVis.visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.97)",
           transition: "all 0.9s cubic-bezier(0.23,1,0.32,1)",
-        }}>
+        }} className="internship-cta-box">
           {/* Animated gradient border top */}
           <div style={{
             position: "absolute", top: 0, left: 0, right: 0, height: "3px",
@@ -79,6 +79,12 @@ export default function Internship() {
           0% { background-position: 0% 50%; }
           100% { background-position: 300% 50%; }
         }
+        @media (max-width: 480px) {
+          .internship-cta-box {
+            padding: 28px 16px !important;
+            border-radius: 18px !important;
+          }
+        }
       `}</style>
     </div>
   );
@@ -91,6 +97,7 @@ function ReasonCard({ reason, index }: { reason: typeof reasons[0]; index: numbe
   return (
     <div
       ref={ref}
+      className="reason-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
