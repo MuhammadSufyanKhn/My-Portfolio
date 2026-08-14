@@ -65,6 +65,7 @@ function SemesterCard({ project, index, onSelect }: { project: typeof projects.s
         border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "20px",
         overflow: "hidden", cursor: "pointer", transition: "border-color 0.3s ease",
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+        display: "flex", flexDirection: "column", height: "100%",
       }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLElement).style.borderColor = "rgba(16, 185, 129, 0.35)";
@@ -78,8 +79,9 @@ function SemesterCard({ project, index, onSelect }: { project: typeof projects.s
         transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
         opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)",
         display: "flex", flexDirection: "column", justifyContent: "space-between",
+        flex: 1, height: "100%",
       }}>
-      <div className="project-card-content" style={{ padding: "28px" }}>
+      <div className="project-card-content" style={{ padding: "28px", flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Compact Header Block */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "8px" }}>
           <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "18px", fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>{project.title}</h3>
@@ -96,7 +98,7 @@ function SemesterCard({ project, index, onSelect }: { project: typeof projects.s
         </div>
 
         {/* Description */}
-        <p style={{ fontSize: "13px", color: "#a1a1aa", lineHeight: 1.6, margin: "0 0 20px" }}>{project.description}</p>
+        <p style={{ fontSize: "13px", color: "#a1a1aa", lineHeight: 1.6, margin: "0 0 20px", flex: 1 }}>{project.description}</p>
 
         {/* Grouped Tech Stack Pills */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "24px" }}>
