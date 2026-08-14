@@ -11,13 +11,7 @@ const allProjects = [
 
 export default function Projects() {
   const hero = useVisible();
-  const [filter, setFilter] = useState<"all" | "dotnet" | "python" | "semester">("all");
   const [selected, setSelected] = useState<any | null>(null);
-
-  const filtered = allProjects.filter((p) => {
-    if (filter === "all") return true;
-    return p.category === filter;
-  });
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "110px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
@@ -46,36 +40,9 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Filter Tabs */}
-        <div className="filter-tabs-container" style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "40px" }}>
-          {[
-            { id: "all", label: "All Projects", count: allProjects.length },
-            { id: "dotnet", label: ".NET Core", count: projects.dotnet.length },
-            { id: "python", label: "Python", count: projects.python.length },
-            { id: "semester", label: "Semester", count: projects.semester.length },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setFilter(tab.id as any)}
-              style={{
-                padding: "10px 20px", borderRadius: "100px",
-                border: filter === tab.id ? "1px solid rgba(56,189,248,0.5)" : "1px solid rgba(255,255,255,0.08)",
-                background: filter === tab.id ? "rgba(56,189,248,0.15)" : "rgba(255,255,255,0.04)",
-                color: filter === tab.id ? "#38bdf8" : "#94a3b8",
-                fontSize: "13px", fontWeight: 600, cursor: "pointer",
-                transition: "all 0.3s ease",
-                display: "flex", alignItems: "center", gap: "8px",
-              }}
-            >
-              {tab.label}
-              <span style={{ padding: "2px 7px", borderRadius: "100px", background: filter === tab.id ? "rgba(56,189,248,0.2)" : "rgba(255,255,255,0.08)", fontSize: "11px" }}>{tab.count}</span>
-            </button>
-          ))}
-        </div>
-
         {/* Grid */}
         <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "24px" }}>
-          {filtered.map((project, i) => (
+          {allProjects.map((project, i) => (
             <ProjectCard key={project.id + project.title} project={project} index={i} onClick={() => setSelected(project)} />
           ))}
         </div>
@@ -117,6 +84,13 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
           <span style={{ padding: "3px 10px", borderRadius: "100px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8", fontSize: "11px", fontWeight: 700, flexShrink: 0 }}>
             {project.category === "dotnet" ? ".NET" : project.category === "python" ? "Python" : "Semester"}
           </span>
+        </div>
+
+        {/* Status indicator row */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#94a3b8", marginBottom: "16px" }}>
+          <span>{project.category === "dotnet" ? "⚡ .NET" : project.category === "python" ? "🐍 Python" : "🏫 Academic"}</span>
+          <span>•</span>
+          <span style={{ color: project.status === "Completed" ? "#34d399" : "#f97316", fontWeight: 600 }}>{project.status}</span>
         </div>
 
         <p style={{ fontSize: "13px", color: "#a1a1aa", lineHeight: 1.6, margin: "0 0 20px" }}>{project.description}</p>
