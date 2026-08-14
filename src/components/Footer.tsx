@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -26,17 +27,7 @@ export default function Footer() {
           {/* Brand & Social Column */}
           <div style={{ paddingRight: "16px" }}>
             <Link to="/" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-              <div style={{
-                width: "30px", height: "30px",
-                background: "linear-gradient(135deg, #10b981 0%, #6366f1 100%)",
-                borderRadius: "8px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "'Poppins', 'Inter', sans-serif",
-                fontWeight: 800, color: "#ffffff", fontSize: "11px",
-                boxShadow: "0 3px 10px rgba(16, 185, 129, 0.3)",
-              }}>
-                MSK
-              </div>
+              <Logo size="sm" />
               <span style={{
                 fontFamily: "'Poppins', 'Inter', sans-serif",
                 fontWeight: 700, fontSize: "15px",

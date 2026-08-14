@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Logo from "./Logo";
 
 const navItems = [
   { label: "Home", path: "/", icon: "🏠" },
@@ -87,18 +88,7 @@ export default function Navbar() {
           {/* Brand Logo */}
           <Link to="/" style={{ textDecoration: "none", flexShrink: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{
-                width: "36px", height: "36px",
-                background: "linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)",
-                borderRadius: "10px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "'Poppins', 'Inter', sans-serif",
-                fontWeight: 800, color: "#ffffff", fontSize: "13px",
-                letterSpacing: "-0.3px",
-                boxShadow: "0 4px 14px rgba(59, 130, 246, 0.4)",
-              }}>
-                MSK
-              </div>
+              <Logo size="sm" />
               <span style={{
                 fontFamily: "'Poppins', 'Inter', sans-serif",
                 fontWeight: 700, fontSize: "14px",
