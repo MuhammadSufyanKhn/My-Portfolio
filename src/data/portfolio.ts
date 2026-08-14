@@ -355,6 +355,7 @@ export const certifications = [
     description: "Certificate of completion for C# learning and development fundamentals.",
     color: "#818cf8",
     icon: "🏅",
+    image: "/certificates/microsoft-certificate-csharp.png",
     file: "/certificates/microsoft-certificate-csharp.pdf",
   },
   {
@@ -366,6 +367,7 @@ export const certifications = [
     description: "Completed Google's Introduction to AI online course through Coursera.",
     color: "#239120",
     icon: "🎖️",
+    image: "/certificates/introduction-to-ai.png",
     file: "/certificates/introduction-to-ai.pdf",
   },
   {
@@ -377,6 +379,7 @@ export const certifications = [
     description: "Completed HTML Essentials training, covering core web structure and markup skills.",
     color: "#E34F26",
     icon: "🥇",
+    image: "/certificates/html-essentials.png",
     file: "/certificates/html-essentials.pdf",
   },
   {
@@ -388,6 +391,7 @@ export const certifications = [
     description: "Completed a C# course for .NET developers offered through Coursera.",
     color: "#a78bfa",
     icon: "🎓",
+    image: "/certificates/csharp-dotnet.png",
     file: "/certificates/csharp-dotnet.pdf",
   },
   {
@@ -399,6 +403,7 @@ export const certifications = [
     description: "Completed backend development training using ASP.NET through Coursera.",
     color: "#10B981",
     icon: "🏅",
+    image: "/certificates/backend-aspnet.png",
     file: "/certificates/backend-aspnet.pdf",
   },
 ];
