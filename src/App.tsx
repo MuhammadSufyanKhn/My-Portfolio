@@ -40,12 +40,16 @@ function PageWrapper({ children }: { children: React.ReactNode }) {
   }, [children, visible]);
 
   return (
-    <div style={{
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(16px)",
-      transition: "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-      minHeight: "100vh",
-    }}>
+    <div
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translate3d(0, 0, 0)" : "translate3d(0, 18px, 0)",
+        transition:
+          "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        willChange: "opacity, transform",
+        minHeight: "100vh",
+      }}
+    >
       {currentChildren}
     </div>
   );

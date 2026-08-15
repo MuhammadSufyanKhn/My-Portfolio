@@ -3,9 +3,12 @@ import { useState } from "react";
 
 const coursework = [
   { name: "Data Structures & Algorithms", grade: "A", icon: "🔁" },
+  { name: "Design & Analysis of Algorithms", grade: "A", icon: "⚡" },
   { name: "Object-Oriented Programming", grade: "A+", icon: "🧩" },
   { name: "Database Systems", grade: "A", icon: "🗄️" },
   { name: "Software Engineering", grade: "A", icon: "🏗️" },
+  { name: "Artificial Intelligence", grade: "A", icon: "🤖" },
+  { name: "Information Security", grade: "A", icon: "🛡️" },
   { name: "Operating Systems", grade: "A-", icon: "💻" },
   { name: "Computer Networks", grade: "A", icon: "🌐" },
   { name: "Web Technologies", grade: "A", icon: "🕸️" },
@@ -37,40 +40,7 @@ export default function Education() {
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: 0, letterSpacing: "-2px", lineHeight: 1.1 }}>Education</h1>
         </div>
 
-        <div ref={edu.ref} style={{ opacity: edu.visible ? 1 : 0, transform: edu.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1) 0.2s", marginBottom: "48px" }}>
-          <div style={{ padding: "32px 36px", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "24px", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "linear-gradient(90deg, #10b981, #6366f1, #f59e0b)" }} />
-            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }} className="edu-grid">
-              <div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "4px 12px", borderRadius: "100px", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)", marginBottom: "16px" }}>
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} />
-                  <span style={{ fontSize: "11px", fontWeight: 600, color: "#059669" }}>Currently Enrolled</span>
-                </div>
-                <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(20px, 3.5vw, 28px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px", letterSpacing: "-0.5px" }}>Sir Syed University of Engineering & Technology</h2>
-                <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "16px", fontWeight: 600, color: "#94a3b8", margin: "0 0 4px" }}>BS Computer Science</h3>
-                <p style={{ fontSize: "15px", color: "#64748b", margin: "0 0 24px" }}>Completed 6th Semester</p>
-                <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-                  {[
-                    { label: "Duration", value: "2023 to 2027" },
-                    { label: "Status", value: "Completed 6th Semester" },
-                    { label: "Location", value: "Pakistan" },
-                  ].map((item) => (
-                    <div key={item.label}>
-                      <div style={{ fontSize: "11px", color: "#475569", fontWeight: 500, marginBottom: "2px" }}>{item.label}</div>
-                      <div style={{ fontSize: "14px", color: "#f1f5f9", fontWeight: 600 }}>{item.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{ textAlign: "center", padding: "28px 36px", background: "linear-gradient(135deg, #0a0a0a, #1a1a2e)", borderRadius: "20px", boxShadow: "0 12px 40px rgba(0,0,0,0.15)", minWidth: "160px" }} className="edu-cgpa-badge">
-                <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", fontWeight: 600, letterSpacing: "2px", marginBottom: "8px" }}>CGPA</div>
-                <div style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "48px", fontWeight: 800, background: "linear-gradient(135deg, #10b981, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1 }}>3.97</div>
-                <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginTop: "4px" }}>/ 4.0</div>
-                <div style={{ marginTop: "12px", padding: "4px 10px", background: "rgba(16,185,129,0.2)", borderRadius: "100px", fontSize: "10px", fontWeight: 600, color: "#34d399" }}>Top 5%</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EduMainCard refObj={edu.ref} visible={edu.visible} />
 
         {/* Semester Grid */}
         <div style={{ marginBottom: "64px" }}>
@@ -78,7 +48,7 @@ export default function Education() {
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#6366f1", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Academic Progress</div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 32px", letterSpacing: "-1px" }}>Semester by Semester</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 130px), 1fr))", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 155px), 1fr))", gap: "14px" }}>
             {semesters.map((sem, i) => (
               <SemesterCard key={sem.num} sem={sem} index={i} />
             ))}
@@ -130,9 +100,10 @@ function SemesterCard({ sem, index }: { sem: typeof semesters[0]; index: number 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: "20px",
-        background: hovered ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.05)",
-        backdropFilter: "blur(10px)",
+        padding: "16px 14px",
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
         border: sem.highlight ? "1.5px solid rgba(16,185,129,0.3)" : `1px solid ${hovered ? "rgba(99,102,241,0.3)" : "rgba(255,255,255,0.08)"}`,
         borderRadius: "14px",
         transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
@@ -143,9 +114,9 @@ function SemesterCard({ sem, index }: { sem: typeof semesters[0]; index: number 
         boxShadow: hovered ? "0 12px 28px -8px rgba(99, 102, 241, 0.15)" : "none",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px", gap: "8px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px", gap: "6px" }}>
         <span style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "13px", fontWeight: 700, color: "#e2e8f0", whiteSpace: "nowrap" }}>{sem.num} Sem</span>
-        <span style={{ padding: "2px 8px", borderRadius: "100px", fontSize: "10px", fontWeight: 600, background: "rgba(99,102,241,0.12)", color: "#818cf8", whiteSpace: "nowrap", flexShrink: 0 }}>{sem.status}</span>
+        <span style={{ padding: "2px 7px", borderRadius: "100px", fontSize: "10px", fontWeight: 600, background: sem.highlight ? "rgba(16,185,129,0.15)" : "rgba(99,102,241,0.15)", color: sem.highlight ? "#34d399" : "#818cf8", whiteSpace: "nowrap" }}>{sem.status}</span>
       </div>
       <div style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "22px", fontWeight: 800, color: "#f1f5f9" }}>{sem.gpa}</div>
       <div style={{ fontSize: "10px", color: "#475569", marginTop: "2px" }}>GPA</div>
@@ -164,9 +135,10 @@ function CourseworkCard({ course, index }: { course: typeof coursework[0]; index
       onMouseLeave={() => setHovered(false)}
       style={{
         display: "flex", alignItems: "center", gap: "14px", padding: "14px 18px",
-        background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
-        backdropFilter: "blur(10px)",
-        border: `1px solid ${hovered ? "rgba(245,158,11,0.25)" : "rgba(255,255,255,0.08)"}`,
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? "rgba(245,158,11,0.3)" : "rgba(255,255,255,0.08)"}`,
         borderRadius: "12px",
         opacity: visible ? 1 : 0,
         transform: visible
@@ -193,9 +165,10 @@ function AchievementCard({ ach, index }: { ach: { icon: string; title: string; d
       onMouseLeave={() => setHovered(false)}
       style={{
         padding: "28px",
-        background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
-        backdropFilter: "blur(10px)",
-        border: `1px solid ${hovered ? `${ach.color}40` : "rgba(255,255,255,0.08)"}`,
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? `${ach.color}45` : "rgba(255,255,255,0.08)"}`,
         borderRadius: "18px",
         opacity: visible ? 1 : 0,
         transform: visible
@@ -216,6 +189,122 @@ function AchievementCard({ ach, index }: { ach: { icon: string; title: string; d
       }}>{ach.icon}</div>
       <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "16px", fontWeight: 700, color: "#f1f5f9", margin: "0 0 8px" }}>{ach.title}</h3>
       <p style={{ fontSize: "13px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>{ach.desc}</p>
+    </div>
+  );
+}
+
+function EduMainCard({ refObj, visible }: { refObj: React.RefObject<HTMLDivElement | null>; visible: boolean }) {
+  const [cardHover, setCardHover] = useState(false);
+  const [enrolledHover, setEnrolledHover] = useState(false);
+
+  return (
+    <div ref={refObj} style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1) 0.2s", marginBottom: "48px" }}>
+      <div
+        onMouseEnter={() => setCardHover(true)}
+        onMouseLeave={() => setCardHover(false)}
+        style={{
+          padding: "32px 36px",
+          background: cardHover ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: `1px solid ${cardHover ? "rgba(16, 185, 129, 0.35)" : "rgba(255, 255, 255, 0.08)"}`,
+          borderRadius: "24px",
+          position: "relative",
+          overflow: "hidden",
+          transform: cardHover ? "translateY(-4px)" : "translateY(0)",
+          boxShadow: cardHover ? "0 20px 40px -15px rgba(16, 185, 129, 0.15)" : "none",
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+      >
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: "linear-gradient(90deg, #10b981, #6366f1, #f59e0b)" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }} className="edu-grid">
+          <div>
+            <div
+              onMouseEnter={() => setEnrolledHover(true)}
+              onMouseLeave={() => setEnrolledHover(false)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                padding: "6px 14px", borderRadius: "100px",
+                background: enrolledHover ? "rgba(16,185,129,0.2)" : "rgba(16,185,129,0.1)",
+                border: enrolledHover ? "1px solid rgba(16,185,129,0.4)" : "1px solid rgba(16,185,129,0.2)",
+                marginBottom: "16px",
+                transform: enrolledHover ? "scale(1.04)" : "scale(1)",
+                transition: "all 0.3s ease",
+                cursor: "default",
+              }}
+            >
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981" }} />
+              <span style={{ fontSize: "11px", fontWeight: 600, color: "#10b981" }}>Currently Enrolled</span>
+            </div>
+            <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(20px, 3.5vw, 28px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 8px", letterSpacing: "-0.5px" }}>Sir Syed University of Engineering & Technology</h2>
+            <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "16px", fontWeight: 600, color: "#94a3b8", margin: "0 0 4px" }}>BS Computer Science</h3>
+            <p style={{ fontSize: "15px", color: "#64748b", margin: "0 0 24px" }}>Completed 6th Semester</p>
+            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+              {[
+                { label: "Duration", value: "2023 to 2027" },
+                { label: "Status", value: "Completed 6th Semester" },
+                { label: "Location", value: "Pakistan" },
+              ].map((item) => (
+                <EduInfoItemPill key={item.label} item={item} />
+              ))}
+            </div>
+          </div>
+          <EduCgpaBadge />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EduInfoItemPill({ item }: { item: { label: string; value: string } }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        padding: "10px 16px",
+        background: hovered ? "rgba(25, 25, 32, 0.9)" : "rgba(20, 20, 25, 0.6)",
+        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.35)" : "rgba(255, 255, 255, 0.08)"}`,
+        borderRadius: "12px",
+        transform: hovered ? "translateY(-3px) scale(1.02)" : "translateY(0) scale(1)",
+        boxShadow: hovered ? "0 8px 20px -6px rgba(56, 189, 248, 0.2)" : "none",
+        transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        cursor: "default",
+      }}
+    >
+      <div style={{ fontSize: "11px", color: "#64748b", fontWeight: 500, marginBottom: "2px" }}>{item.label}</div>
+      <div style={{ fontSize: "14px", color: "#f1f5f9", fontWeight: 600 }}>{item.value}</div>
+    </div>
+  );
+}
+
+function EduCgpaBadge() {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        textAlign: "center",
+        padding: "28px 36px",
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? "rgba(16, 185, 129, 0.4)" : "rgba(255, 255, 255, 0.08)"}`,
+        borderRadius: "20px",
+        transform: hovered ? "translateY(-4px) scale(1.03)" : "translateY(0) scale(1)",
+        boxShadow: hovered ? "0 14px 32px -8px rgba(16, 185, 129, 0.25)" : "0 10px 30px -10px rgba(0, 0, 0, 0.5)",
+        transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+        minWidth: "160px",
+        cursor: "default",
+      }}
+      className="edu-cgpa-badge"
+    >
+      <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", fontWeight: 600, letterSpacing: "2px", marginBottom: "8px" }}>CGPA</div>
+      <div style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "48px", fontWeight: 800, background: "linear-gradient(135deg, #10b981, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1 }}>3.97</div>
+      <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginTop: "4px" }}>/ 4.0</div>
+      <div style={{ marginTop: "12px", padding: "4px 10px", background: "rgba(16,185,129,0.2)", borderRadius: "100px", fontSize: "10px", fontWeight: 600, color: "#34d399" }}>Top 5%</div>
     </div>
   );
 }

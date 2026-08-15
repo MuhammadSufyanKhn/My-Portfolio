@@ -44,7 +44,9 @@ export default function Footer() {
               margin: "0 0 12px",
               maxWidth: "290px",
             }}>
-              ASP.NET Core Backend Developer • BSCS Student at Sir Syed University
+              ASP.NET Core Backend Developer
+              <br />
+              BSCS Student at Sir Syed University
             </p>
 
             {/* Social Icons Row */}

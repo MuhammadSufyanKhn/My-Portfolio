@@ -78,7 +78,14 @@ function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: n
         boxShadow: hovered ? "0 12px 28px -8px rgba(139, 92, 246, 0.15)" : "none",
       }}
     >
-      <div style={{ fontSize: "28px", marginBottom: "12px", transition: "transform 0.3s ease", transform: hovered ? "scale(1.2) rotate(5deg)" : "scale(1)" }}>{skill.icon}</div>
+      <div style={{
+        width: "48px", height: "48px", borderRadius: "14px",
+        background: "rgba(139, 92, 246, 0.12)", border: "1px solid rgba(139, 92, 246, 0.25)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "22px", marginBottom: "16px",
+        transition: "transform 0.4s ease",
+        transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
+      }}>{skill.icon}</div>
       <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", margin: "0 0 6px" }}>{skill.name}</h3>
       <p style={{ fontSize: "13px", color: "#a1a1aa", margin: 0, lineHeight: 1.5 }}>{skill.desc}</p>
     </div>

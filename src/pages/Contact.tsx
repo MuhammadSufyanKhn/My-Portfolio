@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useVisible } from "../utils/useVisible";
 
 const contactLinks = [
@@ -23,47 +24,13 @@ export default function Contact() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "32px", alignItems: "start" }} className="contact-grid">
           <div>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {contactLinks.map((link, i) => {
-                const { ref, visible } = useVisible(i * 80);
-                const inner = (
-                  <div ref={ref} className="contact-link-card" style={{
-                    display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px",
-                    background: "rgba(15, 15, 15, 0.7)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px",
-                    cursor: link.href ? "pointer" : "default", opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.4s ease",
-                  }}>
-                    <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: `${link.color}15`, border: `1px solid ${link.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", flexShrink: 0 }}>{link.icon}</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: "11px", color: "#64748b", fontWeight: 500, marginBottom: "2px" }}>{link.label}</div>
-                      <div style={{ fontSize: "13px", color: "#ffffff", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{link.value}</div>
-                      <div style={{ fontSize: "11px", color: "#64748b" }}>{link.desc}</div>
-                    </div>
-                    {link.href && <span style={{ color: "#64748b", fontSize: "14px" }}>→</span>}
-                  </div>
-                );
-                return link.href ? (
-                  <a key={link.label} href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" style={{ textDecoration: "none" }}>{inner}</a>
-                ) : <div key={link.label}>{inner}</div>;
-              })}
+              {contactLinks.map((link, i) => (
+                <ContactLinkCardItem key={link.label} link={link} index={i} />
+              ))}
             </div>
           </div>
 
-          <div ref={cta.ref} style={{ opacity: cta.visible ? 1 : 0, transform: cta.visible ? "translateX(0)" : "translateX(30px)", transition: "all 0.8s ease 0.2s" }}>
-            <div style={{ padding: "40px", background: "rgba(15, 15, 15, 0.7)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "24px", textAlign: "center" }} className="contact-email-card">
-              <div style={{ fontSize: "44px", marginBottom: "16px" }}>✉️</div>
-              <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "24px", fontWeight: 800, color: "#ffffff", margin: "0 0 12px" }}>Send Me an Email</h2>
-              <p style={{ fontSize: "15px", color: "#94a3b8", lineHeight: 1.7, margin: "0 0 28px" }}>Click below to send an email directly. I look forward to discussing engineering opportunities with you!</p>
-              <a href="mailto:khansufyanasim@gmail.com?subject=Opportunity%20-%20.NET%20Developer&body=Hi%20Muhammad%20Sufyan%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity%20with%20you.%0A%0A" style={{
-                textDecoration: "none", display: "block", width: "100%", padding: "14px 16px",
-                borderRadius: "12px", border: "none",
-                background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-                color: "#ffffff", fontSize: "clamp(12px, 3.5vw, 15px)", fontWeight: 700, cursor: "pointer",
-                textAlign: "center" as const, boxSizing: "border-box" as const,
-                wordBreak: "break-all" as const, overflowWrap: "break-word" as const,
-                boxShadow: "0 8px 24px rgba(59, 130, 246, 0.35)",
-                transition: "all 0.3s ease",
-              }}>khansufyanasim@gmail.com →</a>
-            </div>
-          </div>
+          <ContactEmailCard ctaRef={cta.ref} visible={cta.visible} />
         </div>
       </div>
 
@@ -75,6 +42,118 @@ export default function Contact() {
           }
         }
       `}</style>
+    </div>
+  );
+}
+
+function ContactLinkCardItem({ link, index }: { link: typeof contactLinks[0]; index: number }) {
+  const { ref, visible } = useVisible(index * 80);
+  const [hovered, setHovered] = useState(false);
+
+  const inner = (
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="contact-link-card"
+      style={{
+        display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px",
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? `${link.color}50` : "rgba(255,255,255,0.08)"}`,
+        borderRadius: "14px",
+        cursor: link.href ? "pointer" : "default",
+        opacity: visible ? 1 : 0,
+        transform: visible
+          ? (hovered ? "translateY(-4px) scale(1.015)" : "translateX(0)")
+          : "translateX(-20px)",
+        boxShadow: hovered ? `0 12px 28px -8px ${link.color}25` : "none",
+        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+    >
+      <div style={{
+        width: "44px", height: "44px", borderRadius: "12px",
+        background: `${link.color}15`, border: `1px solid ${link.color}30`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "18px", flexShrink: 0,
+        transition: "transform 0.3s ease",
+        transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1)",
+      }}>{link.icon}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: "11px", color: "#64748b", fontWeight: 500, marginBottom: "2px" }}>{link.label}</div>
+        <div style={{ fontSize: "13px", color: "#ffffff", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{link.value}</div>
+        <div style={{ fontSize: "11px", color: "#64748b" }}>{link.desc}</div>
+      </div>
+      {link.href && (
+        <span style={{
+          color: hovered ? link.color : "#64748b",
+          fontSize: "14px",
+          transition: "transform 0.3s ease, color 0.3s ease",
+          transform: hovered ? "translateX(4px)" : "translateX(0)",
+        }}>→</span>
+      )}
+    </div>
+  );
+
+  return link.href ? (
+    <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+      {inner}
+    </a>
+  ) : (
+    <div>{inner}</div>
+  );
+}
+
+function ContactEmailCard({ ctaRef, visible }: { ctaRef: React.RefObject<HTMLDivElement | null>; visible: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  const [btnHovered, setBtnHovered] = useState(false);
+
+  return (
+    <div ref={ctaRef} style={{ opacity: visible ? 1 : 0, transform: visible ? "translateX(0)" : "translateX(30px)", transition: "all 0.8s ease 0.2s" }}>
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          padding: "40px",
+          background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: `1px solid ${hovered ? "rgba(59, 130, 246, 0.35)" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "24px",
+          textAlign: "center",
+          transform: hovered ? "translateY(-4px)" : "translateY(0)",
+          boxShadow: hovered ? "0 20px 40px -15px rgba(59, 130, 246, 0.18)" : "none",
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+        className="contact-email-card"
+      >
+        <div style={{
+          fontSize: "44px", marginBottom: "16px",
+          transition: "transform 0.3s ease",
+          transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1)",
+        }}>✉️</div>
+        <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "24px", fontWeight: 800, color: "#ffffff", margin: "0 0 12px" }}>Send Me an Email</h2>
+        <p style={{ fontSize: "15px", color: "#94a3b8", lineHeight: 1.7, margin: "0 0 28px" }}>Click below to send an email directly. I look forward to discussing engineering opportunities with you!</p>
+        <a
+          onMouseEnter={() => setBtnHovered(true)}
+          onMouseLeave={() => setBtnHovered(false)}
+          href="mailto:khansufyanasim@gmail.com?subject=Opportunity%20-%20.NET%20Developer&body=Hi%20Muhammad%20Sufyan%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20discuss%20an%20opportunity%20with%20you.%0A%0A"
+          style={{
+            textDecoration: "none", display: "block", width: "100%", padding: "14px 16px",
+            borderRadius: "12px", border: "none",
+            background: btnHovered ? "linear-gradient(135deg, #2563eb, #1d4ed8)" : "linear-gradient(135deg, #3b82f6, #2563eb)",
+            color: "#ffffff", fontSize: "clamp(12px, 3.5vw, 15px)", fontWeight: 700, cursor: "pointer",
+            textAlign: "center" as const, boxSizing: "border-box" as const,
+            wordBreak: "break-all" as const, overflowWrap: "break-word" as const,
+            boxShadow: btnHovered ? "0 12px 32px rgba(59, 130, 246, 0.5)" : "0 8px 24px rgba(59, 130, 246, 0.35)",
+            transform: btnHovered ? "scale(1.02)" : "scale(1)",
+            transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        >
+          khansufyanasim@gmail.com →
+        </a>
+      </div>
     </div>
   );
 }

@@ -80,17 +80,7 @@ export default function About() {
               { label: "Semester", value: "Completed 6th Semester", icon: "📚" },
               { label: "Location", value: "Pakistan", icon: "📍" },
             ].map((item) => (
-              <div key={item.label} style={{
-                display: "flex", alignItems: "center", gap: "14px",
-                padding: "14px 16px",
-                background: cardBg, backdropFilter: "blur(16px)", border: cardBorder, borderRadius: "14px",
-              }}>
-                <span style={{ fontSize: "20px", flexShrink: 0, width: "24px", textAlign: "center" }}>{item.icon}</span>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: "11px", color: "#71717a", fontWeight: 500, letterSpacing: "0.5px" }}>{item.label}</div>
-                  <div style={{ fontSize: "14px", color: "#ffffff", fontWeight: 600 }}>{item.value}</div>
-                </div>
-              </div>
+              <QuickInfoCard key={item.label} item={item} />
             ))}
           </div>
         </div>
@@ -122,6 +112,34 @@ export default function About() {
             <InterestCard key={item.title} item={item} index={i} />
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function QuickInfoCard({ item }: { item: { label: string; value: string; icon: string } }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex", alignItems: "center", gap: "14px",
+        padding: "14px 16px",
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : cardBg,
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.35)" : "rgba(255, 255, 255, 0.07)"}`,
+        borderRadius: "14px",
+        transform: hovered ? "translateY(-3px) scale(1.01)" : "translateY(0) scale(1)",
+        boxShadow: hovered ? "0 10px 24px -8px rgba(56, 189, 248, 0.2)" : "none",
+        transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+    >
+      <span style={{ fontSize: "20px", flexShrink: 0, width: "24px", textAlign: "center", transition: "transform 0.3s ease", transform: hovered ? "scale(1.2)" : "scale(1)" }}>{item.icon}</span>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: "11px", color: "#71717a", fontWeight: 500, letterSpacing: "0.5px" }}>{item.label}</div>
+        <div style={{ fontSize: "14px", color: "#ffffff", fontWeight: 600 }}>{item.value}</div>
       </div>
     </div>
   );
@@ -184,13 +202,35 @@ function TimelineItem({ item, index, total }: { item: typeof timeline[0]; index:
 
 function InterestCard({ item, index }: { item: typeof interests[0]; index: number }) {
   const { ref, visible } = useVisible(index * 80);
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <div ref={ref} style={{
-      padding: "24px", background: cardBg, border: cardBorder, borderRadius: "16px",
-      transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.05}s`,
-      opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)",
-    }}>
-      <div style={{ fontSize: "28px", marginBottom: "12px" }}>{item.icon}</div>
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        padding: "24px",
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : cardBg,
+        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.35)" : "rgba(255, 255, 255, 0.08)"}`,
+        borderRadius: "16px",
+        transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1)`,
+        opacity: visible ? 1 : 0,
+        transform: visible ? (hovered ? "translateY(-5px) scale(1.02)" : "translateY(0) scale(1)") : "translateY(20px)",
+        boxShadow: hovered ? "0 12px 28px -8px rgba(56, 189, 248, 0.18)" : "none",
+        cursor: "default",
+      }}
+    >
+      <div style={{
+        width: "48px", height: "48px", borderRadius: "14px",
+        background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.25)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "22px", marginBottom: "16px",
+        transition: "transform 0.4s ease",
+        transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
+      }}>
+        {item.icon}
+      </div>
       <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", margin: "0 0 6px" }}>{item.title}</h3>
       <p style={{ fontSize: "13px", color: "#a1a1aa", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
     </div>

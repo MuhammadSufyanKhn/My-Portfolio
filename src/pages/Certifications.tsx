@@ -9,7 +9,7 @@ export default function Certifications() {
   const [preview, setPreview] = useState<typeof certifications[0] | null>(null);
 
   return (
-    <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }}>
+    <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
       <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <div ref={hero.ref} style={{ marginBottom: "48px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.97)", transition: "all 0.9s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#f59e0b", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateX(0)" : "translateX(-20px)", transition: "all 0.6s ease 0.2s" }}>Credentials</div>
@@ -50,9 +50,10 @@ function CertCard({ cert, index, onPreview }: { cert: typeof certifications[0]; 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: hovered ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.05)",
-        backdropFilter: "blur(20px)",
-        border: `1px solid ${hovered ? `${cert.color}50` : "rgba(255,255,255,0.08)"}`,
+        background: hovered ? "rgba(20, 20, 20, 0.85)" : "rgba(15, 15, 15, 0.75)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        border: `1px solid ${hovered ? `${cert.color}45` : "rgba(255,255,255,0.08)"}`,
         borderRadius: "20px",
         overflow: "hidden",
         cursor: "pointer",
@@ -74,7 +75,7 @@ function CertCard({ cert, index, onPreview }: { cert: typeof certifications[0]; 
         transition: "opacity 0.3s ease",
       }} />
 
-      <div style={{ height: "180px", background: "#0f172a", border: `1px solid ${cert.color}35`, margin: "16px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", transition: "transform 0.4s ease", transform: hovered ? "scale(1.03)" : "scale(1)" }}>
+      <div style={{ height: "180px", background: "rgba(15, 15, 20, 0.9)", border: "1px solid rgba(255, 255, 255, 0.08)", margin: "16px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", transition: "transform 0.4s ease", transform: hovered ? "scale(1.03)" : "scale(1)" }}>
         <img
           src={cert.image}
           alt={`${cert.title} certificate`}
