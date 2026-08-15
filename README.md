@@ -1,7 +1,12 @@
 # Muhammad Sufyan Khan — Portfolio
 
-ASP.NET Core Backend Developer | Final Year CS Student | CGPA 3.97 | Open to Internship Opportunities
+**ASP.NET Core Backend Developer | Final Year CS Student | CGPA 3.97 | Open to Internship Opportunities**
 
+## 🌐 Live Portfolio
+
+**Portfolio Website:** https://muhammadsufyankhan-portfolio.vercel.app/
+
+Visit my live portfolio to explore my projects, technical skills, education, experience, certifications, and contact information.
 
 ---
 
@@ -11,40 +16,40 @@ This is my personal developer portfolio, built to showcase my background in back
 
 ## Features
 
-- Animated aurora background with floating particles and mouse spotlight
-- Custom cursor with contextual hover states
-- Smooth page transitions and scroll-triggered reveal animations
-- Fully responsive layout, optimized down to mobile
-- Interactive project modals with tech stack, features, and roadmap details
-- Scroll progress indicator and back-to-top control
-- Sectioned project pages (.NET, Python, semester projects)
+* Animated aurora background with floating particles and mouse spotlight
+* Custom cursor with contextual hover states
+* Smooth page transitions and scroll-triggered reveal animations
+* Fully responsive layout, optimized down to mobile
+* Interactive project modals with tech stack, features, and roadmap details
+* Scroll progress indicator and back-to-top control
+* Sectioned project pages (.NET, Python, semester projects)
 
-## Tech stack
+## Tech Stack
 
-- **Framework:** React 18 + TypeScript
-- **Build tool:** Vite
-- **Styling:** Tailwind CSS
-- **Routing:** React Router
-- **Fonts:** Inter, Poppins, Sora (Google Fonts)
+* **Framework:** React 18 + TypeScript
+* **Build Tool:** Vite
+* **Styling:** Tailwind CSS
+* **Routing:** React Router
+* **Fonts:** Inter, Poppins, Sora (Google Fonts)
 
 ## Pages
 
-| Route | Description |
-|---|---|
-| `/` | Home |
-| `/about` | About me and journey timeline |
-| `/education` | Academic background |
-| `/experience` | Work experience |
-| `/projects` | All projects overview |
-| `/dotnet-projects` | ASP.NET Core projects |
-| `/python-projects` | Python projects |
-| `/semester-projects` | University semester projects |
-| `/skills` | Technical skills |
-| `/certifications` | Certifications |
-| `/internship` | Internship / hire-me info |
-| `/contact` | Contact details |
+| Route                | Description                   |
+| -------------------- | ----------------------------- |
+| `/`                  | Home                          |
+| `/about`             | About me and journey timeline |
+| `/education`         | Academic background           |
+| `/experience`        | Work experience               |
+| `/projects`          | All projects overview         |
+| `/dotnet-projects`   | ASP.NET Core projects         |
+| `/python-projects`   | Python projects               |
+| `/semester-projects` | University semester projects  |
+| `/skills`            | Technical skills              |
+| `/certifications`    | Certifications                |
+| `/internship`        | Internship / hire-me info     |
+| `/contact`           | Contact details               |
 
-## Getting started
+## Getting Started
 
 Clone the repository and install dependencies:
 
@@ -66,13 +71,13 @@ Build for production:
 npm run build
 ```
 
-## Project structure
+## Project Structure
 
-```
+```text
 src/
 ├── components/       # Navbar, Footer, Loader, CustomCursor, etc.
 │   └── background/   # Aurora, ParticleCanvas, Spotlight
-├── pages/             # Home, About, Contact, Projects, etc.
+├── pages/            # Home, About, Contact, Projects, etc.
 ├── utils/             # Shared hooks and helpers
 ├── App.tsx
 ├── main.tsx
@@ -81,7 +86,8 @@ src/
 
 ## Contact
 
-- **Email:** khansufyanasim@gmail.com
-- **LinkedIn:** [Muhammad Sufyan Khan](https://www.linkedin.com/in/muhammad-sufyan-khan-72574b3a3/)
-- **GitHub:** [@MuhammadSufyanKhn](https://github.com/MuhammadSufyanKhn)
-- **Location:** Karachi, Pakistan — open to Remote, On-site, and Hybrid roles
+* **Email:** [khansufyanasim@gmail.com](mailto:khansufyanasim@gmail.com)
+* **LinkedIn:** Muhammad Sufyan Khan
+* **GitHub:** @MuhammadSufyanKhn
+* **Portfolio:** https://muhammadsufyankhan-portfolio.vercel.app/
+* **Location:** Karachi, Pakistan — open to Remote, On-site, and Hybrid roles
