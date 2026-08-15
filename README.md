@@ -87,7 +87,7 @@ src/
 ## Contact
 
 * **Email:** [khansufyanasim@gmail.com](mailto:khansufyanasim@gmail.com)
-* **LinkedIn:** Muhammad Sufyan Khan
+* **LinkedIn:** [https://www.linkedin.com/in/muhammad-sufyan-khan-72574b3a3/]
 * **GitHub:** @MuhammadSufyanKhn
 * **Portfolio:** https://muhammadsufyankhan-portfolio.vercel.app/
 * **Location:** Karachi, Pakistan — open to Remote, On-site, and Hybrid roles
