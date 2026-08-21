@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Loader from "./components/Loader";
 import CustomCursor from "./components/CustomCursor";
 import AnimatedBackground from "./components/AnimatedBackground";
@@ -102,6 +103,7 @@ export default function App() {
           <AppContent />
         </BrowserRouter>
       </div>
+      <Analytics />
     </>
   );
 }
