@@ -179,7 +179,11 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
     setTouchStartX(null);
   };
 
+  const stageVis = useVisible(80, 0.15);
+
   const project = featured[current];
+  const prevProject = featured[(current - 1 + featured.length) % featured.length];
+  const nextProject = featured[(current + 1) % featured.length];
 
   // Helper metadata
   const metaItems = [
@@ -192,6 +196,8 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
     <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} style={{ position: "relative", width: "100%", margin: "0 auto", overflow: "hidden", userSelect: "none" }}>
       {/* 3D Stage Container */}
       <div
+        ref={stageVis.ref}
+        className="featured-carousel-stage"
         style={{
           display: "flex",
           alignItems: "center",
@@ -215,10 +221,12 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
               height: "440px",
               background: "var(--card)",
               borderRadius: "20px",
-              opacity: 0.55,
-              transform: "translateX(-20px) scale(0.85) rotateY(16deg)",
+              opacity: stageVis.visible ? 0.6 : 0,
+              transform: stageVis.visible
+                ? "translateX(-20px) translateY(0px) scale(0.85) rotateY(16deg)"
+                : "translateX(-20px) translateY(36px) scale(0.76) rotateY(16deg)",
               cursor: "pointer",
-              transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+              transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, box-shadow 0.3s ease, border-color 0.3s ease",
               zIndex: 2,
               pointerEvents: "all",
               overflow: "hidden",
@@ -228,23 +236,82 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
             }}
             title="Click to view previous project"
           >
-            <div style={{ height: "140px", minHeight: "140px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", borderBottom: "1px solid var(--line)" }}>
-              {featured[(current - 1 + featured.length) % featured.length]?.emoji || "📦"}
+            {/* Left preview image with gentle pan-zoom */}
+            <div
+              style={{
+                height: "140px",
+                minHeight: "140px",
+                maxHeight: "140px",
+                position: "relative",
+                overflow: "hidden",
+                borderBottom: "1px solid var(--line)",
+                background: "#18181b",
+              }}
+            >
+              {prevProject?.image ? (
+                <img
+                  src={prevProject.image}
+                  alt={prevProject.title}
+                  className="pan-zoom-img"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px" }}>
+                  {prevProject?.emoji || "📦"}
+                </div>
+              )}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.65) 100%)",
+                  pointerEvents: "none",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  left: "12px",
+                  padding: "3px 9px",
+                  borderRadius: "100px",
+                  background: "rgba(0,0,0,0.6)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  color: "#ffffff",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                <span>← Previous</span>
+              </div>
             </div>
+
             <div style={{ padding: "18px 20px", textAlign: "left", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
                 <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
-                  ← Previous
+                  {prevProject?.category === "dotnet" ? ".NET Project" : prevProject?.category}
                 </div>
                 <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: 1.3, marginBottom: "8px" }}>
-                  {featured[(current - 1 + featured.length) % featured.length]?.title}
+                  {prevProject?.title}
                 </div>
                 <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "13px", color: "var(--muted)", lineHeight: 1.5, margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                  {featured[(current - 1 + featured.length) % featured.length]?.description}
+                  {prevProject?.description}
                 </p>
               </div>
               <div style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                Click to switch
+                Click to switch →
               </div>
             </div>
           </div>
@@ -263,10 +330,12 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
               height: "440px",
               background: "var(--card)",
               borderRadius: "20px",
-              opacity: 0.55,
-              transform: "translateX(20px) scale(0.85) rotateY(-16deg)",
+              opacity: stageVis.visible ? 0.6 : 0,
+              transform: stageVis.visible
+                ? "translateX(20px) translateY(0px) scale(0.85) rotateY(-16deg)"
+                : "translateX(20px) translateY(36px) scale(0.76) rotateY(-16deg)",
               cursor: "pointer",
-              transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+              transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s, box-shadow 0.3s ease, border-color 0.3s ease",
               zIndex: 2,
               pointerEvents: "all",
               overflow: "hidden",
@@ -276,23 +345,82 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
             }}
             title="Click to view next project"
           >
-            <div style={{ height: "140px", minHeight: "140px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", borderBottom: "1px solid var(--line)" }}>
-              {featured[(current + 1) % featured.length]?.emoji || "🚀"}
+            {/* Right preview image with gentle pan-zoom */}
+            <div
+              style={{
+                height: "140px",
+                minHeight: "140px",
+                maxHeight: "140px",
+                position: "relative",
+                overflow: "hidden",
+                borderBottom: "1px solid var(--line)",
+                background: "#18181b",
+              }}
+            >
+              {nextProject?.image ? (
+                <img
+                  src={nextProject.image}
+                  alt={nextProject.title}
+                  className="pan-zoom-img"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px" }}>
+                  {nextProject?.emoji || "🚀"}
+                </div>
+              )}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.65) 100%)",
+                  pointerEvents: "none",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "12px",
+                  padding: "3px 9px",
+                  borderRadius: "100px",
+                  background: "rgba(0,0,0,0.6)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  color: "#ffffff",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                <span>Next →</span>
+              </div>
             </div>
+
             <div style={{ padding: "18px 20px", textAlign: "right", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
                 <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
-                  Next →
+                  {nextProject?.category === "dotnet" ? ".NET Project" : nextProject?.category}
                 </div>
                 <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: 1.3, marginBottom: "8px" }}>
-                  {featured[(current + 1) % featured.length]?.title}
+                  {nextProject?.title}
                 </div>
                 <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "13px", color: "var(--muted)", lineHeight: 1.5, margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                  {featured[(current + 1) % featured.length]?.description}
+                  {nextProject?.description}
                 </p>
               </div>
               <div style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                Click to switch
+                ← Click to switch
               </div>
             </div>
           </div>
@@ -313,13 +441,16 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
             display: "flex",
             flexDirection: "column",
             boxShadow: "0 16px 48px -10px rgba(194, 65, 12, 0.28)",
+            opacity: stageVis.visible ? 1 : 0,
+            transform: stageVis.visible ? "translateY(0px) scale(1)" : "translateY(42px) scale(0.92)",
+            transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.28s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.28s, box-shadow 0.3s ease, border-color 0.3s ease",
           }}
         >
           {/* Animated changing container on card change */}
           <div
             key={current}
             style={{
-              animation: "cardSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+              animation: "cardGentleFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
               display: "flex",
               flexDirection: "column",
               height: "100%",
@@ -328,30 +459,48 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
               zIndex: 2,
             }}
           >
-            {/* Card Visual Banner (Top Half - Fixed 160px height) */}
+            {/* Card Visual Banner (Top Half - Fixed 165px height with dynamic image pan/zoom) */}
             <div
               style={{
-                height: "160px",
-                minHeight: "160px",
-                maxHeight: "160px",
-                background: "var(--tint)",
+                height: "165px",
+                minHeight: "165px",
+                maxHeight: "165px",
+                background: "#18181b",
                 borderBottom: "1px solid var(--line)",
+                position: "relative",
+                overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                position: "relative",
-                overflow: "hidden",
               }}
             >
-              {/* Dot grid texture in banner */}
+              {/* High Quality Real Project Image with Gentle Motion */}
+              {project?.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="pan-zoom-img"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div style={{ fontSize: "50px", position: "relative", zIndex: 2 }}>{project?.emoji || "🚀"}</div>
+              )}
+
+              {/* Gradient Scrim for Readability */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
-                  backgroundImage: "radial-gradient(var(--accent) 1.2px, transparent 1.2px)",
-                  backgroundSize: "14px 14px",
-                  opacity: 0.15,
+                  background: "linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.16) 45%, rgba(0,0,0,0.72) 100%)",
+                  pointerEvents: "none",
+                  zIndex: 1,
                 }}
               />
 
@@ -360,17 +509,23 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
                 style={{
                   position: "absolute",
                   top: "12px",
-                  left: "16px",
+                  left: "14px",
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  zIndex: 2,
+                  zIndex: 3,
+                  padding: "3px 10px",
+                  borderRadius: "100px",
+                  background: "rgba(0, 0, 0, 0.45)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255, 255, 255, 0.14)",
                 }}
               >
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#f59e0b" }} />
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#10b981" }} />
-                <span style={{ marginLeft: "6px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", color: "var(--muted)" }}>
+                <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#ef4444" }} />
+                <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#f59e0b" }} />
+                <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10b981" }} />
+                <span style={{ marginLeft: "5px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", color: "rgba(255, 255, 255, 0.9)" }}>
                   preview.live
                 </span>
               </div>
@@ -379,24 +534,26 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
               <div
                 style={{
                   position: "absolute",
-                  top: "10px",
+                  top: "12px",
                   right: "14px",
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  zIndex: 2,
+                  zIndex: 3,
                 }}
               >
                 <div
                   style={{
                     padding: "3px 10px",
                     borderRadius: "100px",
-                    background: "var(--card)",
-                    border: "1px solid var(--line)",
+                    background: "rgba(0, 0, 0, 0.55)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255, 255, 255, 0.16)",
                     fontFamily: "'Bricolage Grotesque', sans-serif",
                     fontSize: "10px",
                     fontWeight: 700,
-                    color: "var(--accent)",
+                    color: "#fdba74",
                     display: "flex",
                     alignItems: "center",
                     gap: "4px",
@@ -408,14 +565,16 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
 
                 <div
                   style={{
-                    padding: "3px 8px",
+                    padding: "3px 9px",
                     borderRadius: "100px",
-                    background: "var(--card)",
-                    border: "1px solid var(--line)",
+                    background: "rgba(0, 0, 0, 0.55)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255, 255, 255, 0.16)",
                     fontFamily: "'Bricolage Grotesque', sans-serif",
                     fontSize: "10px",
                     fontWeight: 600,
-                    color: project?.status === "Completed" ? "#10b981" : "var(--accent)",
+                    color: project?.status === "Completed" ? "#34d399" : "#fbbf24",
                     display: "flex",
                     alignItems: "center",
                     gap: "4px",
@@ -426,17 +585,32 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
                 </div>
               </div>
 
-              {/* Emoji / Center Graphic */}
+              {/* Bottom category tag on image */}
               <div
                 style={{
-                  fontSize: "50px",
-                  position: "relative",
-                  zIndex: 2,
-                  transform: "translateY(4px)",
-                  filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.08))",
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "14px",
+                  zIndex: 3,
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                {project?.emoji || "🚀"}
+                <span
+                  style={{
+                    fontSize: "10.5px",
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    color: "rgba(255, 255, 255, 0.9)",
+                    background: "rgba(0, 0, 0, 0.48)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                    padding: "2px 8px",
+                    borderRadius: "6px",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                  }}
+                >
+                  {project?.category === "dotnet" ? "ASP.NET Core" : project?.category}
+                </span>
               </div>
             </div>
 
@@ -740,7 +914,7 @@ export default function Home() {
   }, []);
 
   // Top featured projects
-  const featured = projects.dotnet.filter((p: any) => p.expertise);
+  const featured = projects.dotnet;
 
   return (
     <div style={{ minHeight: "100vh", position: "relative", zIndex: 1 }}>

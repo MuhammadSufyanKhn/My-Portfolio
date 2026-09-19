@@ -101,6 +101,7 @@ export const projects = {
       learned: "Advanced ASP.NET Core patterns, agentic AI design, and scalable API architecture.",
       gradient: "from-violet-500 to-purple-700",
       emoji: "🤖",
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 1,
@@ -124,6 +125,7 @@ export const projects = {
       learned: "Advanced EF Core relationships, ASP.NET Core MVC patterns, and complex SQL queries.",
       gradient: "from-purple-500 to-indigo-600",
       emoji: "🚕",
+      image: "https://images.unsplash.com/photo-1549231482-5cf39d19fba4?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 2,
@@ -147,6 +149,7 @@ export const projects = {
       learned: "Complex relational database design, RESTful API patterns, and front-end integration.",
       gradient: "from-emerald-500 to-teal-600",
       emoji: "✅",
+      image: "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 3,
@@ -169,6 +172,7 @@ export const projects = {
       learned: "SOLID principles, inheritance hierarchies, and clean code practices in C#.",
       gradient: "from-blue-500 to-cyan-600",
       emoji: "🔢",
+      image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 4,
@@ -201,6 +205,7 @@ export const projects = {
       learned: "Complex booking systems, real-time data management, and API design patterns.",
       gradient: "from-orange-500 to-rose-600",
       emoji: "⚽",
+      image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1200&q=80",
     },
   ],
   python: [
@@ -225,6 +230,7 @@ export const projects = {
       learned: "File processing optimization, Python libraries, and building user-friendly utilities.",
       gradient: "from-red-500 to-pink-600",
       emoji: "📄",
+      image: "https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 7,
@@ -247,6 +253,7 @@ export const projects = {
       learned: "Solid foundation in programming logic, Python best practices.",
       gradient: "from-teal-500 to-cyan-600",
       emoji: "🐍",
+      image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80",
     },
   ],
   others: [
@@ -271,6 +278,7 @@ export const projects = {
       learned: "Full-stack Next.js, role-based auth flows, and real-time exam state management.",
       gradient: "from-sky-500 to-blue-600",
       emoji: "📝",
+      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 11,
@@ -293,6 +301,7 @@ export const projects = {
       learned: "Ecommerce UX, performance optimization, and production deployment best practices.",
       gradient: "from-amber-500 to-orange-600",
       emoji: "🛒",
+      image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80",
     },
   ],
   semester: [
@@ -319,6 +328,7 @@ export const projects = {
       learned: "Deep understanding of x86 architecture, CPU registers, stack operations, and hardware-level memory management.",
       gradient: "from-slate-600 to-gray-700",
       emoji: "💊",
+      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 9,
@@ -343,6 +353,7 @@ export const projects = {
       learned: "Object-oriented class structures, file stream I/O, error validation, and procedural control flow.",
       gradient: "from-green-500 to-emerald-600",
       emoji: "💱",
+      image: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=1200&q=80",
     },
   ],
 };

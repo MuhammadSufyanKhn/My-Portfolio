@@ -125,6 +125,28 @@ html.lenis, html.lenis body {
   }
 }
 
+/* Gentle image motion inside card: slow zoom & slight pan while keeping container completely stable */
+@keyframes imageSlowPanZoom {
+  0% {
+    transform: scale(1) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.08) translate(-1.5%, -1%);
+  }
+  100% {
+    transform: scale(1.04) translate(1.5%, 1%);
+  }
+}
+
+.pan-zoom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: imageSlowPanZoom 16s ease-in-out infinite alternate;
+  will-change: transform;
+  transition: filter 0.4s ease;
+}
+
 /* Continuous loopable line drawing & retracting for My Journey */
 @keyframes drawAndRetractPath {
   0% {
@@ -716,3 +738,51 @@ body, nav, footer, .card, .project-card, .reason-card, .soft-skill-card, .cert-c
     color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ═══════════════════════════════════════════════
+   16. FEATURED PROJECTS DYNAMIC SCROLL & IMAGE ANIMATION
+   ═══════════════════════════════════════════════ */
+@keyframes imageSlowPanZoom {
+  0% {
+    transform: scale(1.0) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.08) translate(-1.2%, -0.8%);
+  }
+  100% {
+    transform: scale(1.0) translate(1.2%, 0.8%);
+  }
+}
+
+.pan-zoom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center center;
+  animation: imageSlowPanZoom 16s ease-in-out infinite alternate;
+  will-change: transform;
+  pointer-events: none;
+  transition: filter 0.4s ease;
+}
+
+@keyframes cardGentleFadeIn {
+  0% {
+    opacity: 0.72;
+    transform: scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.featured-carousel-stage {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pan-zoom-img {
+    animation: none !important;
+  }
+}
+
