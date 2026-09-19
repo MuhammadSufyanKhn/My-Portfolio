@@ -45,17 +45,28 @@ export default function About() {
               My focus centres around robust REST APIs, relational database schemas, and clean object-oriented code following SOLID principles.
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div
+            className="flowing-card"
+            style={{
+              padding: "24px 26px",
+              background: "var(--card)",
+              borderRadius: "18px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+            }}
+          >
             {[
               { label: "University", value: "Sir Syed UET" },
               { label: "Degree", value: "BS Computer Science" },
               { label: "CGPA", value: "3.97 / 4.0" },
               { label: "Semester", value: "Completed 6th" },
               { label: "Location", value: "Pakistan" },
-            ].map(item => (
+            ].map((item, idx, arr) => (
               <div key={item.label} style={{
                 display: "flex", justifyContent: "space-between", alignItems: "center",
-                padding: "12px 0", borderBottom: "1px solid var(--line)",
+                padding: "10px 0", borderBottom: idx === arr.length - 1 ? "none" : "1px solid var(--line)",
+                position: "relative", zIndex: 2,
               }}>
                 <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "13px", color: "var(--muted)", fontWeight: 500 }}>{item.label}</span>
                 <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "14px", color: "var(--ink)", fontWeight: 600 }}>{item.value}</span>
@@ -104,25 +115,8 @@ export default function About() {
 function DiagonalTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
-  const [scrollY, setScrollY] = useState(0);
 
-  // Scroll listener for moving dashed line
-  useEffect(() => {
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Calculate precise coordinates of node dots so SVG slanted line connects them directly
+  // Calculate precise coordinates of node dots so SVG curved line connects them directly
   useEffect(() => {
     const updateCoords = () => {
       if (!containerRef.current) return;
@@ -148,11 +142,26 @@ function DiagonalTimeline() {
     };
   }, []);
 
+  // Construct a continuous organic flowing path through all milestone coordinates
+  const pathD = points.length >= 2
+    ? points.reduce((acc, pt, i) => {
+        if (i === 0) {
+          return `M ${pt.x} ${pt.y - 28} L ${pt.x} ${pt.y}`;
+        }
+        const prevPt = points[i - 1];
+        const dy = pt.y - prevPt.y;
+        // Natural S-curve easing between zigzag nodes
+        const cp1y = prevPt.y + dy * 0.45;
+        const cp2y = prevPt.y + dy * 0.55;
+        return `${acc} C ${prevPt.x} ${cp1y}, ${pt.x} ${cp2y}, ${pt.x} ${pt.y}`;
+      }, "") + ` L ${points[points.length - 1].x} ${points[points.length - 1].y + 32}`
+    : "";
+
   return (
     <div style={{ position: "relative" }}>
       {/* ── Desktop Diagonal Zigzag Layout ── */}
       <div ref={containerRef} className="zigzag-desktop-wrap" style={{ position: "relative" }}>
-        {/* SVG Slanted / Diagonal Connecting Lines */}
+        {/* Continuous Flowing SVG Line Animation */}
         <svg
           aria-hidden="true"
           style={{
@@ -165,26 +174,36 @@ function DiagonalTimeline() {
             overflow: "visible",
           }}
         >
-          {points.map((pt, i) => {
-            if (i === points.length - 1) return null;
-            const nextPt = points[i + 1];
-            return (
-              <g key={i}>
-                {/* Diagonal connecting line with scroll-driven motion */}
-                <line
-                  x1={pt.x}
-                  y1={pt.y}
-                  x2={nextPt.x}
-                  y2={nextPt.y}
-                  stroke="var(--accent)"
-                  strokeWidth="2.5"
-                  strokeDasharray="6 6"
-                  strokeDashoffset={-scrollY * 0.4}
-                  opacity="0.8"
-                />
-              </g>
-            );
-          })}
+          {/* Subtle background track */}
+          {pathD && (
+            <path
+              d={pathD}
+              fill="none"
+              stroke="var(--line)"
+              strokeWidth="2"
+              strokeDasharray="4 6"
+              opacity="0.6"
+              strokeLinecap="round"
+            />
+          )}
+
+          {/* Smooth continuous flowing line that draws, pauses, retracts, and seamless repeats */}
+          {pathD && (
+            <path
+              d={pathD}
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              pathLength="1000"
+              strokeDasharray="1000"
+              style={{
+                animation: "drawAndRetractPath 6.5s cubic-bezier(0.42, 0, 0.58, 1) infinite",
+                filter: "drop-shadow(0 0 6px rgba(194, 65, 12, 0.45))",
+              }}
+            />
+          )}
         </svg>
 
         {/* Timeline Rows */}
@@ -205,17 +224,35 @@ function DiagonalTimeline() {
 
       {/* ── Mobile Vertical Layout (<768px) ── */}
       <div className="zigzag-mobile-wrap" style={{ position: "relative", paddingLeft: "30px" }}>
-        {/* Vertical line */}
-        <div
+        {/* Animated vertical line */}
+        <svg
+          aria-hidden="true"
           style={{
             position: "absolute",
             left: "11px",
             top: "10px",
             bottom: "10px",
-            width: "2px",
-            background: "var(--line)",
+            width: "4px",
+            height: "calc(100% - 20px)",
+            pointerEvents: "none",
+            zIndex: 1,
+            overflow: "visible",
           }}
-        />
+        >
+          <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--line)" strokeWidth="2" strokeDasharray="4 6" opacity="0.6" />
+          <line
+            x1="1"
+            y1="0"
+            x2="1"
+            y2="100%"
+            stroke="var(--accent)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            pathLength="1000"
+            strokeDasharray="1000"
+            style={{ animation: "drawAndRetractPath 6.5s cubic-bezier(0.42, 0, 0.58, 1) infinite" }}
+          />
+        </svg>
 
         {timeline.map((item, i) => (
           <div key={item.year + item.title} style={{ position: "relative", marginBottom: "28px" }}>
@@ -300,21 +337,20 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
           <div
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            className="flowing-card"
             style={{
               width: "100%",
               padding: "22px 24px",
               background: "var(--card)",
-              border: `1.5px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
               borderRadius: "16px",
               boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
-              animation: visible ? "flowingBorderGlow 4s ease-in-out infinite" : "none",
               transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
               transform: hovered ? "translateY(-3px)" : "none",
               textAlign: "right",
               position: "relative",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", marginBottom: "8px", position: "relative", zIndex: 2 }}>
               <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                 {item.badge}
               </span>
@@ -334,10 +370,10 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
               </span>
               <span style={{ fontSize: "18px" }}>{item.icon}</span>
             </div>
-            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", position: "relative", zIndex: 2 }}>
               {item.title}
             </h3>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0, position: "relative", zIndex: 2 }}>
               {item.description}
             </p>
           </div>
@@ -394,21 +430,20 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
           <div
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            className="flowing-card"
             style={{
               width: "100%",
               padding: "22px 24px",
               background: "var(--card)",
-              border: `1.5px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
               borderRadius: "16px",
               boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
-              animation: visible ? "flowingBorderGlow 4s ease-in-out infinite" : "none",
               transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
               transform: hovered ? "translateY(-3px)" : "none",
               textAlign: "left",
               position: "relative",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "8px", marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "8px", marginBottom: "8px", position: "relative", zIndex: 2 }}>
               <span style={{ fontSize: "18px" }}>{item.icon}</span>
               <span
                 style={{
@@ -428,10 +463,10 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
                 {item.badge}
               </span>
             </div>
-            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", position: "relative", zIndex: 2 }}>
               {item.title}
             </h3>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0, position: "relative", zIndex: 2 }}>
               {item.description}
             </p>
           </div>
@@ -452,10 +487,10 @@ function InterestCard({ item, index }: { item: typeof interests[0]; index: numbe
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="flowing-card interest-card"
       style={{
         padding: "20px",
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "14px",
         transition: "all 0.3s ease",
         opacity: visible ? 1 : 0,

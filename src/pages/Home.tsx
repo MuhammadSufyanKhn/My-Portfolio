@@ -88,20 +88,23 @@ function JsonApiCard({ delay }: { delay: number }) {
   const Bool = (v: any) => <span style={{ color: "var(--accent)", fontWeight: 700 }}>{resolve(v)}</span>;
 
   return (
-    <div style={{
-      background: "var(--card)",
-      border: "1px solid var(--line)",
-      borderRadius: "16px",
-      padding: "20px 22px",
-      fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
-      fontSize: "12.5px",
-      lineHeight: 1.9,
-      boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-      opacity: 1,
-      transform: "none",
-      transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
-      minWidth: 0,
-    }}>
+    <div
+      className="flowing-card"
+      style={{
+        background: "var(--card)",
+        borderRadius: "16px",
+        padding: "20px 22px",
+        fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
+        fontSize: "12.5px",
+        lineHeight: 1.9,
+        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        opacity: 1,
+        transform: "none",
+        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
+        minWidth: 0,
+        position: "relative",
+      }}
+    >
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px", paddingBottom: "10px", borderBottom: "1px solid var(--line)" }}>
         <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "11px", color: "var(--muted)", fontWeight: 500 }}>GET</span>
@@ -203,35 +206,45 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
         {featured.length > 1 && (
           <div
             onClick={prev}
-            className="carousel-ghost-left"
+            className="carousel-ghost-left flowing-card"
             style={{
               position: "absolute",
               left: "1%",
-              width: "360px",
-              maxWidth: "40vw",
+              width: "350px",
+              maxWidth: "38vw",
+              height: "440px",
               background: "var(--card)",
-              border: "1px solid var(--line)",
               borderRadius: "20px",
-              opacity: 0.5,
-              transform: "translateX(-20px) scale(0.84) rotateY(16deg)",
+              opacity: 0.55,
+              transform: "translateX(-20px) scale(0.85) rotateY(16deg)",
               cursor: "pointer",
               transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
               zIndex: 2,
               pointerEvents: "all",
               overflow: "hidden",
               boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+              display: "flex",
+              flexDirection: "column",
             }}
             title="Click to view previous project"
           >
-            <div style={{ height: "110px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px", borderBottom: "1px solid var(--line)" }}>
+            <div style={{ height: "140px", minHeight: "140px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", borderBottom: "1px solid var(--line)" }}>
               {featured[(current - 1 + featured.length) % featured.length]?.emoji || "📦"}
             </div>
-            <div style={{ padding: "14px 18px", textAlign: "left" }}>
-              <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
-                ← Previous
+            <div style={{ padding: "18px 20px", textAlign: "left", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
+                  ← Previous
+                </div>
+                <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: 1.3, marginBottom: "8px" }}>
+                  {featured[(current - 1 + featured.length) % featured.length]?.title}
+                </div>
+                <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "13px", color: "var(--muted)", lineHeight: 1.5, margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                  {featured[(current - 1 + featured.length) % featured.length]?.description}
+                </p>
               </div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {featured[(current - 1 + featured.length) % featured.length]?.title}
+              <div style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                Click to switch
               </div>
             </div>
           </div>
@@ -241,306 +254,328 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
         {featured.length > 1 && (
           <div
             onClick={next}
-            className="carousel-ghost-right"
+            className="carousel-ghost-right flowing-card"
             style={{
               position: "absolute",
               right: "1%",
-              width: "360px",
-              maxWidth: "40vw",
+              width: "350px",
+              maxWidth: "38vw",
+              height: "440px",
               background: "var(--card)",
-              border: "1px solid var(--line)",
               borderRadius: "20px",
-              opacity: 0.5,
-              transform: "translateX(20px) scale(0.84) rotateY(-16deg)",
+              opacity: 0.55,
+              transform: "translateX(20px) scale(0.85) rotateY(-16deg)",
               cursor: "pointer",
               transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
               zIndex: 2,
               pointerEvents: "all",
               overflow: "hidden",
               boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+              display: "flex",
+              flexDirection: "column",
             }}
             title="Click to view next project"
           >
-            <div style={{ height: "110px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px", borderBottom: "1px solid var(--line)" }}>
+            <div style={{ height: "140px", minHeight: "140px", background: "var(--tint)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", borderBottom: "1px solid var(--line)" }}>
               {featured[(current + 1) % featured.length]?.emoji || "🚀"}
             </div>
-            <div style={{ padding: "14px 18px", textAlign: "right" }}>
-              <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
-                Next →
+            <div style={{ padding: "18px 20px", textAlign: "right", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", textTransform: "uppercase", marginBottom: "4px" }}>
+                  Next →
+                </div>
+                <div style={{ fontSize: "16px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", lineHeight: 1.3, marginBottom: "8px" }}>
+                  {featured[(current + 1) % featured.length]?.title}
+                </div>
+                <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "13px", color: "var(--muted)", lineHeight: 1.5, margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                  {featured[(current + 1) % featured.length]?.description}
+                </p>
               </div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)", fontFamily: "'Bricolage Grotesque', sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {featured[(current + 1) % featured.length]?.title}
+              <div style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                Click to switch
               </div>
             </div>
           </div>
         )}
 
-        {/* Center Active Card */}
+        {/* Center Active Card - Exactly identical size for all projects */}
         <div
-          className="carousel-active-card"
+          className="carousel-active-card flowing-card"
           style={{
             width: "100%",
             maxWidth: "540px",
+            height: "535px",
             background: "var(--card)",
-            border: "2px solid var(--accent)",
             borderRadius: "20px",
             overflow: "hidden",
             position: "relative",
             zIndex: 10,
-            animation: "activeCardBorderGlow 3.5s ease-in-out infinite",
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: "0 16px 48px -10px rgba(194, 65, 12, 0.28)",
           }}
         >
-          {/* Card Visual Banner (Top Half) */}
+          {/* Animated changing container on card change */}
           <div
+            key={current}
             style={{
-              height: "170px",
-              background: "var(--tint)",
-              borderBottom: "1px solid var(--line)",
+              animation: "cardSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              height: "100%",
+              width: "100%",
               position: "relative",
-              overflow: "hidden",
+              zIndex: 2,
             }}
           >
-            {/* Dot grid texture in banner */}
+            {/* Card Visual Banner (Top Half - Fixed 160px height) */}
             <div
               style={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage: "radial-gradient(var(--accent) 1.2px, transparent 1.2px)",
-                backgroundSize: "14px 14px",
-                opacity: 0.15,
-              }}
-            />
-
-            {/* Mock Window Controls Header */}
-            <div
-              style={{
-                position: "absolute",
-                top: "12px",
-                left: "16px",
+                height: "160px",
+                minHeight: "160px",
+                maxHeight: "160px",
+                background: "var(--tint)",
+                borderBottom: "1px solid var(--line)",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                gap: "6px",
-                zIndex: 2,
-              }}
-            >
-              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
-              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#f59e0b" }} />
-              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#10b981" }} />
-              <span style={{ marginLeft: "6px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", color: "var(--muted)" }}>
-                preview.live
-              </span>
-            </div>
-
-            {/* Badges on top-right of banner */}
-            <div
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                zIndex: 2,
-              }}
-            >
-              <div
-                style={{
-                  padding: "3px 10px",
-                  borderRadius: "100px",
-                  background: "var(--card)",
-                  border: "1px solid var(--line)",
-                  fontFamily: "'Bricolage Grotesque', sans-serif",
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  color: "var(--accent)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <span>★</span>
-                <span>{project?.expertise ? "Core expertise" : ".NET Project"}</span>
-              </div>
-
-              <div
-                style={{
-                  padding: "3px 8px",
-                  borderRadius: "100px",
-                  background: "var(--card)",
-                  border: "1px solid var(--line)",
-                  fontFamily: "'Bricolage Grotesque', sans-serif",
-                  fontSize: "10px",
-                  fontWeight: 600,
-                  color: project?.status === "Completed" ? "#10b981" : "var(--accent)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "currentColor" }} />
-                <span>{project?.status}</span>
-              </div>
-            </div>
-
-            {/* Emoji / Center Graphic */}
-            <div
-              style={{
-                fontSize: "52px",
+                justifyContent: "center",
                 position: "relative",
-                zIndex: 2,
-                transform: "translateY(6px)",
-                filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.08))",
+                overflow: "hidden",
               }}
             >
-              {project?.emoji || "🚀"}
+              {/* Dot grid texture in banner */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: "radial-gradient(var(--accent) 1.2px, transparent 1.2px)",
+                  backgroundSize: "14px 14px",
+                  opacity: 0.15,
+                }}
+              />
+
+              {/* Mock Window Controls Header */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  left: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  zIndex: 2,
+                }}
+              >
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#ef4444" }} />
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#f59e0b" }} />
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#10b981" }} />
+                <span style={{ marginLeft: "6px", fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px", color: "var(--muted)" }}>
+                  preview.live
+                </span>
+              </div>
+
+              {/* Badges on top-right of banner */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  style={{
+                    padding: "3px 10px",
+                    borderRadius: "100px",
+                    background: "var(--card)",
+                    border: "1px solid var(--line)",
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    color: "var(--accent)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <span>★</span>
+                  <span>{project?.expertise ? "Core expertise" : ".NET Project"}</span>
+                </div>
+
+                <div
+                  style={{
+                    padding: "3px 8px",
+                    borderRadius: "100px",
+                    background: "var(--card)",
+                    border: "1px solid var(--line)",
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontSize: "10px",
+                    fontWeight: 600,
+                    color: project?.status === "Completed" ? "#10b981" : "var(--accent)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "currentColor" }} />
+                  <span>{project?.status}</span>
+                </div>
+              </div>
+
+              {/* Emoji / Center Graphic */}
+              <div
+                style={{
+                  fontSize: "50px",
+                  position: "relative",
+                  zIndex: 2,
+                  transform: "translateY(4px)",
+                  filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.08))",
+                }}
+              >
+                {project?.emoji || "🚀"}
+              </div>
             </div>
-          </div>
 
-          {/* Card Body Content */}
-          <div style={{ padding: "24px 26px" }}>
-            {/* Title */}
-            <h3
-              style={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
-                fontSize: "22px",
-                fontWeight: 700,
-                color: "var(--ink)",
-                margin: "0 0 10px",
-                letterSpacing: "-0.02em",
-                lineHeight: 1.25,
-              }}
-            >
-              {project?.title}
-            </h3>
-
-            {/* Description */}
-            <p
-              style={{
-                fontFamily: "'Newsreader', Georgia, serif",
-                fontSize: "15px",
-                color: "var(--muted)",
-                lineHeight: 1.6,
-                margin: "0 0 20px",
-                minHeight: "48px",
-              }}
-            >
-              {project?.description}
-            </p>
-
-            {/* Metadata Info Row (Pic 1 design) */}
+            {/* Card Body Content - Exactly fixed heights */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "8px",
-                marginBottom: "20px",
+                padding: "22px 24px",
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
               }}
             >
-              {metaItems.map(m => (
+              <div>
+                {/* Title (clamped to 2 lines, minHeight 52px) */}
+                <h3
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    color: "var(--ink)",
+                    margin: "0 0 8px",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.25,
+                    minHeight: "52px",
+                    maxHeight: "52px",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {project?.title}
+                </h3>
+
+                {/* Description (clamped to 2 lines, minHeight 44px) */}
+                <p
+                  style={{
+                    fontFamily: "'Newsreader', Georgia, serif",
+                    fontSize: "15px",
+                    color: "var(--muted)",
+                    lineHeight: 1.55,
+                    margin: "0 0 16px",
+                    minHeight: "44px",
+                    maxHeight: "44px",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {project?.description}
+                </p>
+
+                {/* Metadata Info Row */}
                 <div
-                  key={m.label}
                   style={{
-                    background: "var(--bg)",
-                    border: "1px solid var(--line)",
-                    borderRadius: "10px",
-                    padding: "8px 10px",
-                    textAlign: "center",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gap: "8px",
+                    marginBottom: "16px",
                   }}
                 >
-                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "10px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                    {m.label}
-                  </div>
-                  <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", fontWeight: 700, color: "var(--ink)", marginTop: "2px" }}>
-                    {m.val}
-                  </div>
+                  {metaItems.map(m => (
+                    <div
+                      key={m.label}
+                      style={{
+                        background: "var(--bg)",
+                        border: "1px solid var(--line)",
+                        borderRadius: "10px",
+                        padding: "6px 8px",
+                        textAlign: "center",
+                      }}
+                    >
+                      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "9.5px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                        {m.label}
+                      </div>
+                      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "11.5px", fontWeight: 700, color: "var(--ink)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {m.val}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            {/* Tech Chips */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "22px" }}>
-              {project?.tech?.slice(0, 5).map((t: string) => (
-                <span
-                  key={t}
-                  style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    padding: "3px 10px",
-                    background: "var(--tint)",
-                    border: "1px solid var(--line)",
-                    borderRadius: "100px",
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    color: "var(--tint-ink)",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+                {/* Tech Chips */}
+                <div style={{ display: "flex", flexWrap: "nowrap", gap: "6px", marginBottom: "18px", overflow: "hidden", height: "26px" }}>
+                  {project?.tech?.slice(0, 4).map((t: string) => (
+                    <span
+                      key={t}
+                      style={{
+                        fontFamily: "'IBM Plex Mono', monospace",
+                        padding: "2px 8px",
+                        background: "var(--tint)",
+                        border: "1px solid var(--line)",
+                        borderRadius: "100px",
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        color: "var(--tint-ink)",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-            {/* Full-width CTA button matching Pic 1 */}
-            <div style={{ display: "flex", gap: "10px" }}>
-              <button
-                onClick={() => onSelect(project)}
-                className="btn-primary"
-                style={{ flex: 1, justifyContent: "center", height: "44px", fontSize: "14px" }}
-              >
-                View details →
-              </button>
-              {project?.github && project.github !== "#" && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
-                  aria-label="GitHub repository"
+              {/* Full-width CTA buttons matching Pic 1 */}
+              <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
+                <button
+                  onClick={() => onSelect(project)}
+                  className="btn-primary"
+                  style={{ flex: 1, justifyContent: "center", height: "42px", fontSize: "14px" }}
                 >
-                  <button
-                    className="btn-secondary"
-                    style={{ height: "44px", width: "44px", padding: 0, justifyContent: "center" }}
-                    title="View source code on GitHub"
+                  View details →
+                </button>
+                {project?.github && project.github !== "#" && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                    aria-label="GitHub repository"
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                  </button>
-                </a>
-              )}
+                    <button
+                      className="btn-secondary"
+                      style={{ height: "42px", width: "42px", padding: 0, justifyContent: "center" }}
+                      title="View source code on GitHub"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                      </svg>
+                    </button>
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Next Card Ghost (Right) */}
-        {featured.length > 1 && (
-          <div
-            onClick={next}
-            className="carousel-ghost-right"
-            style={{
-              position: "absolute",
-              right: "4%",
-              width: "360px",
-              height: "400px",
-              background: "var(--card)",
-              border: "1px solid var(--line)",
-              borderRadius: "20px",
-              opacity: 0.45,
-              transform: "translateX(40px) scale(0.86) rotateY(-12deg)",
-              cursor: "pointer",
-              transition: "all 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
-              zIndex: 1,
-              pointerEvents: "all",
-              overflow: "hidden",
-              filter: "blur(0.5px)",
-            }}
-          >
-            <div style={{ height: "140px", background: "var(--tint)", opacity: 0.6 }} />
-          </div>
-        )}
       </div>
 
       {/* Navigation Row matching Pic 1: < 01 —————— 03 > */}
@@ -775,7 +810,7 @@ export default function Home() {
               transform: heroVisible ? "translateY(0)" : "translateY(18px)",
               transition: "all 0.7s ease 0.44s",
             }}>
-              Final year CS student building production-grade .NET APIs with clean architecture and SOLID principles. CGPA 3.97.
+              Final year CS student building production-grade .NET APIs with clean architecture and SOLID principles.
             </p>
 
             {/* CTA buttons */}
@@ -815,25 +850,28 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="who-what-grid">
 
           {/* Who am I */}
-          <div ref={whoVis.ref} style={{
-            padding: "32px",
-            background: "var(--card)",
-            border: "1px solid var(--line)",
-            borderRadius: "20px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-            opacity: whoVis.visible ? 1 : 0,
-            transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "all 0.7s ease",
-          }}>
-            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Introduction</div>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 16px", letterSpacing: "-0.02em" }}>Who am I</h2>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, marginBottom: "16px", marginTop: 0 }}>
-              Computer Science student at Sir Syed University of Engineering & Technology with a 3.97 CGPA. I specialise in backend engineering — C#, ASP.NET Core, and relational database systems.
+          <div
+            ref={whoVis.ref}
+            className="flowing-card"
+            style={{
+              padding: "32px",
+              background: "var(--card)",
+              borderRadius: "20px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              opacity: whoVis.visible ? 1 : 0,
+              transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
+              transition: "all 0.7s ease",
+            }}
+          >
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif", position: "relative", zIndex: 2 }}>Introduction</div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 16px", letterSpacing: "-0.02em", position: "relative", zIndex: 2 }}>Who am I</h2>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, marginBottom: "16px", marginTop: 0, position: "relative", zIndex: 2 }}>
+              Computer Science student at Sir Syed University of Engineering & Technology. I specialise in backend engineering including programming in C#, ASP.NET Core, Entity Framework Core and relational database systems.
             </p>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, margin: "0 0 24px" }}>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, margin: "0 0 24px", position: "relative", zIndex: 2 }}>
               With internship experience at 10Pearls and CodeLabs, I build secure, high-performance applications with clean architecture.
             </p>
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", paddingTop: "16px", borderTop: "1px solid var(--line)" }}>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", paddingTop: "16px", borderTop: "1px solid var(--line)", position: "relative", zIndex: 2 }}>
               <Link to="/about" style={{ textDecoration: "none" }}>
                 <button className="btn-secondary" style={{ height: "38px", fontSize: "13px", padding: "0 16px" }}>Read full bio →</button>
               </Link>
@@ -844,19 +882,21 @@ export default function Home() {
           </div>
 
           {/* What I do */}
-          <div style={{
-            padding: "32px",
-            background: "var(--card)",
-            border: "1px solid var(--line)",
-            borderRadius: "20px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-            opacity: whoVis.visible ? 1 : 0,
-            transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "all 0.7s ease 0.12s",
-          }}>
-            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Core capabilities</div>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 20px", letterSpacing: "-0.02em" }}>What I do</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+          <div
+            className="flowing-card"
+            style={{
+              padding: "32px",
+              background: "var(--card)",
+              borderRadius: "20px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              opacity: whoVis.visible ? 1 : 0,
+              transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
+              transition: "all 0.7s ease 0.12s",
+            }}
+          >
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif", position: "relative", zIndex: 2 }}>Core capabilities</div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 20px", letterSpacing: "-0.02em", position: "relative", zIndex: 2 }}>What I do</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0", position: "relative", zIndex: 2 }}>
               {whatIDoItems.map((item, i) => (
                 <WhatItem key={item.title} item={item} isLast={i === whatIDoItems.length - 1} />
               ))}
@@ -871,23 +911,24 @@ export default function Home() {
           {stats.map((stat, i) => {
             const sv = useVisible(i * 100);
             return (
-              <div ref={sv.ref} key={stat.label} style={{
-                padding: "24px 20px",
-                background: "var(--card)",
-                border: "1px solid var(--line)",
-                borderRadius: "16px",
-                textAlign: "center",
-                opacity: sv.visible ? 1 : 0,
-                transform: sv.visible ? "scale(1)" : "scale(0.95)",
-                transition: `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`,
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--line)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
+              <div
+                ref={sv.ref}
+                key={stat.label}
+                className="flowing-card"
+                style={{
+                  padding: "24px 20px",
+                  background: "var(--card)",
+                  borderRadius: "16px",
+                  textAlign: "center",
+                  opacity: sv.visible ? 1 : 0,
+                  transform: sv.visible ? "scale(1)" : "scale(0.95)",
+                  transition: `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`,
+                }}
               >
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "34px", fontWeight: 700, color: "var(--accent)", lineHeight: 1 }}>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "34px", fontWeight: 700, color: "var(--accent)", lineHeight: 1, position: "relative", zIndex: 2 }}>
                   <Counter target={parseFloat(stat.value)} suffix={stat.suffix} />
                 </div>
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "var(--muted)", fontWeight: 500, marginTop: "6px" }}>{stat.label}</div>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "var(--muted)", fontWeight: 500, marginTop: "6px", position: "relative", zIndex: 2 }}>{stat.label}</div>
               </div>
             );
           })}

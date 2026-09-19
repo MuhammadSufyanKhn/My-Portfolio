@@ -112,6 +112,99 @@ html.lenis, html.lenis body {
     transform: translateX(250%) skewX(-20deg);
   }
 }
+
+/* Card slide-in animation when switching projects */
+@keyframes cardSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Continuous loopable line drawing & retracting for My Journey */
+@keyframes drawAndRetractPath {
+  0% {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  4% {
+    stroke-dashoffset: 1000;
+    opacity: 1;
+  }
+  45% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  62% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  86% {
+    stroke-dashoffset: -1000;
+    opacity: 0.35;
+  }
+  94%, 100% {
+    stroke-dashoffset: -1000;
+    opacity: 0;
+  }
+}
+
+/* Universal flowing card styling (Academic Honors animation everywhere) */
+.flowing-card,
+.project-card,
+.cert-card,
+.reason-card,
+.soft-skill-card,
+.interest-card {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid var(--line) !important;
+  animation: flowingBorderGlow 5s ease-in-out infinite !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease !important;
+}
+
+.flowing-card::after,
+.project-card::after,
+.cert-card::after,
+.reason-card::after,
+.soft-skill-card::after,
+.interest-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(194, 65, 12, 0.07), transparent);
+  animation: flowSheen 5.5s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.flowing-card > *,
+.project-card > *,
+.cert-card > *,
+.reason-card > *,
+.soft-skill-card > *,
+.interest-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.flowing-card:hover,
+.project-card:hover,
+.cert-card:hover,
+.reason-card:hover,
+.soft-skill-card:hover,
+.interest-card:hover {
+  border-color: var(--accent) !important;
+  box-shadow: 0 14px 36px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent) !important;
+  transform: translateY(-4px) !important;
+}
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }

@@ -50,7 +50,6 @@ export default function Internship() {
           style={{
             padding: "52px 36px",
             background: "var(--card)",
-            border: "1px solid var(--line)",
             borderRadius: "24px",
             textAlign: "center",
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
@@ -58,18 +57,18 @@ export default function Internship() {
             transform: ctaVis.visible ? "translateY(0)" : "translateY(24px)",
             transition: "all 0.7s ease",
           }}
-          className="internship-cta-box"
+          className="internship-cta-box flowing-card"
         >
-          <div style={{ display: "inline-flex", padding: "4px 14px", borderRadius: "100px", background: "var(--tint)", border: "1px solid var(--line)", color: "var(--accent)", fontSize: "12px", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: "16px" }}>
+          <div style={{ display: "inline-flex", padding: "4px 14px", borderRadius: "100px", background: "var(--tint)", border: "1px solid var(--line)", color: "var(--accent)", fontSize: "12px", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: "16px", position: "relative", zIndex: 2 }}>
             Available immediately
           </div>
-          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 14px", letterSpacing: "-0.02em", position: "relative", zIndex: 2 }}>
             Ready to contribute from day one
           </h2>
-          <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", maxWidth: "480px", margin: "0 auto 32px", lineHeight: 1.7 }}>
+          <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", maxWidth: "480px", margin: "0 auto 32px", lineHeight: 1.7, position: "relative", zIndex: 2 }}>
             If your engineering team is building with .NET Core and needs a motivated, fast-learning backend intern, let's connect.
           </p>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", position: "relative", zIndex: 2 }}>
             <a
               href="/resume.pdf"
               download="Muhammad Sufyan Khan CV.pdf"
@@ -96,23 +95,18 @@ export default function Internship() {
 
 function ReasonCard({ reason, index }: { reason: typeof reasons[0]; index: number }) {
   const { ref, visible } = useVisible(index * 80);
-  const [hovered, setHovered] = useState(false);
 
   return (
     <div
       ref={ref}
-      className="reason-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="reason-card flowing-card"
       style={{
         padding: "24px",
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "18px",
-        boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.12)" : "0 2px 8px rgba(0, 0, 0, 0.03)",
-        transition: "all 0.3s ease",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.03)",
         opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-3px)" : "none") : "translateY(20px)",
+        transform: visible ? "translateY(0)" : "translateY(20px)",
       }}
     >
       <div

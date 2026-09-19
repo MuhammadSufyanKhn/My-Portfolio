@@ -43,20 +43,17 @@ function CertCard({ cert, index, onPreview }: { cert: typeof certifications[0]; 
   return (
     <div
       ref={ref}
-      className="cert-card"
+      className="cert-card flowing-card"
       onClick={onPreview}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "18px",
         overflow: "hidden",
         cursor: "pointer",
-        transition: "all 0.3s ease",
         opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-4px)" : "none") : "translateY(24px)",
-        boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.12)" : "0 2px 8px rgba(0, 0, 0, 0.04)",
+        transform: visible ? "translateY(0)" : "translateY(24px)",
       }}
     >
       <div style={{ height: "170px", background: "var(--tint)", borderBottom: "1px solid var(--line)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>

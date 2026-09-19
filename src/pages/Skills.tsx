@@ -245,13 +245,12 @@ function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: n
   return (
     <div
       ref={ref}
-      className="soft-skill-card"
+      className="soft-skill-card flowing-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         padding: "22px",
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "16px",
         opacity: visible ? 1 : 0,
         transform: visible ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(20px)",
@@ -265,13 +264,14 @@ function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: n
         background: "var(--tint)", border: "1px solid var(--line)",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "20px", marginBottom: "14px",
+        position: "relative", zIndex: 2,
       }}>
         {skill.icon}
       </div>
-      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>
+      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em", position: "relative", zIndex: 2 }}>
         {skill.name}
       </h3>
-      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55 }}>
+      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55, position: "relative", zIndex: 2 }}>
         {skill.desc}
       </p>
     </div>

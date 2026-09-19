@@ -53,11 +53,9 @@ export default function Education() {
           ref={edu.ref}
           style={{
             background: "var(--card)",
-            border: "1px solid var(--line)",
             borderRadius: "20px",
             padding: "32px 36px",
             marginBottom: "48px",
-            animation: "flowingBorderGlow 6s ease-in-out infinite",
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
             display: "grid",
             gridTemplateColumns: "1.4fr 1fr",
@@ -66,10 +64,8 @@ export default function Education() {
             opacity: edu.visible ? 1 : 0,
             transform: edu.visible ? "translateY(0)" : "translateY(24px)",
             transition: "all 0.7s ease",
-            position: "relative",
-            overflow: "hidden",
           }}
-          className="edu-grid"
+          className="edu-grid flowing-card"
         >
           <div>
             <div style={{ display: "inline-flex", padding: "3px 12px", borderRadius: "100px", background: "var(--tint)", border: "1px solid var(--line)", color: "var(--accent)", fontSize: "11px", fontWeight: 700, fontFamily: "'Bricolage Grotesque', sans-serif", marginBottom: "14px" }}>
@@ -90,12 +86,11 @@ export default function Education() {
           <div
             style={{
               background: "var(--tint)",
-              border: "1px solid var(--line)",
               borderRadius: "16px",
               padding: "24px 28px",
               textAlign: "center",
             }}
-            className="edu-cgpa-badge"
+            className="edu-cgpa-badge flowing-card"
           >
             <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "11px", fontWeight: 600, color: "var(--tint-ink)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "4px" }}>
               Cumulative GPA
@@ -171,22 +166,18 @@ export default function Education() {
 
 function SemesterCard({ sem, index }: { sem: typeof semesters[0]; index: number }) {
   const { ref, visible } = useVisible(index * 70);
-  const [hovered, setHovered] = useState(false);
 
   return (
     <div
       ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="flowing-card"
       style={{
         padding: "16px 14px",
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "14px",
         textAlign: "center",
-        boxShadow: hovered ? "0 8px 24px -6px rgba(194, 65, 12, 0.1)" : "0 1px 4px rgba(0,0,0,0.03)",
-        transition: "all 0.25s ease",
-        transform: visible ? (hovered ? "translateY(-3px)" : "none") : "translateY(16px)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+        transform: visible ? "translateY(0)" : "translateY(16px)",
         opacity: visible ? 1 : 0,
       }}
     >
@@ -205,27 +196,23 @@ function SemesterCard({ sem, index }: { sem: typeof semesters[0]; index: number 
 
 function CourseworkCard({ course, index }: { course: typeof coursework[0]; index: number }) {
   const { ref, visible } = useVisible(index * 50);
-  const [hovered, setHovered] = useState(false);
 
   return (
     <div
       ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="flowing-card"
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         padding: "12px 14px",
         background: "var(--card)",
-        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "12px",
-        transition: "all 0.2s ease",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(12px)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", position: "relative", zIndex: 2 }}>
         <span>{course.icon}</span>
         <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
           {course.name}
@@ -241,6 +228,8 @@ function CourseworkCard({ course, index }: { course: typeof coursework[0]; index
           padding: "2px 8px",
           borderRadius: "6px",
           border: "1px solid var(--line)",
+          position: "relative",
+          zIndex: 2,
         }}
       >
         {course.grade}
@@ -251,46 +240,24 @@ function CourseworkCard({ course, index }: { course: typeof coursework[0]; index
 
 function AchievementCard({ ach, index }: { ach: { icon: string; title: string; desc: string }; index: number }) {
   const { ref, visible } = useVisible(index * 80);
-  const [hovered, setHovered] = useState(false);
 
   return (
     <div
       ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="flowing-card"
       style={{
         padding: "22px",
         background: "var(--card)",
-        border: `1.5px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
         borderRadius: "16px",
-        boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
-        animation: visible ? "flowingBorderGlow 4s ease-in-out infinite" : "none",
-        transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
         opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-4px)" : "none") : "translateY(16px)",
-        position: "relative",
-        overflow: "hidden",
+        transform: visible ? "translateY(0)" : "translateY(16px)",
       }}
     >
-      {/* Flowing sheen light stream */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "linear-gradient(90deg, transparent, rgba(194, 65, 12, 0.08), transparent)",
-          animation: `flowSheen 5s infinite ease-in-out ${index * 1.2}s`,
-          pointerEvents: "none",
-        }}
-      />
-      <div style={{ fontSize: "24px", marginBottom: "10px" }}>{ach.icon}</div>
-      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>
+      <div style={{ fontSize: "24px", marginBottom: "10px", position: "relative", zIndex: 2 }}>{ach.icon}</div>
+      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em", position: "relative", zIndex: 2 }}>
         {ach.title}
       </h3>
-      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55 }}>
+      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55, position: "relative", zIndex: 2 }}>
         {ach.desc}
       </p>
     </div>
