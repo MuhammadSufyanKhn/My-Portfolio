@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-import Logo from "./Logo";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer style={{
-      borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-      background: "rgba(10, 10, 15, 0.96)",
-      backdropFilter: "blur(20px)",
-      WebkitBackdropFilter: "blur(20px)",
+      borderTop: "1px solid var(--line)",
+      background: "var(--card)",
       padding: "28px 24px 18px",
       position: "relative",
       zIndex: 1,
@@ -27,19 +24,20 @@ export default function Footer() {
           {/* Brand & Social Column */}
           <div style={{ paddingRight: "16px" }}>
             <Link to="/" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-              <Logo size="sm" />
+              <div style={{ width: "28px", height: "28px", borderRadius: "7px", background: "var(--accent)", color: "var(--on-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "10px", fontWeight: 700 }}>MSK</div>
               <span style={{
-                fontFamily: "'Poppins', 'Inter', sans-serif",
+                fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontWeight: 700, fontSize: "15px",
-                color: "#ffffff", letterSpacing: "-0.2px",
+                color: "var(--ink)", letterSpacing: "-0.02em",
               }}>
                 Muhammad Sufyan Khan
               </span>
             </Link>
 
             <p style={{
-              fontSize: "12px",
-              color: "#94a3b8",
+              fontFamily: "'Newsreader', Georgia, serif",
+              fontSize: "13px",
+              color: "var(--muted)",
               lineHeight: 1.5,
               margin: "0 0 12px",
               maxWidth: "290px",
@@ -68,19 +66,19 @@ export default function Footer() {
                     style={{
                       width: "32px", height: "32px",
                       borderRadius: "8px",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      background: "rgba(255, 255, 255, 0.04)",
+                      border: "1px solid var(--line)",
+                      background: "var(--tint)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: "14px",
                       transition: "all 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(56, 189, 248, 0.15)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(56, 189, 248, 0.4)";
+                      (e.currentTarget as HTMLElement).style.background = "var(--tint)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.04)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.1)";
+                      (e.currentTarget as HTMLElement).style.background = "var(--tint)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "var(--line)";
                     }}
                   >
                     {social.icon}
@@ -90,18 +88,18 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 1: PAGES */}
+          {/* Column 1: Pages */}
           <div style={{ textAlign: "left" }}>
             <h4 style={{
-              fontFamily: "'Poppins', 'Inter', sans-serif",
+              fontFamily: "'Bricolage Grotesque', sans-serif",
               fontSize: "11px",
               fontWeight: 700,
-              color: "#71717a",
+              color: "var(--muted)",
               textTransform: "uppercase",
               letterSpacing: "1.2px",
               margin: "0 0 10px",
             }}>
-              PAGES
+              Pages
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               {[
@@ -116,13 +114,13 @@ export default function Footer() {
                   style={{
                     fontSize: "13px",
                     fontWeight: 500,
-                    color: "#cbd5e1",
+                    color: "var(--muted)",
                     textDecoration: "none",
                     transition: "color 0.2s ease",
                     lineHeight: "1.4",
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#38bdf8"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#cbd5e1"; }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
                 >
                   {item.label}
                 </Link>
@@ -130,24 +128,25 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: PROJECTS */}
+          {/* Column 2: Projects */}
           <div style={{ textAlign: "left" }}>
             <h4 style={{
-              fontFamily: "'Poppins', 'Inter', sans-serif",
+              fontFamily: "'Bricolage Grotesque', sans-serif",
               fontSize: "11px",
               fontWeight: 700,
-              color: "#71717a",
+              color: "var(--muted)",
               textTransform: "uppercase",
               letterSpacing: "1.2px",
               margin: "0 0 10px",
             }}>
-              PROJECTS
+              Projects
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               {[
                 { label: "All Projects", path: "/projects" },
                 { label: ".NET Projects", path: "/dotnet-projects" },
                 { label: "Python Projects", path: "/python-projects" },
+                { label: "Others", path: "/others-projects" },
                 { label: "Semester Projects", path: "/semester-projects" },
               ].map((item) => (
                 <Link
@@ -156,13 +155,13 @@ export default function Footer() {
                   style={{
                     fontSize: "13px",
                     fontWeight: 500,
-                    color: "#cbd5e1",
+                    color: "var(--muted)",
                     textDecoration: "none",
                     transition: "color 0.2s ease",
                     lineHeight: "1.4",
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#38bdf8"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#cbd5e1"; }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
                 >
                   {item.label}
                 </Link>
@@ -170,18 +169,18 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 3: CONTACT */}
+          {/* Column 3: Contact */}
           <div style={{ textAlign: "left" }}>
             <h4 style={{
-              fontFamily: "'Poppins', 'Inter', sans-serif",
+              fontFamily: "'Bricolage Grotesque', sans-serif",
               fontSize: "11px",
               fontWeight: 700,
-              color: "#71717a",
+              color: "var(--muted)",
               textTransform: "uppercase",
               letterSpacing: "1.2px",
               margin: "0 0 10px",
             }}>
-              CONTACT
+              Contact
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               {[
@@ -196,13 +195,13 @@ export default function Footer() {
                   style={{
                     fontSize: "13px",
                     fontWeight: 500,
-                    color: "#cbd5e1",
+                    color: "var(--muted)",
                     textDecoration: "none",
                     transition: "color 0.2s ease",
                     lineHeight: "1.4",
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#38bdf8"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#cbd5e1"; }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
                 >
                   {item.label}
                 </Link>
@@ -212,14 +211,14 @@ export default function Footer() {
 
         </div>
 
-        {/* SINGLE SUBTLE HORIZONTAL DIVIDER BEFORE COPYRIGHT */}
+        {/* Horizontal divider */}
         <div style={{
           height: "1px",
-          background: "rgba(255, 255, 255, 0.08)",
+          background: "var(--line)",
           margin: "18px 0 14px",
         }} />
 
-        {/* BOTTOM COPYRIGHT LINE */}
+        {/* Bottom copyright line */}
         <div style={{
           display: "flex",
           justifyContent: "space-between",
@@ -227,10 +226,9 @@ export default function Footer() {
           flexWrap: "wrap",
           gap: "8px",
         }} className="footer-copyright-row">
-          <p style={{ fontSize: "12px", color: "#71717a", margin: 0, textAlign: "left" }}>
+          <p style={{ fontFamily: "'Newsreader', serif", fontSize: "13px", color: "var(--muted)", margin: 0, textAlign: "left" }}>
             © {year} Muhammad Sufyan Khan • All rights reserved.
           </p>
-
         </div>
 
       </div>

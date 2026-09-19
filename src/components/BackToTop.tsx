@@ -1,15 +1,31 @@
 import { useEffect, useState } from "react";
+import { globalLenis } from "../App";
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setVisible(window.scrollY > 400);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollTop = () => {
+    if (globalLenis) {
+      globalLenis.scrollTo(0, { duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -22,10 +38,9 @@ export default function BackToTop() {
           width: "42px",
           height: "42px",
           borderRadius: "50%",
-          border: "1px solid rgba(255, 255, 255, 0.12)",
-          background: "rgba(15, 15, 15, 0.85)",
-          backdropFilter: "blur(16px)",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+          border: "1px solid var(--line)",
+          background: "var(--card)",
+          boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -33,21 +48,24 @@ export default function BackToTop() {
           zIndex: 900,
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0) scale(1)" : "translateY(10px) scale(0.9)",
-          transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+          transition: "opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, color 0.2s ease",
           pointerEvents: visible ? "all" : "none",
           fontSize: "15px",
-          color: "#38bdf8",
+          color: "var(--ink)",
         }}
         className="back-to-top-btn"
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(56, 189, 248, 0.4)";
-          (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(59, 130, 246, 0.3)";
+          (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+          (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-2px) scale(1.05)";
         }}
         onMouseLeave={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.12)";
-          (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.4)";
+          (e.currentTarget as HTMLElement).style.borderColor = "var(--line)";
+          (e.currentTarget as HTMLElement).style.color = "var(--ink)";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0) scale(1)";
         }}
         title="Back to top"
+        aria-label="Back to top"
       >
         ↑
       </button>

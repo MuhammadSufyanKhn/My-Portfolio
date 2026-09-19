@@ -1,207 +1,450 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useVisible } from "../utils/useVisible";
-import { hexToRgb } from "../utils/helpers";
 
 const timeline = [
-  { year: "2023", title: "Started CS Journey", description: "Enrolled at Sir Syed University of Engineering & Technology for a Bachelor's in Computer Science. Discovered my passion for backend programming and system design.", icon: "🎓", color: "#3b82f6" },
-  { year: "2023", title: "Deep Dive into .NET", description: "Mastered C# and ASP.NET Core. Built my first REST API and fell in love with clean architecture, EF Core, and database design.", icon: "💻", color: "#6366f1" },
-  { year: "2024", title: "Production Projects", description: "Built multiple full-stack systems including Cab Management System and Task Management Platform using Entity Framework Core and SQL Server.", icon: "🚀", color: "#38bdf8" },
-  { year: "2025", title: "Internship at CodeLabs", description: "Joined CodeLabs Pvt Ltd as a .NET Developer Intern. Engineered production-grade systems alongside senior software engineers.", icon: "💼", color: "#818cf8" },
-  { year: "2026", title: "Internship at 10Pearls", description: "Joined 10Pearls as a .NET Developer Intern, contributing to enterprise-grade software solutions and collaborating with cross-functional teams on scalable applications.", icon: "🖥️", color: "#10b981" },
-  { year: "2027", title: "Graduation & Beyond", description: "On track to graduate with a 3.97 CGPA. Seeking software engineering opportunities at high-impact technology companies.", icon: "⭐", color: "#60a5fa" },
+  { year: "2023", title: "Started CS journey", description: "Enrolled at Sir Syed University of Engineering & Technology for a Bachelor's in Computer Science. Discovered my passion for backend programming.", icon: "🎓", badge: "Education" },
+  { year: "2023", title: "Deep dive into .NET", description: "Mastered C# and ASP.NET Core. Built my first REST API and fell in love with clean architecture, Entity Framework Core, and relational database design.", icon: "💻", badge: "Milestone" },
+  { year: "2024", title: "Production projects", description: "Built multiple full-stack systems including Cab Management System and Task Management Platform. Gained confidence with EF Core, SQL Server, and MVC patterns.", icon: "🚀", badge: "Projects" },
+  { year: "2025", title: "Internship at CodeLabs", description: "Joined CodeLabs Pvt Ltd as a .NET Developer Intern. Engineered production-grade systems alongside senior software engineers on real client work.", icon: "💼", badge: "Internship" },
+  { year: "2026", title: "Internship at 10Pearls", description: "Joined 10Pearls as a .NET Developer Intern, contributing to enterprise-grade software solutions and collaborating with cross-functional teams.", icon: "🖥️", badge: "Internship" },
+  { year: "2027", title: "Graduation & beyond", description: "On track to graduate with a 3.97 CGPA. Seeking full-time software engineering roles at high-impact technology companies.", icon: "⭐", badge: "Future" },
 ];
 
 const interests = [
-  { icon: "🏗️", title: "Backend Architecture", desc: "Clean, scalable API design with .NET Core" },
-  { icon: "🗄️", title: "Database Systems", desc: "Optimized SQL queries, indexes, and schema design" },
-  { icon: "🔐", title: "Application Security", desc: "JWT authentication and role-based authorization" },
-  { icon: "⚡", title: "High Performance", desc: "Building fast, efficient, low-latency microservices" },
-  { icon: "📦", title: "Clean Code & Design Patterns", desc: "SOLID principles, repository patterns, and DDD" },
-  { icon: "☁️", title: "Cloud & Containerization", desc: "Docker containers and Azure Cloud Services" },
+  { icon: "🏗️", title: "Backend architecture", desc: "Clean, scalable API design with ASP.NET Core" },
+  { icon: "🗄️", title: "Database systems", desc: "Optimized SQL queries, indexes, and schema design" },
+  { icon: "🔐", title: "Application security", desc: "JWT authentication and role-based authorization" },
+  { icon: "⚡", title: "High performance", desc: "Building fast, efficient, low-latency services" },
+  { icon: "📦", title: "Clean code & patterns", desc: "SOLID principles, repository patterns, and DDD" },
+  { icon: "☁️", title: "Cloud & containers", desc: "Docker containers and Azure Cloud Services" },
 ];
-
-const cardBg = "rgba(15, 15, 15, 0.7)";
-const cardBorder = "1px solid rgba(255, 255, 255, 0.07)";
 
 export default function About() {
   const hero = useVisible();
   const timelineVis = useVisible(100);
-  const lineContainerRef = useRef<HTMLDivElement>(null);
-  const [lineProgress, setLineProgress] = useState(0);
-
-  const handleScroll = useCallback(() => {
-    if (!lineContainerRef.current) return;
-    const rect = lineContainerRef.current.getBoundingClientRect();
-    const windowH = window.innerHeight;
-    const totalH = rect.height;
-    const scrolled = windowH - rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / totalH));
-    setLineProgress(progress);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
 
   return (
-    <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
-        <div ref={hero.ref} style={{
-          opacity: hero.visible ? 1 : 0,
-          transform: hero.visible ? "translateY(0)" : "translateY(30px)",
-          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          marginBottom: "48px",
-        }}>
-          <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>About Me</div>
-          <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(32px, 5vw, 60px)", fontWeight: 800, color: "#ffffff", margin: "0 0 24px", letterSpacing: "-1.5px", lineHeight: 1.1 }}>
-            Engineered for reliability,<br />
-            <span style={{ background: "linear-gradient(135deg, #38bdf8, #6366f1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              crafted for scale.
-            </span>
+    <div style={{ minHeight: "100vh", paddingTop: "76px", paddingBottom: "80px", position: "relative", zIndex: 1 }} className="page-container">
+      <div className="page-inner" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px" }}>
+
+        {/* Hero */}
+        <div ref={hero.ref} style={{ opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(24px)", transition: "all 0.7s ease", marginBottom: "28px" }}>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>About me</div>
+          <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(30px, 4.5vw, 52px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 14px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
+            Engineered for reliability,<br />crafted for scale.
           </h1>
         </div>
 
+        {/* Bio + Quick Info */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "start", marginBottom: "80px" }} className="about-grid">
           <div>
-            <p style={{ fontSize: "17px", color: "#e5e5e5", lineHeight: 1.8, marginBottom: "20px" }}>
-              I'm <strong style={{ color: "#ffffff" }}>Muhammad Sufyan Khan</strong>, a Computer Science student at Sir Syed University of Engineering & Technology maintaining a 3.97 CGPA. I specialize in building backend architectures using ASP.NET Core, C#, and SQL Server.
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "18px", color: "var(--ink)", lineHeight: 1.7, marginBottom: "18px", marginTop: 0 }}>
+              I'm <strong>Muhammad Sufyan Khan</strong>, a Computer Science student at Sir Syed University of Engineering & Technology maintaining a 3.97 CGPA. I specialize in building backend architectures using ASP.NET Core, C#, and SQL Server.
             </p>
-            <p style={{ fontSize: "16px", color: "#a1a1aa", lineHeight: 1.8 }}>
-              My software engineering focus centers around building robust backend systems, scalable REST APIs, relational database schemas, and clean object-oriented code.
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "17px", color: "var(--muted)", lineHeight: 1.7, margin: 0 }}>
+              My focus centres around robust REST APIs, relational database schemas, and clean object-oriented code following SOLID principles.
             </p>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {[
-              { label: "University", value: "Sir Syed University of Engineering & Technology", icon: "🏫" },
-              { label: "Degree", value: "BS Computer Science", icon: "🎓" },
-              { label: "Current CGPA", value: "3.97 / 4.0", icon: "⭐" },
-              { label: "Semester", value: "Completed 6th Semester", icon: "📚" },
-              { label: "Location", value: "Pakistan", icon: "📍" },
-            ].map((item) => (
-              <QuickInfoCard key={item.label} item={item} />
+              { label: "University", value: "Sir Syed UET" },
+              { label: "Degree", value: "BS Computer Science" },
+              { label: "CGPA", value: "3.97 / 4.0" },
+              { label: "Semester", value: "Completed 6th" },
+              { label: "Location", value: "Pakistan" },
+            ].map(item => (
+              <div key={item.label} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "12px 0", borderBottom: "1px solid var(--line)",
+              }}>
+                <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "13px", color: "var(--muted)", fontWeight: 500 }}>{item.label}</span>
+                <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "14px", color: "var(--ink)", fontWeight: 600 }}>{item.value}</span>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Timeline */}
-        <div ref={timelineVis.ref} style={{
-          opacity: timelineVis.visible ? 1 : 0,
-          transform: timelineVis.visible ? "translateY(0)" : "translateY(30px)",
-          transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          marginBottom: "80px",
-        }}>
-          <div style={{ fontSize: "12px", fontWeight: 600, color: "#6366f1", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>My Journey</div>
-          <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, color: "#ffffff", margin: "0 0 48px", letterSpacing: "-1px" }}>Timeline</h2>
+        {/* Timeline header */}
+        <div ref={timelineVis.ref} style={{ opacity: timelineVis.visible ? 1 : 0, transform: timelineVis.visible ? "translateY(0)" : "translateY(24px)", transition: "all 0.7s ease", marginBottom: "48px" }}>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>My journey</div>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 4vw, 38px)", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.02em" }}>Timeline & Milestones</h2>
         </div>
 
-        <div ref={lineContainerRef} style={{ position: "relative", marginBottom: "80px" }}>
-          <div style={{ position: "absolute", left: "20px", top: 0, bottom: 0, width: "2px", background: "rgba(255,255,255,0.04)", borderRadius: "2px" }} />
-          <div style={{ position: "absolute", left: "20px", top: 0, width: "2px", height: `${lineProgress * 100}%`, background: "linear-gradient(to bottom, #3b82f6, #6366f1, #38bdf8, #10b981, #60a5fa)", borderRadius: "2px", boxShadow: "0 0 8px rgba(99, 102, 241, 0.4)", transition: "height 0.08s linear" }} />
-          {timeline.map((item, i) => (
-            <TimelineItem key={item.year + item.title} item={item} index={i} total={timeline.length} />
-          ))}
-        </div>
+        {/* Diagonal Zigzag Timeline (Pic 2) */}
+        <DiagonalTimeline />
 
-        {/* Technical Focus Areas */}
-        <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Passions</div>
-        <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, color: "#ffffff", margin: "0 0 40px", letterSpacing: "-1px" }}>Technical Focus Areas</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "16px" }}>
-          {interests.map((item, i) => (
-            <InterestCard key={item.title} item={item} index={i} />
-          ))}
+        {/* Technical focus */}
+        <div style={{ marginTop: "80px" }}>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Passions</div>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 36px", letterSpacing: "-0.02em" }}>Technical focus areas</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: "16px" }}>
+            {interests.map((item, i) => (
+              <InterestCard key={item.title} item={item} index={i} />
+            ))}
+          </div>
         </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .zigzag-desktop-wrap { display: none !important; }
+          .zigzag-mobile-wrap { display: block !important; }
+          .about-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+        }
+        @media (min-width: 769px) {
+          .zigzag-mobile-wrap { display: none !important; }
+          .zigzag-desktop-wrap { display: block !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ── Diagonal zigzag timeline (matching Pic 2 reference) ── */
+function DiagonalTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
+  const [scrollY, setScrollY] = useState(0);
+
+  // Scroll listener for moving dashed line
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Calculate precise coordinates of node dots so SVG slanted line connects them directly
+  useEffect(() => {
+    const updateCoords = () => {
+      if (!containerRef.current) return;
+      const dots = containerRef.current.querySelectorAll(".zigzag-node-dot");
+      const cRect = containerRef.current.getBoundingClientRect();
+      const coords: { x: number; y: number }[] = [];
+      dots.forEach(dot => {
+        const dRect = dot.getBoundingClientRect();
+        coords.push({
+          x: dRect.left - cRect.left + dRect.width / 2,
+          y: dRect.top - cRect.top + dRect.height / 2,
+        });
+      });
+      setPoints(coords);
+    };
+
+    updateCoords();
+    window.addEventListener("resize", updateCoords);
+    const t = setTimeout(updateCoords, 300);
+    return () => {
+      window.removeEventListener("resize", updateCoords);
+      clearTimeout(t);
+    };
+  }, []);
+
+  return (
+    <div style={{ position: "relative" }}>
+      {/* ── Desktop Diagonal Zigzag Layout ── */}
+      <div ref={containerRef} className="zigzag-desktop-wrap" style={{ position: "relative" }}>
+        {/* SVG Slanted / Diagonal Connecting Lines */}
+        <svg
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 1,
+            overflow: "visible",
+          }}
+        >
+          {points.map((pt, i) => {
+            if (i === points.length - 1) return null;
+            const nextPt = points[i + 1];
+            return (
+              <g key={i}>
+                {/* Diagonal connecting line with scroll-driven motion */}
+                <line
+                  x1={pt.x}
+                  y1={pt.y}
+                  x2={nextPt.x}
+                  y2={nextPt.y}
+                  stroke="var(--accent)"
+                  strokeWidth="2.5"
+                  strokeDasharray="6 6"
+                  strokeDashoffset={-scrollY * 0.4}
+                  opacity="0.8"
+                />
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Timeline Rows */}
+        <div style={{ position: "relative", zIndex: 2 }}>
+          {timeline.map((item, i) => {
+            const isLeft = i % 2 === 0;
+            return (
+              <ZigzagRow
+                key={item.year + item.title}
+                item={item}
+                index={i}
+                isLeft={isLeft}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Mobile Vertical Layout (<768px) ── */}
+      <div className="zigzag-mobile-wrap" style={{ position: "relative", paddingLeft: "30px" }}>
+        {/* Vertical line */}
+        <div
+          style={{
+            position: "absolute",
+            left: "11px",
+            top: "10px",
+            bottom: "10px",
+            width: "2px",
+            background: "var(--line)",
+          }}
+        />
+
+        {timeline.map((item, i) => (
+          <div key={item.year + item.title} style={{ position: "relative", marginBottom: "28px" }}>
+            {/* Dot */}
+            <div
+              style={{
+                position: "absolute",
+                left: "-25px",
+                top: "16px",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                background: "var(--accent)",
+                border: "3px solid var(--bg)",
+                boxShadow: "0 0 0 2px var(--accent)",
+              }}
+            />
+            {/* Card */}
+            <div
+              style={{
+                padding: "18px 20px",
+                background: "var(--card)",
+                border: "1px solid var(--line)",
+                borderRadius: "14px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                <span
+                  style={{
+                    padding: "2px 9px",
+                    borderRadius: "100px",
+                    background: "var(--tint)",
+                    border: "1px solid var(--line)",
+                    color: "var(--accent)",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
+                  {item.year}
+                </span>
+                <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  {item.badge}
+                </span>
+              </div>
+              <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+                {item.title}
+              </h3>
+              <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+                {item.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function QuickInfoCard({ item }: { item: { label: string; value: string; icon: string } }) {
+function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: number; isLeft: boolean }) {
+  const { ref, visible } = useVisible(index * 90);
   const [hovered, setHovered] = useState(false);
+
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      ref={ref}
       style={{
-        display: "flex", alignItems: "center", gap: "14px",
-        padding: "14px 16px",
-        background: hovered ? "rgba(20, 20, 20, 0.85)" : cardBg,
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.35)" : "rgba(255, 255, 255, 0.07)"}`,
-        borderRadius: "14px",
-        transform: hovered ? "translateY(-3px) scale(1.01)" : "translateY(0) scale(1)",
-        boxShadow: hovered ? "0 10px 24px -8px rgba(56, 189, 248, 0.2)" : "none",
-        transition: "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "36px",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.6s ease ${index * 0.08}s, transform 0.6s ease ${index * 0.08}s`,
       }}
     >
-      <span style={{ fontSize: "20px", flexShrink: 0, width: "24px", textAlign: "center", transition: "transform 0.3s ease", transform: hovered ? "scale(1.2)" : "scale(1)" }}>{item.icon}</span>
-      <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: "11px", color: "#71717a", fontWeight: 500, letterSpacing: "0.5px" }}>{item.label}</div>
-        <div style={{ fontSize: "14px", color: "#ffffff", fontWeight: 600 }}>{item.value}</div>
+      {/* Left Column */}
+      <div style={{ flex: "0 0 44%", display: "flex", justifyContent: isLeft ? "flex-end" : "flex-start" }}>
+        {isLeft ? (
+          <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+              width: "100%",
+              padding: "22px 24px",
+              background: "var(--card)",
+              border: `1.5px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
+              borderRadius: "16px",
+              boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
+              animation: visible ? "flowingBorderGlow 4s ease-in-out infinite" : "none",
+              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+              transform: hovered ? "translateY(-3px)" : "none",
+              textAlign: "right",
+              position: "relative",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", marginBottom: "8px" }}>
+              <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                {item.badge}
+              </span>
+              <span
+                style={{
+                  padding: "2px 10px",
+                  borderRadius: "100px",
+                  background: "var(--tint)",
+                  border: "1px solid var(--line)",
+                  color: "var(--accent)",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                }}
+              >
+                {item.year}
+              </span>
+              <span style={{ fontSize: "18px" }}>{item.icon}</span>
+            </div>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+              {item.title}
+            </h3>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+              {item.description}
+            </p>
+          </div>
+        ) : (
+          <div style={{ width: "100%" }} />
+        )}
       </div>
-    </div>
-  );
-}
 
-function TimelineItem({ item, index, total }: { item: typeof timeline[0]; index: number; total: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [inView, setInView] = useState(false);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const visObs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setTimeout(() => setVisible(true), index * 120); visObs.disconnect(); }
-    }, { threshold: 0.2 });
-    visObs.observe(el);
-    const glowObs = new IntersectionObserver(([e]) => { setInView(e.isIntersecting); }, { threshold: 0.5 });
-    glowObs.observe(el);
-    return () => { visObs.disconnect(); glowObs.disconnect(); };
-  }, [index]);
-
-  return (
-    <div ref={ref} style={{
-      display: "flex", gap: "20px",
-      marginBottom: index === total - 1 ? 0 : "36px",
-      opacity: visible ? 1 : 0,
-      transform: visible ? (hovered ? "translateY(-2px)" : "translateY(0)") : "translateY(30px)",
-      transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.08}s`,
-    }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: "40px" }}>
-        <div style={{
-          width: "42px", height: "42px", borderRadius: "12px",
-          background: inView ? `rgba(${hexToRgb(item.color)}, 0.12)` : "rgba(15, 15, 15, 0.9)",
-          border: `1.5px solid ${inView ? item.color : "rgba(255, 255, 255, 0.08)"}`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "18px", flexShrink: 0, zIndex: 1,
-        }}>{item.icon}</div>
-      </div>
-      <div style={{
-        flex: 1, padding: "20px 24px",
-        background: hovered ? "rgba(20, 20, 20, 0.85)" : cardBg,
-        border: `1px solid ${hovered ? `rgba(${hexToRgb(item.color)}, 0.35)` : "rgba(255, 255, 255, 0.07)"}`,
-        borderRadius: "16px",
-        transition: "all 0.35s ease",
-      }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+      {/* Center Slanted Node Area (Zigzags horizontally: 40% when left, 60% when right) */}
+      <div
+        style={{
+          flex: "0 0 12%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: isLeft ? "flex-end" : "flex-start",
+          padding: isLeft ? "0 14px 0 0" : "0 0 0 14px",
+          position: "relative",
+        }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px", flexWrap: "wrap" }}>
-          <span style={{ padding: "3px 12px", borderRadius: "100px", background: `rgba(${hexToRgb(item.color)}, 0.12)`, border: `1px solid rgba(${hexToRgb(item.color)}, 0.25)`, color: item.color, fontSize: "11px", fontWeight: 700 }}>{item.year}</span>
-          <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "16px", fontWeight: 700, color: "#ffffff", margin: 0 }}>{item.title}</h3>
-        </div>
-        <p style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.7, margin: 0 }}>{item.description}</p>
+        {/* Node Dot with pulsing halo on hover */}
+        <div
+          className="zigzag-node-dot"
+          style={{
+            width: "16px",
+            height: "16px",
+            borderRadius: "50%",
+            background: "var(--accent)",
+            border: "3px solid var(--bg)",
+            boxShadow: hovered ? "0 0 0 4px var(--accent)" : "0 0 0 3px var(--line)",
+            transition: "all 0.3s ease",
+            transform: hovered ? "scale(1.3)" : "scale(1)",
+            zIndex: 3,
+          }}
+        />
+        {/* Horizontal connector line diverting toward the box */}
+        <div
+          style={{
+            position: "absolute",
+            top: "7px",
+            [isLeft ? "right" : "left"]: "12px",
+            width: "42px",
+            height: "2px",
+            background: hovered ? "var(--accent)" : "var(--accent)",
+            opacity: hovered ? 1 : 0.6,
+            transition: "all 0.3s ease",
+            zIndex: 2,
+          }}
+        />
+      </div>
+
+      {/* Right Column */}
+      <div style={{ flex: "0 0 44%", display: "flex", justifyContent: !isLeft ? "flex-start" : "flex-end" }}>
+        {!isLeft ? (
+          <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+              width: "100%",
+              padding: "22px 24px",
+              background: "var(--card)",
+              border: `1.5px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
+              borderRadius: "16px",
+              boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
+              animation: visible ? "flowingBorderGlow 4s ease-in-out infinite" : "none",
+              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+              transform: hovered ? "translateY(-3px)" : "none",
+              textAlign: "left",
+              position: "relative",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "8px", marginBottom: "8px" }}>
+              <span style={{ fontSize: "18px" }}>{item.icon}</span>
+              <span
+                style={{
+                  padding: "2px 10px",
+                  borderRadius: "100px",
+                  background: "var(--tint)",
+                  border: "1px solid var(--line)",
+                  color: "var(--accent)",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                }}
+              >
+                {item.year}
+              </span>
+              <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                {item.badge}
+              </span>
+            </div>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+              {item.title}
+            </h3>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+              {item.description}
+            </p>
+          </div>
+        ) : (
+          <div style={{ width: "100%" }} />
+        )}
       </div>
     </div>
   );
 }
 
 function InterestCard({ item, index }: { item: typeof interests[0]; index: number }) {
-  const { ref, visible } = useVisible(index * 80);
+  const { ref, visible } = useVisible(index * 70);
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -210,29 +453,20 @@ function InterestCard({ item, index }: { item: typeof interests[0]; index: numbe
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: "24px",
-        background: hovered ? "rgba(20, 20, 20, 0.85)" : cardBg,
-        border: `1px solid ${hovered ? "rgba(56, 189, 248, 0.35)" : "rgba(255, 255, 255, 0.08)"}`,
-        borderRadius: "16px",
-        transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1)`,
+        padding: "20px",
+        background: "var(--card)",
+        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
+        borderRadius: "14px",
+        transition: "all 0.3s ease",
         opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-5px) scale(1.02)" : "translateY(0) scale(1)") : "translateY(20px)",
-        boxShadow: hovered ? "0 12px 28px -8px rgba(56, 189, 248, 0.18)" : "none",
+        transform: visible ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(16px)",
+        boxShadow: hovered ? "0 8px 24px -6px rgba(194, 65, 12, 0.1)" : "0 1px 4px rgba(0,0,0,0.03)",
         cursor: "default",
       }}
     >
-      <div style={{
-        width: "48px", height: "48px", borderRadius: "14px",
-        background: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.25)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "22px", marginBottom: "16px",
-        transition: "transform 0.4s ease",
-        transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
-      }}>
-        {item.icon}
-      </div>
-      <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "15px", fontWeight: 700, color: "#ffffff", margin: "0 0 6px" }}>{item.title}</h3>
-      <p style={{ fontSize: "13px", color: "#a1a1aa", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+      <div style={{ fontSize: "24px", marginBottom: "12px" }}>{item.icon}</div>
+      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>{item.title}</h3>
+      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
     </div>
   );
 }

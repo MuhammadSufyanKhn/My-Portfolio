@@ -3,21 +3,21 @@ import { skills } from "../data/portfolio";
 import { useVisible } from "../utils/useVisible";
 
 const skillSections = [
-  { key: "backend", title: "Backend Development", subtitle: "Core expertise", icon: "⚙️", color: "#6366f1", bg: "rgba(99,102,241,0.08)", border: "rgba(99,102,241,0.2)" },
-  { key: "frontend", title: "Frontend Skills", subtitle: "Web interface", icon: "💻", color: "#f59e0b", bg: "rgba(245,158,11,0.08)", border: "rgba(245,158,11,0.2)" },
-  { key: "database", title: "Database & SQL", subtitle: "Data management", icon: "🗄️", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.2)" },
-  { key: "languages", title: "Programming Languages", subtitle: "Code I write", icon: "📝", color: "#10b981", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
-  { key: "tools", title: "Tools & IDEs", subtitle: "Development toolkit", icon: "🛠️", color: "#a855f7", bg: "rgba(168,85,247,0.08)", border: "rgba(168,85,247,0.2)" },
-  { key: "concepts", title: "CS Concepts", subtitle: "Foundations", icon: "🧠", color: "#f97316", bg: "rgba(249,115,22,0.08)", border: "rgba(249,115,22,0.2)" },
+  { key: "backend", title: "Backend development", subtitle: "Core specialization & frameworks", icon: "⚙️" },
+  { key: "database", title: "Database & SQL", subtitle: "Relational data management", icon: "🗄️" },
+  { key: "languages", title: "Programming languages", subtitle: "Core language proficiency", icon: "📝" },
+  { key: "concepts", title: "Computer science concepts", subtitle: "Engineering fundamentals", icon: "🧠" },
+  { key: "tools", title: "Tools & IDEs", subtitle: "Developer ecosystem & workflow", icon: "🛠️" },
+  { key: "frontend", title: "Frontend foundations", subtitle: "User interface engineering", icon: "💻" },
 ];
 
 const softSkills = [
-  { name: "Problem Solving", icon: "🧩", desc: "Breaking complex problems into clean, scalable architectural solutions" },
-  { name: "Clean Code", icon: "✨", desc: "Writing readable, maintainable code following SOLID principles and design patterns" },
-  { name: "Team Collaboration", icon: "👥", desc: "Working effectively with cross-functional teams and senior engineers" },
-  { name: "Fast Learner", icon: "🚀", desc: "Quickly adapting to new frameworks, libraries, and enterprise codebases" },
-  { name: "Attention to Detail", icon: "🎯", desc: "Delivering precise, high-quality, fully tested backend code" },
-  { name: "Communication", icon: "💬", desc: "Clearly explaining technical concepts and API designs to team members" },
+  { name: "Problem solving", icon: "🧩", desc: "Deconstructing complex problems into clean, scalable architectural solutions" },
+  { name: "Clean code & SOLID", icon: "✨", desc: "Writing readable, maintainable software following industry design patterns" },
+  { name: "Team collaboration", icon: "👥", desc: "Working constructively with cross-functional teams and senior engineers" },
+  { name: "Rapid learner", icon: "🚀", desc: "Quickly adapting to new enterprise frameworks, libraries, and design patterns" },
+  { name: "Attention to detail", icon: "🎯", desc: "Delivering precise, high-quality, and robust backend implementations" },
+  { name: "Technical communication", icon: "💬", desc: "Clearly articulating architecture, API contracts, and trade-offs" },
 ];
 
 export default function Skills() {
@@ -25,30 +25,46 @@ export default function Skills() {
   const softHeader = useVisible(100);
 
   return (
-    <div style={{ minHeight: "100vh", paddingTop: "100px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
-      <div className="page-inner" style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+    <div style={{ minHeight: "100vh", paddingTop: "76px", paddingBottom: "80px", position: "relative", zIndex: 1 }} className="page-container">
+      <div className="page-inner" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}
-        <div ref={hero.ref} style={{ marginBottom: "64px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.9s cubic-bezier(0.23,1,0.32,1)" }}>
-          <div style={{ fontSize: "12px", fontWeight: 600, color: "#3b82f6", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Technical Expertise</div>
-          <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#0f172a", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1 }}>Skills & Technologies</h1>
-          <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "500px", lineHeight: 1.7 }}>A comprehensive breakdown of my technical skills, software engineering fundamentals, and core tools.</p>
+        <div ref={hero.ref} style={{ marginBottom: "28px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(24px)", transition: "all 0.7s ease" }}>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+            Technical capabilities
+          </div>
+          <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(30px, 4.5vw, 52px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 14px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
+            Skills & Technologies
+          </h1>
+          <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "17px", color: "var(--muted)", maxWidth: "520px", lineHeight: 1.7, margin: 0 }}>
+            A structured inventory of backend frameworks, databases, and engineering principles.
+          </p>
         </div>
 
-        {/* Skill Cards Grid */}
-        <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "24px", marginBottom: "80px" }}>
+        {/* Skill Groups — clean list rows separated by hairline borders */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 450px), 1fr))", gap: "28px", marginBottom: "72px" }}>
           {skillSections.map((section, sIdx) => (
-            <SkillSectionCard key={section.key} section={section} sectionIndex={sIdx} skillItems={skills[section.key as keyof typeof skills] || []} />
+            <SkillSectionGroup
+              key={section.key}
+              section={section}
+              sectionIndex={sIdx}
+              skillItems={skills[section.key as keyof typeof skills] || []}
+            />
           ))}
         </div>
 
         {/* Soft Skills */}
         <div>
-          <div ref={softHeader.ref} style={{ opacity: softHeader.visible ? 1 : 0, transform: softHeader.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease" }}>
-            <div style={{ fontSize: "12px", fontWeight: 600, color: "#8b5cf6", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>Human Skills</div>
-            <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 800, color: "#0f172a", margin: "0 0 32px", letterSpacing: "-1px" }}>Soft Skills</h2>
+          <div ref={softHeader.ref} style={{ opacity: softHeader.visible ? 1 : 0, transform: softHeader.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease", marginBottom: "28px" }}>
+            <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+              Professional values
+            </div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.02em" }}>
+              Soft Skills & Mindset
+            </h2>
           </div>
-          <div className="soft-skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
+
+          <div className="soft-skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "16px" }}>
             {softSkills.map((skill, i) => (
               <SoftSkillCard key={skill.name} skill={skill} index={i} />
             ))}
@@ -59,108 +75,91 @@ export default function Skills() {
   );
 }
 
-function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: number }) {
-  const { ref, visible } = useVisible(index * 100);
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      ref={ref}
-      className="soft-skill-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        padding: "24px",
-        background: hovered ? "#ffffff" : "#f8fafc",
-        border: `1px solid ${hovered ? "rgba(139,92,246,0.3)" : "rgba(0,0,0,0.07)"}`,
-        borderRadius: "16px",
-        opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-4px)" : "translateY(0)") : "translateY(25px)",
-        transition: "all 0.5s cubic-bezier(0.23,1,0.32,1)",
-        boxShadow: hovered ? "0 12px 28px -8px rgba(139, 92, 246, 0.12)" : "0 1px 4px rgba(0,0,0,0.05)",
-      }}
-    >
-      <div style={{
-        width: "48px", height: "48px", borderRadius: "14px",
-        background: "rgba(139, 92, 246, 0.1)", border: "1px solid rgba(139, 92, 246, 0.2)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "22px", marginBottom: "16px",
-        transition: "transform 0.4s ease",
-        transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
-      }}>{skill.icon}</div>
-      <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "15px", fontWeight: 700, color: "#0f172a", margin: "0 0 6px" }}>{skill.name}</h3>
-      <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: 1.5 }}>{skill.desc}</p>
-    </div>
-  );
-}
-
-function SkillSectionCard({ section, sectionIndex, skillItems }: {
+function SkillSectionGroup({ section, sectionIndex, skillItems }: {
   section: typeof skillSections[0];
   sectionIndex: number;
-  skillItems: Array<{ name: string; level: number; color: string }>;
+  skillItems: Array<{ name: string; level: number }>;
 }) {
-  const { ref, visible } = useVisible(sectionIndex * 120);
-  const [hovered, setHovered] = useState(false);
+  const { ref, visible } = useVisible(sectionIndex * 80);
 
   return (
     <div
       ref={ref}
-      className="skill-section-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
-        padding: "28px",
-        background: hovered ? "#ffffff" : "#fafafa",
-        border: `1px solid ${hovered ? section.border : "rgba(0,0,0,0.07)"}`,
-        borderRadius: "20px",
+        background: "var(--card)",
+        border: "1.5px solid var(--line)",
+        borderRadius: "18px",
+        padding: "24px 26px",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
         opacity: visible ? 1 : 0,
-        transform: visible ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(30px)",
-        transition: "all 0.7s cubic-bezier(0.23,1,0.32,1)",
-        boxShadow: hovered ? `0 16px 40px -12px ${section.color}20` : "0 1px 4px rgba(0,0,0,0.05)",
+        transform: visible ? "translateY(0)" : "translateY(20px)",
+        transition: `opacity 0.6s ease ${sectionIndex * 0.08}s, transform 0.6s ease ${sectionIndex * 0.08}s`,
+        animation: "flowingBorderGlow 6s ease-in-out infinite",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Card Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+      {/* Flowing sheen light stream */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "linear-gradient(90deg, transparent, rgba(194, 65, 12, 0.05), transparent)",
+          animation: `flowSheen 7s infinite ease-in-out ${sectionIndex * 1.5}s`,
+          pointerEvents: "none",
+        }}
+      />
+      {/* Section Header */}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px", paddingBottom: "14px", borderBottom: "1px solid var(--line)", position: "relative", zIndex: 1 }}>
         <div style={{
-          width: "44px", height: "44px", borderRadius: "12px",
-          background: section.bg, border: `1.5px solid ${section.border}`,
-          display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px",
-          transition: "transform 0.3s ease",
-          transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1)",
-        }}>{section.icon}</div>
+          width: "40px",
+          height: "40px",
+          borderRadius: "10px",
+          background: "var(--tint)",
+          border: "1px solid var(--line)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "20px",
+          flexShrink: 0,
+        }}>
+          {section.icon}
+        </div>
         <div>
-          <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "16px", fontWeight: 700, color: "#0f172a", margin: 0 }}>{section.title}</h2>
-          <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>{section.subtitle}</p>
+          <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "17px", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.01em" }}>
+            {section.title}
+          </h2>
+          <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "13px", color: "var(--muted)", margin: 0 }}>
+            {section.subtitle}
+          </p>
         </div>
       </div>
 
-      {/* Skill Badge Grid */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      {/* List rows separated by hairline borders */}
+      <div style={{ display: "flex", flexDirection: "column", position: "relative", zIndex: 1 }}>
         {skillItems.map((skill, i) => (
-          <SkillBadgeRow key={skill.name} skill={skill} index={i} visible={visible} sectionColor={section.color} />
+          <SkillRow
+            key={skill.name}
+            skill={skill}
+            isLast={i === skillItems.length - 1}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function SkillBadgeRow({ skill, index, visible, sectionColor }: {
-  skill: { name: string; level: number; color: string };
-  index: number;
-  visible: boolean;
-  sectionColor: string;
-}) {
+function SkillRow({ skill, isLast }: { skill: { name: string; level: number }; isLast: boolean }) {
   const [hovered, setHovered] = useState(false);
 
-  const levelLabel =
+  const levelTier =
     skill.level >= 90 ? "Expert" :
     skill.level >= 80 ? "Advanced" :
     skill.level >= 70 ? "Proficient" : "Familiar";
-
-  const levelColor =
-    skill.level >= 90 ? "#10b981" :
-    skill.level >= 80 ? "#3b82f6" :
-    skill.level >= 70 ? "#f59e0b" : "#94a3b8";
 
   return (
     <div
@@ -170,54 +169,111 @@ function SkillBadgeRow({ skill, index, visible, sectionColor }: {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "10px 14px",
-        borderRadius: "12px",
-        background: hovered ? `${skill.color}0f` : "rgba(0,0,0,0.02)",
-        border: `1px solid ${hovered ? skill.color + "30" : "rgba(0,0,0,0.06)"}`,
-        transition: "all 0.25s ease",
+        padding: "10px 8px",
+        borderBottom: isLast ? "none" : "1px solid var(--line)",
+        background: hovered ? "var(--tint)" : "transparent",
+        transform: hovered ? "translateX(4px)" : "none",
+        transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        borderRadius: "8px",
         cursor: "default",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateX(0)" : "translateX(-12px)",
-        transitionDelay: `${index * 0.07 + 0.2}s`,
       }}
     >
-      {/* Left — name + dot */}
+      {/* Left: tech name + terracotta dot with pulsing glow */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <div style={{
-          width: "8px", height: "8px", borderRadius: "50%",
-          background: skill.color,
-          boxShadow: hovered ? `0 0 6px ${skill.color}80` : "none",
-          transition: "box-shadow 0.2s ease",
-          flexShrink: 0,
-        }} />
-        <span style={{ fontSize: "13px", fontWeight: 600, color: hovered ? "#0f172a" : "#334155", transition: "color 0.2s ease" }}>
+        <span
+          style={{
+            width: "7px",
+            height: "7px",
+            borderRadius: "50%",
+            background: hovered ? "var(--accent)" : "var(--dot)",
+            boxShadow: hovered ? "0 0 0 3px rgba(194, 65, 12, 0.3)" : "none",
+            transition: "all 0.2s ease",
+            transform: hovered ? "scale(1.3)" : "scale(1)",
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "'Bricolage Grotesque', sans-serif",
+            fontSize: "14px",
+            fontWeight: 600,
+            color: hovered ? "var(--accent)" : "var(--ink)",
+            transition: "color 0.2s ease",
+          }}
+        >
           {skill.name}
         </span>
       </div>
 
-      {/* Right — level badge + percentage */}
+      {/* Right: tier pill + percentage in mono font (no straight line) */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{
-          fontSize: "11px", fontWeight: 700,
-          color: levelColor,
-          padding: "2px 8px",
-          borderRadius: "100px",
-          background: `${levelColor}14`,
-          border: `1px solid ${levelColor}28`,
-          transition: "all 0.2s ease",
-        }}>
-          {levelLabel}
+        <span
+          style={{
+            fontFamily: "'Bricolage Grotesque', sans-serif",
+            fontSize: "11px",
+            fontWeight: 600,
+            color: "var(--tint-ink)",
+            background: "var(--tint)",
+            border: "1px solid var(--line)",
+            padding: "2px 8px",
+            borderRadius: "100px",
+          }}
+        >
+          {levelTier}
         </span>
-        <span style={{
-          fontSize: "12px", fontWeight: 700,
-          color: hovered ? skill.color : "#94a3b8",
-          transition: "color 0.2s ease",
-          minWidth: "34px",
-          textAlign: "right",
-        }}>
+        <span
+          style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: "12px",
+            fontWeight: 500,
+            color: hovered ? "var(--accent)" : "var(--muted)",
+            minWidth: "36px",
+            textAlign: "right",
+            transition: "color 0.2s ease",
+          }}
+        >
           {skill.level}%
         </span>
       </div>
+    </div>
+  );
+}
+
+function SoftSkillCard({ skill, index }: { skill: typeof softSkills[0]; index: number }) {
+  const { ref, visible } = useVisible(index * 70);
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      ref={ref}
+      className="soft-skill-card"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        padding: "22px",
+        background: "var(--card)",
+        border: `1px solid ${hovered ? "var(--accent)" : "var(--line)"}`,
+        borderRadius: "16px",
+        opacity: visible ? 1 : 0,
+        transform: visible ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(20px)",
+        transition: "all 0.3s ease",
+        boxShadow: hovered ? "0 8px 24px -6px rgba(194, 65, 12, 0.1)" : "0 1px 4px rgba(0,0,0,0.03)",
+        cursor: "default",
+      }}
+    >
+      <div style={{
+        width: "42px", height: "42px", borderRadius: "12px",
+        background: "var(--tint)", border: "1px solid var(--line)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "20px", marginBottom: "14px",
+      }}>
+        {skill.icon}
+      </div>
+      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>
+        {skill.name}
+      </h3>
+      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55 }}>
+        {skill.desc}
+      </p>
     </div>
   );
 }
