@@ -67,38 +67,7 @@ const Counter = ({ target, suffix = "" }: { target: number; suffix?: string }) =
   return <div ref={ref}>{display}{suffix}</div>;
 };
 
-const TypingReveal = ({ text, speed = 30, delay = 0, className, style }: { text: string; speed?: number; delay?: number; className?: string; style?: React.CSSProperties }) => {
-  const [displayed, setDisplayed] = useState("");
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true;
-        let i = 0;
-        setTimeout(() => {
-          const timer = setInterval(() => {
-            i++;
-            setDisplayed(text.substring(0, i));
-            if (i >= text.length) clearInterval(timer);
-          }, speed);
-        }, delay);
-      }
-    }, { threshold: 0.3 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [text, speed, delay]);
-
-  return (
-    <span ref={ref} className={className} style={style}>
-      {displayed}
-      {displayed.length < text.length && displayed.length > 0 && (
-        <span style={{ borderRight: "2px solid currentColor", marginLeft: "1px", animation: "blink 0.8s step-end infinite", opacity: 0.6 }} />
-      )}
-    </span>
-  );
-};
 
 const whatIDoItems = [
   { icon: "⚡", title: "REST API Architecture", desc: "Designing scalable, secure Web APIs with ASP.NET Core, clean routing, and JWT authentication." },
@@ -316,16 +285,16 @@ export default function Home() {
           }}>
             <div>
               <div style={{ fontSize: "12px", fontWeight: 600, color: "#38bdf8", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>
-                <TypingReveal text="Introduction" speed={50} delay={200} />
+                Introduction
               </div>
               <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "28px", fontWeight: 800, color: "#ffffff", margin: "0 0 16px" }}>
-                <TypingReveal text="Who Am I" speed={60} delay={800} />
+                Who Am I
               </h2>
               <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.8, marginBottom: "16px" }}>
-                <TypingReveal text="I am a Computer Science student at Sir Syed University of Engineering & Technology maintaining a 3.97 CGPA. My focus is on backend engineering, specializing in C#, ASP.NET Core, and relational database systems." speed={15} delay={1400} />
+                I am a Computer Science student at Sir Syed University of Engineering &amp; Technology maintaining a 3.97 CGPA. My focus is on backend engineering, specializing in C#, ASP.NET Core, and relational database systems.
               </p>
               <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.8, margin: 0 }}>
-                <TypingReveal text="With hands on developer internship experience at companies like 10Pearls and CodeLabs, I build secure, high performance software applications with clean architecture and SOLID principles." speed={15} delay={5000} />
+                With hands on developer internship experience at companies like 10Pearls and CodeLabs, I build secure, high performance software applications with clean architecture and SOLID principles.
               </p>
             </div>
 
@@ -361,14 +330,14 @@ export default function Home() {
             transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s",
           }}>
             <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px" }}>
-              <TypingReveal text="Core Capabilities" speed={50} delay={300} />
+              Core Capabilities
             </div>
             <h2 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "28px", fontWeight: 800, color: "#ffffff", margin: "0 0 24px" }}>
-              <TypingReveal text="What I Do" speed={60} delay={1000} />
+              What I Do
             </h2>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }} className="what-grid">
-              {whatIDoItems.map((item, idx) => (
+              {whatIDoItems.map((item) => (
                 <div key={item.title} style={{
                   padding: "18px",
                   background: "rgba(255, 255, 255, 0.03)",
@@ -390,10 +359,10 @@ export default function Home() {
                 >
                   <div style={{ fontSize: "22px", marginBottom: "8px" }}>{item.icon}</div>
                   <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "14px", fontWeight: 700, color: "#ffffff", margin: "0 0 6px" }}>
-                    <TypingReveal text={item.title} speed={35} delay={1500 + idx * 400} />
+                    {item.title}
                   </h3>
                   <p style={{ fontSize: "12px", color: "#94a3b8", lineHeight: 1.5, margin: 0 }}>
-                    <TypingReveal text={item.desc} speed={12} delay={2000 + idx * 500} />
+                    {item.desc}
                   </p>
                 </div>
               ))}
