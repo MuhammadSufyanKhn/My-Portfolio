@@ -19,6 +19,7 @@ import Skills from "./pages/Skills";
 import Certifications from "./pages/Certifications";
 import Internship from "./pages/Internship";
 import Contact from "./pages/Contact";
+import OthersProjects from "./pages/OthersProjects";
 
 function PageWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -77,6 +78,7 @@ function AppContent() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/internship" element={<Internship />} />
+          <Route path="/others-projects" element={<OthersProjects />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </PageWrapper>

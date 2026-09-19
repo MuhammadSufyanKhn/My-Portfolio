@@ -6,12 +6,27 @@ import ProjectModal from "../components/ProjectModal";
 const allProjects = [
   ...projects.dotnet,
   ...projects.python,
+  ...projects.others,
   ...projects.semester,
+];
+
+type FilterType = "all" | "dotnet" | "python" | "others" | "semester";
+
+const FILTERS: { key: FilterType; label: string; color: string }[] = [
+  { key: "all", label: "All Projects", color: "#38bdf8" },
+  { key: "dotnet", label: ".NET / C#", color: "#818cf8" },
+  { key: "python", label: "Python", color: "#34d399" },
+  { key: "others", label: "Others", color: "#f59e0b" },
+  { key: "semester", label: "Academic", color: "#94a3b8" },
 ];
 
 export default function Projects() {
   const hero = useVisible();
   const [selected, setSelected] = useState<any | null>(null);
+  const [filter, setFilter] = useState<FilterType>("all");
+
+  const filtered =
+    filter === "all" ? allProjects : allProjects.filter((p) => p.category === filter);
 
   return (
     <div style={{ minHeight: "100vh", paddingTop: "110px", paddingBottom: "100px", position: "relative", zIndex: 1 }} className="page-container">
@@ -19,16 +34,16 @@ export default function Projects() {
         <div ref={hero.ref} style={{ marginBottom: "48px", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(30px)", transition: "all 0.8s cubic-bezier(0.23,1,0.32,1)" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "#10b981", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Portfolio</div>
           <h1 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 800, color: "#f1f5f9", margin: "0 0 16px", letterSpacing: "-2px", lineHeight: 1.1 }}>All Projects</h1>
-          <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "520px", lineHeight: 1.7 }}>Comprehensive collection of .NET backend systems, Python tools, and academic coursework.</p>
+          <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "520px", lineHeight: 1.7 }}>Comprehensive collection of .NET backend systems, Python tools, live deployments, and academic coursework.</p>
         </div>
 
         {/* Stats Summary Banner */}
-        <div className="stats-summary-banner" style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "40px", padding: "16px 18px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: "16px" }}>
+        <div className="stats-summary-banner" style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "32px", padding: "16px 18px", background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.15)", borderRadius: "16px" }}>
           {[
             { label: "Total Projects", value: allProjects.length, icon: "📦" },
             { label: "Completed", value: allProjects.filter(p => p.status === "Completed").length, icon: "✅" },
             { label: "In Progress", value: allProjects.filter(p => p.status === "In Progress").length, icon: "🚧" },
-            { label: "Tech Stack", value: ".NET / Python / Asm", icon: "⚡" },
+            { label: "Tech Stack", value: ".NET / Python / Web", icon: "⚡" },
           ].map((stat) => (
             <div key={stat.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <span style={{ fontSize: "16px" }}>{stat.icon}</span>
@@ -40,9 +55,41 @@ export default function Projects() {
           ))}
         </div>
 
+        {/* Filter Tabs */}
+        <div className="filter-tabs-container" style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "32px" }}>
+          {FILTERS.map(({ key, label, color }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              style={{
+                padding: "9px 18px",
+                borderRadius: "100px",
+                border: filter === key ? `1px solid ${color}55` : "1px solid rgba(255,255,255,0.08)",
+                background: filter === key ? `${color}18` : "rgba(255,255,255,0.03)",
+                color: filter === key ? color : "#64748b",
+                fontSize: "13px",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {label}
+              <span style={{
+                marginLeft: "6px",
+                padding: "1px 7px",
+                borderRadius: "100px",
+                background: filter === key ? `${color}28` : "rgba(255,255,255,0.06)",
+                fontSize: "11px",
+              }}>
+                {key === "all" ? allProjects.length : allProjects.filter(p => p.category === key).length}
+              </span>
+            </button>
+          ))}
+        </div>
+
         {/* Grid */}
         <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "24px" }}>
-          {allProjects.map((project, i) => (
+          {filtered.map((project, i) => (
             <ProjectCard key={project.id + project.title} project={project} index={i} onClick={() => setSelected(project)} />
           ))}
         </div>
@@ -58,6 +105,16 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
 
   const btnGradient = "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)";
   const btnShadow = "0 4px 14px rgba(59, 130, 246, 0.35)";
+
+  const categoryLabel =
+    project.category === "dotnet" ? ".NET" :
+    project.category === "python" ? "Python" :
+    project.category === "others" ? "Others" : "Semester";
+
+  const categoryIcon =
+    project.category === "dotnet" ? "⚡ .NET" :
+    project.category === "python" ? "🐍 Python" :
+    project.category === "others" ? "🌐 Others" : "🏫 Academic";
 
   return (
     <div ref={ref} className="project-card" style={{
@@ -84,13 +141,13 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", marginBottom: "8px" }}>
             <h3 style={{ fontFamily: "'Poppins', 'Inter', sans-serif", fontSize: "18px", fontWeight: 700, color: "#ffffff", margin: 0, letterSpacing: "-0.3px" }}>{project.title}</h3>
             <span style={{ padding: "3px 10px", borderRadius: "100px", background: "rgba(255, 255, 255, 0.06)", border: "1px solid rgba(255, 255, 255, 0.1)", color: "#94a3b8", fontSize: "11px", fontWeight: 700, flexShrink: 0 }}>
-              {project.category === "dotnet" ? ".NET" : project.category === "python" ? "Python" : "Semester"}
+              {categoryLabel}
             </span>
           </div>
 
           {/* Status indicator row */}
           <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#94a3b8", marginBottom: "16px" }}>
-            <span>{project.category === "dotnet" ? "⚡ .NET" : project.category === "python" ? "🐍 Python" : "🏫 Academic"}</span>
+            <span>{categoryIcon}</span>
             <span>•</span>
             <span style={{ color: project.status === "Completed" ? "#34d399" : "#f97316", fontWeight: 600 }}>{project.status}</span>
           </div>
@@ -123,19 +180,37 @@ function ProjectCard({ project, index, onClick }: { project: any; index: number;
               </button>
             </a>
           )}
-          <button
-            onClick={(e) => { e.stopPropagation(); onClick(); }}
-            style={{
-              flex: 1, padding: "10px 14px", borderRadius: "10px", border: "none",
-              background: btnGradient, color: "#ffffff", fontSize: "12px",
-              fontWeight: 600, cursor: "pointer", boxShadow: btnShadow,
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"}
-            onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = "translateY(0)"}
-          >
-            View Details →
-          </button>
+          {project.demo && (
+            <a href={project.demo} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", flex: 1 }} onClick={e => e.stopPropagation()}>
+              <button style={{
+                width: "100%", padding: "10px 14px", borderRadius: "10px",
+                border: "1px solid rgba(56,189,248,0.25)", background: "rgba(56,189,248,0.07)",
+                color: "#38bdf8", fontSize: "12px", fontWeight: 600, cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                transition: "all 0.2s ease",
+              }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(56,189,248,0.14)"}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "rgba(56,189,248,0.07)"}
+              >
+                🔗 Live Preview
+              </button>
+            </a>
+          )}
+          {(!project.demo) && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onClick(); }}
+              style={{
+                flex: 1, padding: "10px 14px", borderRadius: "10px", border: "none",
+                background: btnGradient, color: "#ffffff", fontSize: "12px",
+                fontWeight: 600, cursor: "pointer", boxShadow: btnShadow,
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = "translateY(0)"}
+            >
+              View Details →
+            </button>
+          )}
         </div>
       </div>
     </div>
