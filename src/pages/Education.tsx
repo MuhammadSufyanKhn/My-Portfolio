@@ -1,5 +1,4 @@
 import { useVisible } from "../utils/useVisible";
-import { useState } from "react";
 
 const coursework = [
   { name: "Data Structures & Algorithms", grade: "A", icon: "🔁" },

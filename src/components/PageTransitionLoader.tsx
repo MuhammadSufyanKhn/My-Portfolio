@@ -1,76 +1,91 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-interface LoaderProps {
+interface PageTransitionLoaderProps {
+  title: string;
+  isActive: boolean;
   onComplete: () => void;
-  pageTitle?: string;
 }
 
 const CIRCUMFERENCE = 2 * Math.PI * 52; // radius = 52
 
-export default function Loader({ onComplete, pageTitle }: LoaderProps) {
+export default function PageTransitionLoader({
+  title,
+  isActive,
+  onComplete,
+}: PageTransitionLoaderProps) {
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "complete" | "exit">("loading");
+  const [phase, setPhase] = useState<"idle" | "loading" | "exit">("idle");
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
-  // Lock scroll while loading
   useEffect(() => {
+    if (!isActive) {
+      setPhase("idle");
+      setProgress(0);
+      return;
+    }
+
+    setPhase("loading");
+    setProgress(0);
+
+    // Lock scroll during transition
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
 
-  // Progress animation — ease-out over ~1.7s
-  useEffect(() => {
-    let p = 0;
+    let raf: number;
     const start = performance.now();
-    const DURATION = 1700;
+    const DURATION = 650; // smooth 650ms progress animation
 
     function tick(now: number) {
       const elapsed = now - start;
       const t = Math.min(elapsed / DURATION, 1);
       // ease-out cubic
-      p = 1 - Math.pow(1 - t, 3);
+      const p = 1 - Math.pow(1 - t, 3);
       setProgress(Math.round(p * 100));
 
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
-        // At 100%: wait 180ms then exit
-        setTimeout(() => setPhase("complete"), 0);
-        setTimeout(() => {
-          setPhase("exit");
-          // After exit animation, unlock and notify
-          setTimeout(() => {
-            document.body.style.overflow = "";
-            onComplete();
-          }, 950);
-        }, 180);
+        // Complete -> trigger curtain sweep up
+        setPhase("exit");
+        const exitTimer = setTimeout(() => {
+          document.body.style.overflow = prevOverflow;
+          onCompleteRef.current();
+        }, 750); // matches the 0.75s transition duration
+
+        return () => clearTimeout(exitTimer);
       }
     }
 
-    let raf = requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
 
-    // Failsafe: close after 5s
+    // Failsafe timer (3s)
     const failsafe = setTimeout(() => {
       cancelAnimationFrame(raf);
-      document.body.style.overflow = "";
-      onComplete();
-    }, 5000);
+      document.body.style.overflow = prevOverflow;
+      onCompleteRef.current();
+    }, 3000);
 
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(failsafe);
+      document.body.style.overflow = prevOverflow;
     };
-  }, [onComplete]);
+  }, [isActive]);
+
+  if (phase === "idle") return null;
 
   const dashOffset = CIRCUMFERENCE * (1 - progress / 100);
   const isExiting = phase === "exit";
 
   return (
     <div
-      aria-hidden="true"
+      aria-live="assertive"
+      aria-label={`Loading ${title}`}
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: 99999,
+        zIndex: 99998,
         background: "var(--bg)",
         display: "flex",
         flexDirection: "column",
@@ -78,7 +93,7 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
         justifyContent: "center",
         transform: isExiting ? "translateY(-100%)" : "translateY(0)",
         transition: isExiting
-          ? "transform 0.95s cubic-bezier(0.76, 0, 0.24, 1)"
+          ? "transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)"
           : "none",
         pointerEvents: isExiting ? "none" : "all",
         overflow: "hidden",
@@ -96,13 +111,22 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
         }}
       />
 
-      <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "0 24px",
+          maxWidth: "600px",
+          transform: isExiting ? "scale(0.96)" : "scale(1)",
+          opacity: isExiting ? 0.7 : 1,
+          transition: "transform 0.5s ease-out, opacity 0.5s ease-out",
+        }}
+      >
         {/* 132px circular badge with SVG ring */}
         <div
           style={{
             width: "132px",
             height: "132px",
-            margin: "0 auto 24px",
+            margin: "0 auto 28px",
             position: "relative",
           }}
         >
@@ -134,7 +158,7 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
               fill="none"
               strokeDasharray={CIRCUMFERENCE}
               strokeDashoffset={dashOffset}
-              style={{ transition: "stroke-dashoffset 0.06s linear" }}
+              style={{ transition: "stroke-dashoffset 0.05s linear" }}
             />
           </svg>
 
@@ -162,11 +186,35 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
           </div>
         </div>
 
+        {/* Welcome message */}
+        <h2
+          style={{
+            fontFamily: "'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif",
+            fontSize: "clamp(24px, 4.5vw, 36px)",
+            fontWeight: 700,
+            color: "var(--ink)",
+            letterSpacing: "-0.02em",
+            margin: "0 0 12px 0",
+            lineHeight: 1.2,
+          }}
+        >
+          Welcome to{" "}
+          <span
+            style={{
+              color: "var(--accent)",
+              display: "inline-block",
+              position: "relative",
+            }}
+          >
+            {title}
+          </span>
+        </h2>
+
         {/* Percentage counter */}
         <div
           style={{
             fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
-            fontSize: "22px",
+            fontSize: "20px",
             fontWeight: 500,
             color: "var(--ink)",
             marginBottom: "8px",
@@ -175,24 +223,6 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
         >
           {progress}%
         </div>
-
-        {/* Welcome message */}
-        <h2
-          style={{
-            fontFamily: "'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif",
-            fontSize: "clamp(22px, 4vw, 32px)",
-            fontWeight: 700,
-            color: "var(--ink)",
-            letterSpacing: "-0.02em",
-            margin: "0 0 10px 0",
-            lineHeight: 1.2,
-          }}
-        >
-          Welcome to{" "}
-          <span style={{ color: "var(--accent)" }}>
-            {pageTitle || "Portfolio"}
-          </span>
-        </h2>
 
         {/* Loading label */}
         <div
@@ -204,7 +234,7 @@ export default function Loader({ onComplete, pageTitle }: LoaderProps) {
             textTransform: "uppercase",
           }}
         >
-          Loading portfolio...
+          Loading view...
         </div>
       </div>
     </div>

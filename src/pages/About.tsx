@@ -254,7 +254,7 @@ function DiagonalTimeline() {
           />
         </svg>
 
-        {timeline.map((item, i) => (
+        {timeline.map((item) => (
           <div key={item.year + item.title} style={{ position: "relative", marginBottom: "28px" }}>
             {/* Dot */}
             <div
