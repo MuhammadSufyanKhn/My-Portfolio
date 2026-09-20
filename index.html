@@ -46,11 +46,42 @@
       noscript + * { opacity: 1 !important; }
     </style>
   </head>
-  <body>
-    <noscript>
-      <p>Please enable JavaScript to view this portfolio.</p>
-    </noscript>
-    <div id="root"></div>
+  <body class="loading">
+    <noscript><style>.loader{display:none!important}body.loading{overflow:auto}[data-in]{opacity:1!important;transform:none!important}</style></noscript>
+    <div id="root">
+      <div class="loader" id="loader" role="status" aria-label="Loading portfolio">
+        <svg class="lsvg" id="lsvg" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="lvg" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="800">
+              <stop offset=".35" stop-color="#000" stop-opacity="0"/>
+              <stop offset="1" stop-color="#000" stop-opacity=".12"/>
+            </radialGradient>
+          </defs>
+          <g id="lstage">
+            <g class="l-gate" id="lgate"></g>
+            <rect class="l-vig" id="lvig" fill="url(#lvg)"/>
+            <g class="l-flash">
+              <path class="l-seam" id="lseam" opacity="0"/>
+              <circle class="l-shock" id="lshock" cx="0" cy="0" r="0" opacity="0"/>
+            </g>
+            <g id="lhub">
+              <circle class="l-hs2" id="lhs2" cx="0" cy="14" r="120"/>
+              <circle class="l-hs1" id="lhs1" cx="0" cy="7" r="120"/>
+              <circle class="l-collar" id="lcol" cx="0" cy="0" r="118"/>
+              <circle class="l-groove" id="lgrv" cx="0" cy="0" r="96"/>
+              <g id="llights"></g>
+              <circle class="l-disc" id="ldisc" cx="0" cy="0" r="72"/>
+              <circle class="l-arc" id="larc" cx="0" cy="0" r="72" transform="rotate(-90)"/>
+              <text class="l-msk" id="lmsk" x="0" y="0" dy=".35em" text-anchor="middle" font-size="28">MSK</text>
+              <g id="lpill">
+                <rect class="l-pr" x="-23" y="-11" width="46" height="22" rx="11"/>
+                <text class="l-pt" id="lpt" x="0" y="0" dy=".35em" text-anchor="middle">0%</text>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

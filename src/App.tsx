@@ -1,9 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import Loader from "./components/Loader";
-import PageTransitionLoader from "./components/PageTransitionLoader";
-import { getPageTitle } from "./utils/pageTitles";
 import AnimatedBackground from "./components/AnimatedBackground";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -139,30 +137,13 @@ function DecoRings() {
 
 function AppContent() {
   const location = useLocation();
-  const [transitioning, setTransitioning] = useState(false);
-  const [targetTitle, setTargetTitle] = useState("");
-  const prevPathRef = useRef(location.pathname);
-  const isFirstRender = useRef(true);
 
-  // Trigger transition loader on route change (tab clicks)
+  // Scroll immediately to top on route change
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (prevPathRef.current !== location.pathname) {
-      const pageTitle = getPageTitle(location.pathname);
-      setTargetTitle(pageTitle);
-      setTransitioning(true);
-      prevPathRef.current = location.pathname;
-
-      // Scroll immediately to top beneath the transition overlay
-      if (globalLenis) {
-        globalLenis.scrollTo(0, { immediate: true });
-      } else {
-        window.scrollTo({ top: 0, behavior: "instant" });
-      }
+    if (globalLenis) {
+      globalLenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, [location.pathname]);
 
@@ -202,11 +183,6 @@ function AppContent() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", background: "transparent" }}>
-      <PageTransitionLoader
-        title={targetTitle}
-        isActive={transitioning}
-        onComplete={() => setTransitioning(false)}
-      />
       <AnimatedBackground />
       <DecoRings />
       <LeftRail />
@@ -241,26 +217,13 @@ function AppContent() {
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
-  const initialTitle = getPageTitle(window.location.pathname);
 
   return (
     <>
-      {!loaded && (
-        <Loader
-          onComplete={() => setLoaded(true)}
-          pageTitle={initialTitle}
-        />
-      )}
-      <div
-        style={{
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s",
-        }}
-      >
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </div>
+      {!loaded && <Loader onComplete={() => setLoaded(true)} />}
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </>
   );
 }

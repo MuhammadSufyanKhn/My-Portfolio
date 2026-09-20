@@ -143,28 +143,42 @@ function DiagonalTimeline() {
     };
   }, []);
 
-  // Smooth scroll scrubbing: line progress directly controlled by scroll position
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
+
+  // Silky smooth lerped RAF animation loop for scroll-driven timeline line
   useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (!containerRef.current) return;
-          const rect = containerRef.current.getBoundingClientRect();
-          const vh = window.innerHeight;
-          // Start extending when top of container enters 72% of viewport
-          // Complete when bottom of container reaches 28% of viewport
-          const enterY = vh * 0.72;
-          const exitY = vh * 0.28;
-          const totalDistance = rect.height + (enterY - exitY);
-          const currentDistance = enterY - rect.top;
-          const raw = currentDistance / totalDistance;
-          const clamped = Math.max(0, Math.min(1, raw));
-          setScrollProgress(clamped);
-          ticking = false;
-        });
-        ticking = true;
+    let rafId: number;
+    const lerp = () => {
+      const diff = targetProgressRef.current - currentProgressRef.current;
+      if (Math.abs(diff) > 0.0005) {
+        currentProgressRef.current += diff * 0.12;
+        setScrollProgress(currentProgressRef.current);
+      } else if (currentProgressRef.current !== targetProgressRef.current) {
+        currentProgressRef.current = targetProgressRef.current;
+        setScrollProgress(targetProgressRef.current);
       }
+      rafId = requestAnimationFrame(lerp);
+    };
+    rafId = requestAnimationFrame(lerp);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  // Update target progress from window scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Start extending when top of container enters 72% of viewport
+      // Complete when bottom of container reaches 28% of viewport
+      const enterY = vh * 0.72;
+      const exitY = vh * 0.28;
+      const totalDistance = rect.height + (enterY - exitY);
+      const currentDistance = enterY - rect.top;
+      const raw = currentDistance / totalDistance;
+      const clamped = Math.max(0, Math.min(1, raw));
+      targetProgressRef.current = clamped;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -172,11 +186,11 @@ function DiagonalTimeline() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Construct a continuous organic flowing path through all milestone coordinates
+  // Construct a continuous flowing path that terminates PRECISELY at the circle in front of the box
   const pathD = points.length >= 2
     ? points.reduce((acc, pt, i) => {
         if (i === 0) {
-          return `M ${pt.x} ${pt.y - 28} L ${pt.x} ${pt.y}`;
+          return `M ${pt.x} ${pt.y}`;
         }
         const prevPt = points[i - 1];
         const dy = pt.y - prevPt.y;
@@ -184,16 +198,16 @@ function DiagonalTimeline() {
         const cp1y = prevPt.y + dy * 0.45;
         const cp2y = prevPt.y + dy * 0.55;
         return `${acc} C ${prevPt.x} ${cp1y}, ${pt.x} ${cp2y}, ${pt.x} ${pt.y}`;
-      }, "") + ` L ${points[points.length - 1].x} ${points[points.length - 1].y + 32}`
+      }, "")
     : "";
 
-  // Thresholds for each milestone node: line physically reaches node -> card appears
+  // Thresholds for each milestone node: line physically reaches node -> card appears smoothly
   const thresholds = points.length === timeline.length && containerRef.current
     ? points.map(pt => {
         const h = containerRef.current?.getBoundingClientRect().height || 1000;
-        return Math.max(0.06, Math.min(0.96, pt.y / h));
+        return Math.max(0.04, Math.min(0.96, pt.y / h));
       })
-    : [0.08, 0.25, 0.43, 0.61, 0.79, 0.95];
+    : [0.06, 0.22, 0.40, 0.58, 0.76, 0.94];
 
   return (
     <div style={{ position: "relative" }}>
@@ -225,7 +239,7 @@ function DiagonalTimeline() {
             />
           )}
 
-          {/* Scroll-driven progressive line */}
+          {/* Scroll-driven progressive line: stops right at the node circles */}
           {pathD && (
             <path
               d={pathD}
@@ -239,7 +253,6 @@ function DiagonalTimeline() {
               strokeDashoffset={1000 * (1 - scrollProgress)}
               style={{
                 filter: "drop-shadow(0 0 8px rgba(194, 65, 12, 0.45))",
-                transition: "stroke-dashoffset 0.08s linear",
               }}
             />
           )}
@@ -293,7 +306,6 @@ function DiagonalTimeline() {
             strokeDashoffset={1000 * (1 - scrollProgress)}
             style={{
               filter: "drop-shadow(0 0 6px rgba(194, 65, 12, 0.45))",
-              transition: "stroke-dashoffset 0.08s linear",
             }}
           />
         </svg>

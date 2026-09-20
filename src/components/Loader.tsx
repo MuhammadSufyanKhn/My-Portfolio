@@ -1,17 +1,10 @@
-import TriangleGateLoader from "./TriangleGateLoader";
+import VaultGateLoader from "./VaultGateLoader";
 
 interface LoaderProps {
-  onComplete: () => void;
+  onComplete?: () => void;
   pageTitle?: string;
 }
 
-export default function Loader({ onComplete, pageTitle = "Portfolio" }: LoaderProps) {
-  return (
-    <TriangleGateLoader
-      title={pageTitle}
-      isActive={true}
-      onComplete={onComplete}
-      isInitial={true}
-    />
-  );
+export default function Loader({ onComplete }: LoaderProps) {
+  return <VaultGateLoader onComplete={onComplete} />;
 }

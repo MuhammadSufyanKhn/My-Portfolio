@@ -904,14 +904,9 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
 }
 
 export default function Home() {
-  const [heroVisible, setHeroVisible] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
   const featHero = useVisible(100);
   const whoVis = useVisible(100);
-
-  useEffect(() => {
-    setTimeout(() => setHeroVisible(true), 200);
-  }, []);
 
   // Top featured projects
   const featured = projects.dotnet;
@@ -927,15 +922,15 @@ export default function Home() {
           <div>
             {/* Status pill with floating animation */}
             <div
-              className={`status-pill-wrap ${heroVisible ? "floating-status-pill" : ""}`}
+              data-in
+              className={`status-pill-wrap floating-status-pill`}
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 padding: "6px 14px", borderRadius: "100px",
                 background: "var(--tint)", border: "1px solid var(--line)",
                 marginBottom: "24px",
-                opacity: heroVisible ? 1 : 0,
-                transition: "opacity 0.7s ease 0.2s",
-              }}
+                "--d": "0.2s",
+              } as React.CSSProperties}
             >
               <span
                 className="pulse-dot"
@@ -947,58 +942,62 @@ export default function Home() {
             </div>
 
             {/* Name */}
-            <h1 style={{
-              fontFamily: "'Bricolage Grotesque', sans-serif",
-              fontSize: "clamp(36px, 6vw, 68px)",
-              fontWeight: 700,
-              color: "var(--ink)",
-              margin: "0 0 8px",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.05,
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-              transition: "all 0.7s ease 0.28s",
-            }}>
+            <h1
+              data-in
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontSize: "clamp(36px, 6vw, 68px)",
+                fontWeight: 700,
+                color: "var(--ink)",
+                margin: "0 0 8px",
+                letterSpacing: "-0.03em",
+                lineHeight: 1.05,
+                "--d": "0.28s",
+              } as React.CSSProperties}
+            >
               Muhammad<br />Sufyan Khan
             </h1>
 
             {/* Typewriter role */}
-            <div style={{
-              fontFamily: "'Bricolage Grotesque', sans-serif",
-              fontSize: "clamp(16px, 2.5vw, 22px)",
-              fontWeight: 500,
-              color: "var(--accent)",
-              marginBottom: "20px",
-              minHeight: "32px",
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-              transition: "all 0.7s ease 0.36s",
-            }}>
+            <div
+              data-in
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontSize: "clamp(16px, 2.5vw, 22px)",
+                fontWeight: 500,
+                color: "var(--accent)",
+                marginBottom: "20px",
+                minHeight: "32px",
+                "--d": "0.36s",
+              } as React.CSSProperties}
+            >
               <TypeWriter words={["ASP.NET Core Developer", ".NET Backend Engineer", "C# & SQL Server Specialist"]} />
             </div>
 
             {/* One-sentence intro */}
-            <p style={{
-              fontFamily: "'Newsreader', Georgia, serif",
-              fontSize: "17px",
-              color: "var(--muted)",
-              lineHeight: 1.7,
-              maxWidth: "460px",
-              margin: "0 0 32px",
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-              transition: "all 0.7s ease 0.44s",
-            }}>
+            <p
+              data-in
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: "17px",
+                color: "var(--muted)",
+                lineHeight: 1.7,
+                maxWidth: "460px",
+                margin: "0 0 32px",
+                "--d": "0.44s",
+              } as React.CSSProperties}
+            >
               Final year CS student building production-grade .NET APIs with clean architecture and SOLID principles.
             </p>
 
             {/* CTA buttons */}
-            <div style={{
-              display: "flex", gap: "12px", flexWrap: "wrap",
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-              transition: "all 0.7s ease 0.52s",
-            }}>
+            <div
+              data-in
+              style={{
+                display: "flex", gap: "12px", flexWrap: "wrap",
+                "--d": "0.52s",
+              } as React.CSSProperties}
+            >
               <Link to="/projects" style={{ textDecoration: "none" }}>
                 <button className="btn-primary">
                   Explore projects →
@@ -1014,11 +1013,13 @@ export default function Home() {
           </div>
 
           {/* Right: JSON API card */}
-          <div style={{
-            opacity: heroVisible ? 1 : 0,
-            transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-            transition: "all 0.7s ease 0.56s",
-          }}>
+          <div
+            data-in
+            style={{
+              minWidth: 0,
+              "--d": "0.56s",
+            } as React.CSSProperties}
+          >
             <JsonApiCard delay={0.56} />
           </div>
         </div>
