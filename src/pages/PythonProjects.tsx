@@ -86,21 +86,89 @@ function PythonCard({ project, index, onSelect }: { project: typeof projects.pyt
       }}
       className="project-card"
     >
-      {/* Top Banner */}
+      {/* Top Image Banner with Window Chrome */}
       <div
         style={{
-          padding: "20px 22px 14px",
+          height: "190px",
+          position: "relative",
+          overflow: "hidden",
           background: "var(--tint)",
           borderBottom: "1px solid var(--line)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
         }}
       >
-        <span style={{ fontSize: "32px" }}>{project.emoji || "🐍"}</span>
-        <span style={{ padding: "2px 8px", borderRadius: "100px", background: "var(--card)", border: "1px solid var(--line)", color: project.status === "Completed" ? "#10b981" : "var(--accent)", fontSize: "11px", fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-          {project.status}
-        </span>
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.title}
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              transform: hovered ? "scale(1.06)" : "scale(1)",
+              filter: "brightness(0.92)",
+            }}
+          />
+        ) : (
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "42px" }}>
+            {project.emoji || "🐍"}
+          </div>
+        )}
+        {/* Subtle overlay gradient */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        {/* Window controls on top-left */}
+        <div
+          style={{
+            position: "absolute",
+            top: "12px",
+            left: "14px",
+            display: "flex",
+            gap: "5px",
+            alignItems: "center",
+            padding: "4px 8px",
+            borderRadius: "100px",
+            background: "rgba(15, 23, 42, 0.65)",
+            backdropFilter: "blur(6px)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+          }}
+        >
+          <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#ef4444" }} />
+          <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#eab308" }} />
+          <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#22c55e" }} />
+        </div>
+        {/* Status badge on top-right */}
+        <div
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "14px",
+          }}
+        >
+          <span
+            style={{
+              padding: "3px 9px",
+              borderRadius: "100px",
+              background: "rgba(15, 23, 42, 0.75)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              color: project.status === "Completed" ? "#4ade80" : "#fb923c",
+              fontSize: "11px",
+              fontWeight: 600,
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+            }}
+          >
+            {project.status}
+          </span>
+        </div>
       </div>
 
       {/* Content */}

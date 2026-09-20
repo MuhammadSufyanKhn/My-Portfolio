@@ -111,12 +111,13 @@ export default function About() {
   );
 }
 
-/* ── Diagonal zigzag timeline (matching Pic 2 reference) ── */
+/* ── Diagonal zigzag timeline (Scroll-Controlled) ── */
 function DiagonalTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Calculate precise coordinates of node dots so SVG curved line connects them directly
+  // Calculate coordinates of node dots
   useEffect(() => {
     const updateCoords = () => {
       if (!containerRef.current) return;
@@ -142,6 +143,35 @@ function DiagonalTimeline() {
     };
   }, []);
 
+  // Smooth scroll scrubbing: line progress directly controlled by scroll position
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!containerRef.current) return;
+          const rect = containerRef.current.getBoundingClientRect();
+          const vh = window.innerHeight;
+          // Start extending when top of container enters 72% of viewport
+          // Complete when bottom of container reaches 28% of viewport
+          const enterY = vh * 0.72;
+          const exitY = vh * 0.28;
+          const totalDistance = rect.height + (enterY - exitY);
+          const currentDistance = enterY - rect.top;
+          const raw = currentDistance / totalDistance;
+          const clamped = Math.max(0, Math.min(1, raw));
+          setScrollProgress(clamped);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Construct a continuous organic flowing path through all milestone coordinates
   const pathD = points.length >= 2
     ? points.reduce((acc, pt, i) => {
@@ -156,6 +186,14 @@ function DiagonalTimeline() {
         return `${acc} C ${prevPt.x} ${cp1y}, ${pt.x} ${cp2y}, ${pt.x} ${pt.y}`;
       }, "") + ` L ${points[points.length - 1].x} ${points[points.length - 1].y + 32}`
     : "";
+
+  // Thresholds for each milestone node: line physically reaches node -> card appears
+  const thresholds = points.length === timeline.length && containerRef.current
+    ? points.map(pt => {
+        const h = containerRef.current?.getBoundingClientRect().height || 1000;
+        return Math.max(0.06, Math.min(0.96, pt.y / h));
+      })
+    : [0.08, 0.25, 0.43, 0.61, 0.79, 0.95];
 
   return (
     <div style={{ position: "relative" }}>
@@ -182,25 +220,26 @@ function DiagonalTimeline() {
               stroke="var(--line)"
               strokeWidth="2"
               strokeDasharray="4 6"
-              opacity="0.6"
+              opacity="0.45"
               strokeLinecap="round"
             />
           )}
 
-          {/* Smooth continuous flowing line that draws, pauses, retracts, and seamless repeats */}
+          {/* Scroll-driven progressive line */}
           {pathD && (
             <path
               d={pathD}
               fill="none"
               stroke="var(--accent)"
-              strokeWidth="2.5"
+              strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
               pathLength="1000"
               strokeDasharray="1000"
+              strokeDashoffset={1000 * (1 - scrollProgress)}
               style={{
-                animation: "drawAndRetractPath 6.5s cubic-bezier(0.42, 0, 0.58, 1) infinite",
-                filter: "drop-shadow(0 0 6px rgba(194, 65, 12, 0.45))",
+                filter: "drop-shadow(0 0 8px rgba(194, 65, 12, 0.45))",
+                transition: "stroke-dashoffset 0.08s linear",
               }}
             />
           )}
@@ -210,12 +249,13 @@ function DiagonalTimeline() {
         <div style={{ position: "relative", zIndex: 2 }}>
           {timeline.map((item, i) => {
             const isLeft = i % 2 === 0;
+            const isRevealed = scrollProgress >= (thresholds[i] ?? (i / timeline.length));
             return (
               <ZigzagRow
                 key={item.year + item.title}
                 item={item}
-                index={i}
                 isLeft={isLeft}
+                isRevealed={isRevealed}
               />
             );
           })}
@@ -239,96 +279,118 @@ function DiagonalTimeline() {
             overflow: "visible",
           }}
         >
-          <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--line)" strokeWidth="2" strokeDasharray="4 6" opacity="0.6" />
+          <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--line)" strokeWidth="2" strokeDasharray="4 6" opacity="0.4" />
           <line
             x1="1"
             y1="0"
             x2="1"
             y2="100%"
             stroke="var(--accent)"
-            strokeWidth="2.5"
+            strokeWidth="3"
             strokeLinecap="round"
             pathLength="1000"
             strokeDasharray="1000"
-            style={{ animation: "drawAndRetractPath 6.5s cubic-bezier(0.42, 0, 0.58, 1) infinite" }}
+            strokeDashoffset={1000 * (1 - scrollProgress)}
+            style={{
+              filter: "drop-shadow(0 0 6px rgba(194, 65, 12, 0.45))",
+              transition: "stroke-dashoffset 0.08s linear",
+            }}
           />
         </svg>
 
-        {timeline.map((item) => (
-          <div key={item.year + item.title} style={{ position: "relative", marginBottom: "28px" }}>
-            {/* Dot */}
+        {timeline.map((item, idx) => {
+          const isMobileRevealed = scrollProgress >= (thresholds[idx] ?? (idx / timeline.length));
+          return (
             <div
+              key={item.year + item.title}
               style={{
-                position: "absolute",
-                left: "-25px",
-                top: "16px",
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                background: "var(--accent)",
-                border: "3px solid var(--bg)",
-                boxShadow: "0 0 0 2px var(--accent)",
-              }}
-            />
-            {/* Card */}
-            <div
-              style={{
-                padding: "18px 20px",
-                background: "var(--card)",
-                border: "1px solid var(--line)",
-                borderRadius: "14px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                position: "relative",
+                marginBottom: "32px",
+                opacity: isMobileRevealed ? 1 : 0,
+                transform: isMobileRevealed ? "translateY(0)" : "translateY(22px)",
+                transition: "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+                pointerEvents: isMobileRevealed ? "auto" : "none",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
-                <span style={{ fontSize: "18px" }}>{item.icon}</span>
-                <span
-                  style={{
-                    padding: "2px 9px",
-                    borderRadius: "100px",
-                    background: "var(--tint)",
-                    border: "1px solid var(--line)",
-                    color: "var(--accent)",
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  {item.year}
-                </span>
-                <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                  {item.badge}
-                </span>
+              {/* Dot */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: "-25px",
+                  top: "16px",
+                  width: "14px",
+                  height: "14px",
+                  borderRadius: "50%",
+                  background: isMobileRevealed ? "var(--accent)" : "var(--card)",
+                  border: `3px solid ${isMobileRevealed ? "var(--accent)" : "var(--line)"}`,
+                  boxShadow: isMobileRevealed ? "0 0 0 3px rgba(194, 65, 12, 0.35)" : "none",
+                  transition: "all 0.35s ease",
+                }}
+              />
+              {/* Card */}
+              <div
+                style={{
+                  padding: "18px 20px",
+                  background: "var(--card)",
+                  border: "1px solid var(--line)",
+                  borderRadius: "14px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+                  <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                  <span
+                    style={{
+                      padding: "2px 9px",
+                      borderRadius: "100px",
+                      background: "var(--tint)",
+                      border: "1px solid var(--line)",
+                      color: "var(--accent)",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {item.year}
+                  </span>
+                  <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    {item.badge}
+                  </span>
+                </div>
+                <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
+                  {item.title}
+                </h3>
+                <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
+                  {item.description}
+                </p>
               </div>
-              <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "16px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px" }}>
-                {item.title}
-              </h3>
-              <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", lineHeight: 1.6, margin: 0 }}>
-                {item.description}
-              </p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
 }
 
-function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: number; isLeft: boolean }) {
-  const { ref, visible } = useVisible(index * 90);
+function ZigzagRow({
+  item,
+  isLeft,
+  isRevealed,
+}: {
+  item: typeof timeline[0];
+  isLeft: boolean;
+  isRevealed: boolean;
+}) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <div
-      ref={ref}
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "36px",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition: `opacity 0.6s ease ${index * 0.08}s, transform 0.6s ease ${index * 0.08}s`,
+        marginBottom: "52px",
+        position: "relative",
       }}
     >
       {/* Left Column */}
@@ -344,8 +406,10 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
               background: "var(--card)",
               borderRadius: "16px",
               boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
-              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-              transform: hovered ? "translateY(-3px)" : "none",
+              transition: "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease",
+              opacity: isRevealed ? 1 : 0,
+              transform: isRevealed ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(24px)",
+              pointerEvents: isRevealed ? "auto" : "none",
               textAlign: "right",
               position: "relative",
             }}
@@ -382,7 +446,7 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
         )}
       </div>
 
-      {/* Center Slanted Node Area (Zigzags horizontally: 40% when left, 60% when right) */}
+      {/* Center Slanted Node Area */}
       <div
         style={{
           flex: "0 0 12%",
@@ -393,22 +457,23 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
           position: "relative",
         }}
       >
-        {/* Node Dot with pulsing halo on hover */}
+        {/* Node Dot with pulsing halo when reached */}
         <div
           className="zigzag-node-dot"
           style={{
             width: "16px",
             height: "16px",
             borderRadius: "50%",
-            background: "var(--accent)",
-            border: "3px solid var(--bg)",
-            boxShadow: hovered ? "0 0 0 4px var(--accent)" : "0 0 0 3px var(--line)",
-            transition: "all 0.3s ease",
-            transform: hovered ? "scale(1.3)" : "scale(1)",
+            background: isRevealed ? "var(--accent)" : "var(--card)",
+            border: `3px solid ${isRevealed ? "var(--accent)" : "var(--line)"}`,
+            boxShadow: isRevealed ? (hovered ? "0 0 0 5px var(--accent)" : "0 0 0 4px rgba(194, 65, 12, 0.35)") : "none",
+            transition: "all 0.35s ease",
+            transform: isRevealed ? (hovered ? "scale(1.25)" : "scale(1)") : "scale(0.8)",
+            opacity: isRevealed ? 1 : 0.4,
             zIndex: 3,
           }}
         />
-        {/* Horizontal connector line diverting toward the box */}
+        {/* Horizontal connector line */}
         <div
           style={{
             position: "absolute",
@@ -416,9 +481,9 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
             [isLeft ? "right" : "left"]: "12px",
             width: "42px",
             height: "2px",
-            background: hovered ? "var(--accent)" : "var(--accent)",
-            opacity: hovered ? 1 : 0.6,
-            transition: "all 0.3s ease",
+            background: "var(--accent)",
+            opacity: isRevealed ? (hovered ? 1 : 0.8) : 0.2,
+            transition: "opacity 0.35s ease",
             zIndex: 2,
           }}
         />
@@ -437,8 +502,10 @@ function ZigzagRow({ item, index, isLeft }: { item: typeof timeline[0]; index: n
               background: "var(--card)",
               borderRadius: "16px",
               boxShadow: hovered ? "0 12px 32px -8px rgba(194, 65, 12, 0.22), 0 0 0 1px var(--accent)" : "0 2px 10px rgba(0,0,0,0.04)",
-              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-              transform: hovered ? "translateY(-3px)" : "none",
+              transition: "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease",
+              opacity: isRevealed ? 1 : 0,
+              transform: isRevealed ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(24px)",
+              pointerEvents: isRevealed ? "auto" : "none",
               textAlign: "left",
               position: "relative",
             }}

@@ -852,3 +852,59 @@ body, nav, footer, .card, .project-card, .reason-card, .soft-skill-card, .cert-c
   }
 }
 
+/* ═══════════════════════════════════════════════
+   17. ELEVATED PROJECTS SHOWCASE RESPONSIVENESS
+   ═══════════════════════════════════════════════ */
+@media (max-width: 860px) {
+  .projects-table-header {
+    display: none !important;
+  }
+
+  .project-elevated-row {
+    grid-template-columns: 80px 1fr !important;
+    grid-template-areas:
+      "thumb info"
+      "thumb meta"
+      "action action" !important;
+    gap: 12px 14px !important;
+    padding: 16px 14px !important;
+  }
+
+  .project-row-thumb {
+    grid-area: thumb;
+    width: 80px !important;
+    height: 70px !important;
+  }
+
+  .project-row-category,
+  .project-row-tech,
+  .project-row-status {
+    font-size: 11px !important;
+  }
+
+  .project-row-action {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .credential-ledger-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    padding: 18px 16px !important;
+  }
+
+  .cert-frame-thumb {
+    width: 100% !important;
+    height: 140px !important;
+  }
+
+  .cert-row-action {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+
