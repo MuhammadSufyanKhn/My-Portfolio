@@ -125,7 +125,7 @@ export const projects = {
       learned: "Advanced EF Core relationships, ASP.NET Core MVC patterns, and complex SQL queries.",
       gradient: "from-purple-500 to-indigo-600",
       emoji: "🚕",
-      image: "https://images.unsplash.com/photo-1549231482-5cf39d19fba4?auto=format&fit=crop&w=1200&q=80",
+      image: "https://images.unsplash.com/photo-1556122071-e404eaedb77f?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 2,

@@ -43,9 +43,9 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
 
     const T_START = reduce ? 0 : 200;
     const T_CLOSE = reduce ? 0 : 1100;
-    const T_LOAD = reduce ? 900 : 2800;
-    const T_HOLD = reduce ? 150 : 400;
-    const T_OPEN = reduce ? 400 : 1700;
+    const T_LOAD = reduce ? 900 : 2500;
+    const T_HOLD = reduce ? 150 : 350;
+    const T_OPEN = reduce ? 400 : 1450;
     const tC = T_START;
     const tI = tC + T_CLOSE;
     const tL0 = tI + (reduce ? 0 : 200);
@@ -273,6 +273,7 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
       shock.setAttribute("r", s.sr.toFixed(1));
       shock.setAttribute("opacity", s.so.toFixed(3));
       hub.setAttribute("opacity", s.hub.toFixed(3));
+      hub.setAttribute("transform", "scale(" + s.hubScale.toFixed(3) + ")");
       (arc as any).style.strokeDashoffset = C * (1 - s.p);
       pill.setAttribute("transform", "translate(" + (rB * Math.sin(th)).toFixed(2) + " " + (-rB * Math.cos(th)).toFixed(2) + ")");
       pillText.textContent = Math.round(s.p * 100) + "%";
@@ -280,7 +281,7 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
     }
 
     function state(t: number) {
-      const s = { d: 0, phi: 0, vig: 1, hub: 1, sx: 0, sy: 0, fl: 0, sr: 0, so: 0, lit: 0, p: 0 };
+      const s = { d: 0, phi: 0, vig: 1, hub: 1, hubScale: 1, sx: 0, sy: 0, fl: 0, sr: 0, so: 0, lit: 0, p: 0 };
       let u: number;
       let c: number;
       let a: number;
@@ -299,15 +300,24 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
       } else if (t < tH) {
         a = (t - (tH - 350)) / 350;
         s.phi = a > 0 ? PHI_UNLOCK * ease(Math.min(1, a)) : 0;
+        s.hub = 1;
+        s.hubScale = 1;
       } else {
         u = T_OPEN ? Math.min(1, (t - tH) / T_OPEN) : 1;
         c = inOut(u);
-        s.d = D * c;
-        s.phi = PHI_UNLOCK - PHI_OUT * c;
-        s.hub = reduce ? 1 : 1 - smooth(0.5, 0.9, u);
+        // Surrounding geometric structure progressively retracts outward toward the edges of the viewport
+        s.d = D * 1.35 * c;
+        // Smooth anticlockwise reverse unlocking motion
+        s.phi = PHI_UNLOCK - (PHI_OUT * 1.25) * c;
+
+        // Remove the center circle before revealing Home:
+        // Smoothly retracts (shrinks scale to 0 and fades opacity to 0) within the first 35% of the exit phase
+        const hubProgress = Math.min(1, u / 0.35);
+        s.hub = 1 - ease(hubProgress);
+        s.hubScale = Math.max(0, 1 - ease(hubProgress));
       }
 
-      s.vig = 1 - smooth(0, 0.4, s.d / D);
+      s.vig = 1 - smooth(0.65, 1.0, s.d / (D * 1.35));
       s.p = ease(clamp((t - tL0) / T_LOAD));
 
       if (!reduce) {
@@ -331,17 +341,16 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
       return s;
     }
 
-    function openStart() {
+    function finishAndReveal() {
       if (opened) return;
       opened = true;
-      loader.classList.add(reduce ? "done" : "open");
+      loader.classList.add("done");
       document.body.classList.remove("loading");
       document.body.classList.add("ready");
       onCompleteRef.current?.();
-    }
-
-    function end() {
-      loader.classList.add("gone");
+      setTimeout(() => {
+        loader.classList.add("gone");
+      }, 450);
     }
 
     let t0: number | null = null;
@@ -350,9 +359,8 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
       const t = ts - t0;
       lastS = state(t);
       render(lastS);
-      if (t >= tH) openStart();
       if (t >= tE) {
-        end();
+        finishAndReveal();
         return;
       }
       rafId = requestAnimationFrame(frame);
@@ -375,9 +383,8 @@ export default function VaultGateLoader({ onComplete }: VaultGateLoaderProps) {
     rafId = requestAnimationFrame(frame);
 
     const failsafeTimer = setTimeout(() => {
-      openStart();
-      end();
-    }, 12000);
+      finishAndReveal();
+    }, 10000);
 
     return () => {
       cancelAnimationFrame(rafId);

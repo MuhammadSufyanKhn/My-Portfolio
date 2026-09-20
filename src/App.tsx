@@ -221,9 +221,11 @@ export default function App() {
   return (
     <>
       {!loaded && <Loader onComplete={() => setLoaded(true)} />}
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <div className={`site-content-wrapper ${loaded ? "site-ready" : ""}`}>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </div>
     </>
   );
 }

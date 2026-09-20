@@ -149,9 +149,17 @@ function JsonApiCard({ delay }: { delay: number }) {
 /* ── Featured Project Coverflow Carousel (pic 1 style) ── */
 function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: (p: any) => void }) {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
-  const prev = useCallback(() => setCurrent(c => (c - 1 + featured.length) % featured.length), [featured.length]);
-  const next = useCallback(() => setCurrent(c => (c + 1) % featured.length), [featured.length]);
+  const prev = useCallback(() => {
+    setDirection("prev");
+    setCurrent(c => (c - 1 + featured.length) % featured.length);
+  }, [featured.length]);
+
+  const next = useCallback(() => {
+    setDirection("next");
+    setCurrent(c => (c + 1) % featured.length);
+  }, [featured.length]);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   // Keyboard navigation [ArrowLeft] and [ArrowRight]
@@ -449,8 +457,8 @@ function CoverflowCarousel({ featured, onSelect }: { featured: any[]; onSelect: 
           {/* Animated changing container on card change */}
           <div
             key={current}
+            className={direction === "next" ? "carousel-card-slide-next" : "carousel-card-slide-prev"}
             style={{
-              animation: "cardGentleFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
               display: "flex",
               flexDirection: "column",
               height: "100%",
@@ -919,7 +927,7 @@ export default function Home() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "center" }} className="hero-grid">
 
           {/* Left: text */}
-          <div>
+          <div className="hero-text-col">
             {/* Status pill with floating animation */}
             <div
               data-in
@@ -961,6 +969,7 @@ export default function Home() {
             {/* Typewriter role */}
             <div
               data-in
+              className="hero-typewriter-wrap"
               style={{
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "clamp(16px, 2.5vw, 22px)",
@@ -993,6 +1002,7 @@ export default function Home() {
             {/* CTA buttons */}
             <div
               data-in
+              className="hero-cta-wrap"
               style={{
                 display: "flex", gap: "12px", flexWrap: "wrap",
                 "--d": "0.52s",

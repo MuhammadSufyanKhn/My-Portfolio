@@ -63,19 +63,8 @@ export default function Projects() {
             marginBottom: "24px",
           }}
         >
-          {/* Category Filter Pills */}
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-              flexWrap: "wrap",
-              background: "var(--card)",
-              border: "1px solid var(--line)",
-              padding: "6px",
-              borderRadius: "14px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
-            }}
-          >
+          {/* Category Filter Pills (Desktop / Tablet) */}
+          <div className="projects-filter-desktop">
             {CATEGORIES.map((cat) => {
               const count = cat.key === "all" ? allProjects.length : allProjects.filter((p) => p.category === cat.key).length;
               const isActive = activeTab === cat.key;
@@ -83,50 +72,51 @@ export default function Projects() {
                 <button
                   key={cat.key}
                   onClick={() => setActiveTab(cat.key)}
-                  style={{
-                    border: "none",
-                    background: isActive ? "var(--accent)" : "transparent",
-                    color: isActive ? "var(--on-accent)" : "var(--muted)",
-                    padding: "7px 14px",
-                    borderRadius: "10px",
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
+                  className={`projects-filter-pill ${isActive ? "active" : ""}`}
                 >
                   <span>{cat.label}</span>
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      opacity: isActive ? 1 : 0.7,
-                      padding: "1px 6px",
-                      borderRadius: "100px",
-                      background: isActive ? "rgba(255,255,255,0.2)" : "var(--tint)",
-                    }}
-                  >
-                    {count}
-                  </span>
+                  <span className="projects-filter-count">{count}</span>
                 </button>
               );
             })}
           </div>
 
+          {/* Category Filter Dropdown (Mobile View - Pic 1) */}
+          <div className="projects-filter-mobile">
+            <div className="projects-mobile-filter-box">
+              <span className="projects-mobile-filter-icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+              </span>
+              <label htmlFor="projects-mobile-cat-select" className="projects-mobile-filter-label">
+                Filter by:
+              </label>
+              <div className="projects-mobile-select-wrapper">
+                <select
+                  id="projects-mobile-cat-select"
+                  value={activeTab}
+                  onChange={(e) => setActiveTab(e.target.value)}
+                  className="projects-mobile-select"
+                >
+                  {CATEGORIES.map((cat) => {
+                    const count = cat.key === "all" ? allProjects.length : allProjects.filter((p) => p.category === cat.key).length;
+                    return (
+                      <option key={cat.key} value={cat.key}>
+                        {cat.label} ({count})
+                      </option>
+                    );
+                  })}
+                </select>
+                <span className="projects-mobile-select-arrow" aria-hidden="true">
+                  ▼
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Quick Metric Counter */}
-          <div
-            style={{
-              fontFamily: "'Newsreader', serif",
-              fontSize: "14px",
-              color: "var(--muted)",
-              display: "flex",
-              gap: "8px",
-              alignItems: "center",
-            }}
-          >
+          <div className="projects-counter-badge">
             <span>Showing <strong style={{ color: "var(--ink)" }}>{filteredProjects.length}</strong> of {allProjects.length} projects</span>
           </div>
         </div>
@@ -204,34 +194,14 @@ function ProjectElevatedRow({ project, index, onClick }: { project: any; index: 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "grid",
-        gridTemplateColumns: "100px minmax(200px, 1fr) 140px 200px 100px 120px",
-        gap: "16px",
-        alignItems: "center",
-        padding: "16px 20px",
-        borderBottom: "1px solid var(--line)",
-        cursor: "pointer",
-        background: hovered ? "var(--tint)" : "transparent",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(12px)",
         transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
-      className="project-elevated-row"
+      className={`project-elevated-row ${hovered ? "is-hovered" : ""}`}
     >
       {/* Thumbnail Picture */}
-      <div
-        style={{
-          width: "90px",
-          height: "60px",
-          borderRadius: "10px",
-          overflow: "hidden",
-          background: "var(--tint)",
-          border: "1px solid var(--line)",
-          position: "relative",
-          flexShrink: 0,
-        }}
-        className="project-row-thumb"
-      >
+      <div className="project-row-thumb">
         {project.image ? (
           <img
             src={project.image}
@@ -253,7 +223,7 @@ function ProjectElevatedRow({ project, index, onClick }: { project: any; index: 
       </div>
 
       {/* Project Title & Short excerpt */}
-      <div style={{ minWidth: 0 }}>
+      <div className="project-row-main">
         <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
           <h3
             style={{

@@ -23,47 +23,24 @@ export default function Certifications() {
           </p>
         </div>
 
-        {/* Credentials Registry Strip */}
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            flexWrap: "wrap",
-            marginBottom: "32px",
-            padding: "16px 22px",
-            background: "var(--tint)",
-            border: "1px solid var(--line)",
-            borderRadius: "16px",
-          }}
-          className="cert-summary-strip"
-        >
-          {[
-            { label: "Total credentials", value: certifications.length },
-            { label: "Issuing bodies", value: "Microsoft, Google, Cisco" },
-            { label: "Status", value: "100% Verified" },
-          ].map((item) => (
-            <div key={item.label} style={{ display: "flex", gap: "8px", alignItems: "baseline" }}>
-              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "18px", fontWeight: 700, color: "var(--accent)" }}>
-                {item.value}
-              </span>
-              <span style={{ fontFamily: "'Newsreader', serif", fontSize: "14px", color: "var(--muted)" }}>
-                {item.label}
-              </span>
-            </div>
-          ))}
+        {/* Credentials Registry Strip (Pic 3 Fix) */}
+        <div className="cert-summary-strip">
+          <div className="cert-summary-card cert-summary-count">
+            <span className="cert-summary-val">{certifications.length}</span>
+            <span className="cert-summary-label">Total credentials</span>
+          </div>
+          <div className="cert-summary-card cert-summary-status">
+            <span className="cert-summary-val">100% Verified</span>
+            <span className="cert-summary-label">Official Status</span>
+          </div>
+          <div className="cert-summary-card cert-summary-issuers">
+            <span className="cert-summary-val">Microsoft, Google, Cisco</span>
+            <span className="cert-summary-label">Issuing bodies</span>
+          </div>
         </div>
 
-        {/* Editorial Credential Directory (De-boxed Ledger) */}
-        <div
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--line)",
-            borderRadius: "20px",
-            overflow: "hidden",
-            boxShadow: "0 10px 30px -8px rgba(0, 0, 0, 0.06)",
-          }}
-          className="cert-directory-container"
-        >
+        {/* Editorial Credential Directory (Pic 4 Fix: Distinct Cards with Gaps & Animations) */}
+        <div className="cert-directory-container">
           {certifications.map((cert, i) => (
             <CredentialLedgerRow
               key={cert.id}
@@ -99,18 +76,10 @@ function CredentialLedgerRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "24px",
-        padding: "20px 24px",
-        borderBottom: index < certifications.length - 1 ? "1px solid var(--line)" : "none",
-        cursor: "pointer",
-        background: hovered ? "var(--tint)" : "transparent",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(16px)",
-        transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+        transform: visible ? (hovered ? "translateY(-4px)" : "translateY(0)") : "translateY(16px)",
       }}
-      className="credential-ledger-row"
+      className={`credential-ledger-row ${hovered ? "is-hovered" : ""}`}
     >
       {/* Authentic Certificate Preview Frame */}
       <div
