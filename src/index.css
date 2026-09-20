@@ -348,18 +348,14 @@ body::before {
 }
 
 /* ═══════════════════════════════════════════════
-   8. DECORATIVE RING OUTLINES (≥ 1100px)
+   8. DECORATIVE RING OUTLINES (Visible on all viewports)
    ═══════════════════════════════════════════════ */
 .deco-rings {
-  display: none;
+  display: block;
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
-}
-
-@media (min-width: 1100px) {
-  .deco-rings { display: block; }
 }
 
 .deco-ring {
@@ -368,29 +364,99 @@ body::before {
   border: 1.5px solid var(--ring);
 }
 
-/* Left ring — center at ~24% from top, partly off-screen left */
+/* Mobile & Tablet sizing (< 1100px) - as highlighted in Pic 1 & Pic 2 */
 .deco-ring-left-outer {
-  width: 520px; height: 520px;
-  left: -180px;
-  top: 16%;
+  width: 320px;
+  height: 320px;
+  left: -140px;
+  top: 14%;
+  opacity: 0.85;
 }
 .deco-ring-left-inner {
-  width: 452px; height: 452px;
-  left: -146px;
-  top: calc(16% + 34px);
+  width: 260px;
+  height: 260px;
+  left: -110px;
+  top: calc(14% + 30px);
+  opacity: 0.85;
 }
 
-/* Right ring — bottom-right corner, partly off-screen */
 .deco-ring-right-outer {
-  width: 480px; height: 480px;
-  right: -200px;
-  bottom: 8%;
+  width: 300px;
+  height: 300px;
+  right: -130px;
+  top: 32%;
+  opacity: 0.85;
 }
 .deco-ring-right-inner {
-  width: 412px; height: 412px;
-  right: -166px;
-  bottom: calc(8% + 34px);
+  width: 240px;
+  height: 240px;
+  right: -100px;
+  top: calc(32% + 30px);
+  opacity: 0.85;
 }
+
+/* Desktop sizing (≥ 1100px) */
+@media (min-width: 1100px) {
+  .deco-ring-left-outer {
+    width: 520px;
+    height: 520px;
+    left: -180px;
+    top: 16%;
+    opacity: 1;
+  }
+  .deco-ring-left-inner {
+    width: 452px;
+    height: 452px;
+    left: -146px;
+    top: calc(16% + 34px);
+    opacity: 1;
+  }
+  .deco-ring-right-outer {
+    width: 480px;
+    height: 480px;
+    right: -200px;
+    top: auto;
+    bottom: 8%;
+    opacity: 1;
+  }
+  .deco-ring-right-inner {
+    width: 412px;
+    height: 412px;
+    right: -166px;
+    top: auto;
+    bottom: calc(8% + 34px);
+    opacity: 1;
+  }
+}
+
+/* Floating animation for status pill */
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(224, 90, 62, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(224, 90, 62, 0);
+  }
+}
+
+.floating-status-pill {
+  animation: floatBadge 3.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.floating-status-pill .pulse-dot {
+  animation: pulseGlow 2.2s infinite;
+}
+
 
 /* ═══════════════════════════════════════════════
    9. LEFT SOCIAL RAIL (≥ 1320px)

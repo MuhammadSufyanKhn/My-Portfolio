@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { globalLenis } from "../App";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -112,10 +113,19 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handle);
   }, []);
 
-  // Lock body scroll when mobile menu open
+  // Lock body scroll and pause Lenis when mobile menu open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      globalLenis?.stop();
+    } else {
+      document.body.style.overflow = "";
+      globalLenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      globalLenis?.start();
+    };
   }, [menuOpen]);
 
   const isNavActive = (item: typeof navItems[0]) => {
@@ -424,13 +434,20 @@ export default function Navbar() {
       {/* Mobile menu overlay */}
       {menuOpen && (
         <div
+          data-lenis-prevent="true"
           style={{
             position: "fixed",
-            inset: "64px 0 0 0",
+            top: "64px",
+            left: 0,
+            right: 0,
+            bottom: 0,
             background: "var(--bg)",
             zIndex: 999,
             overflowY: "auto",
-            padding: "16px 24px 32px",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
+            touchAction: "pan-y",
+            padding: "16px 24px 90px",
             borderTop: "1px solid var(--line)",
           }}
         >

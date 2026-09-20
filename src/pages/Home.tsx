@@ -925,17 +925,22 @@ export default function Home() {
 
           {/* Left: text */}
           <div>
-            {/* Status pill */}
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: "8px",
-              padding: "6px 14px", borderRadius: "100px",
-              background: "var(--tint)", border: "1px solid var(--line)",
-              marginBottom: "24px",
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(18px)",
-              transition: "all 0.7s ease 0.2s",
-            }}>
-              <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent)", display: "inline-block" }} />
+            {/* Status pill with floating animation */}
+            <div
+              className={`status-pill-wrap ${heroVisible ? "floating-status-pill" : ""}`}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                padding: "6px 14px", borderRadius: "100px",
+                background: "var(--tint)", border: "1px solid var(--line)",
+                marginBottom: "24px",
+                opacity: heroVisible ? 1 : 0,
+                transition: "opacity 0.7s ease 0.2s",
+              }}
+            >
+              <span
+                className="pulse-dot"
+                style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent)", display: "inline-block" }}
+              />
               <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "13px", fontWeight: 600, color: "var(--tint-ink)" }}>
                 Open to internship opportunities
               </span>
@@ -1019,58 +1024,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHO AM I + WHAT I DO ── */}
-      <section id="about" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px 60px" }} className="hero-section">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="who-what-grid">
+      {/* ── WHO AM I + WHAT I DO: Asymmetric Editorial Split ── */}
+      <section id="about" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px 64px" }} className="hero-section">
+        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: "48px", alignItems: "start" }} className="who-what-grid">
 
-          {/* Who am I */}
+          {/* Who am I: Editorial Profile */}
           <div
             ref={whoVis.ref}
-            className="flowing-card"
             style={{
-              padding: "32px",
-              background: "var(--card)",
-              borderRadius: "20px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              borderLeft: "3px solid var(--accent)",
+              paddingLeft: "26px",
               opacity: whoVis.visible ? 1 : 0,
-              transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
+              transform: whoVis.visible ? "translateY(0)" : "translateY(20px)",
               transition: "all 0.7s ease",
             }}
           >
-            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif", position: "relative", zIndex: 2 }}>Introduction</div>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 16px", letterSpacing: "-0.02em", position: "relative", zIndex: 2 }}>Who am I</h2>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, marginBottom: "16px", marginTop: 0, position: "relative", zIndex: 2 }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+              Introduction
+            </div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(26px, 3.5vw, 34px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 16px", letterSpacing: "-0.02em" }}>
+              Who am I
+            </h2>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "17.5px", color: "var(--ink)", lineHeight: 1.7, marginBottom: "14px", marginTop: 0 }}>
               Computer Science student at Sir Syed University of Engineering & Technology. I specialise in backend engineering including programming in C#, ASP.NET Core, Entity Framework Core and relational database systems.
             </p>
-            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, margin: "0 0 24px", position: "relative", zIndex: 2 }}>
+            <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "16px", color: "var(--muted)", lineHeight: 1.7, margin: "0 0 24px" }}>
               With internship experience at 10Pearls and CodeLabs, I build secure, high-performance applications with clean architecture.
             </p>
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", paddingTop: "16px", borderTop: "1px solid var(--line)", position: "relative", zIndex: 2 }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", paddingTop: "12px" }}>
               <Link to="/about" style={{ textDecoration: "none" }}>
-                <button className="btn-secondary" style={{ height: "38px", fontSize: "13px", padding: "0 16px" }}>Read full bio →</button>
+                <button className="btn-secondary" style={{ height: "40px", fontSize: "13px", padding: "0 18px" }}>Read full bio →</button>
               </Link>
               <Link to="/experience" style={{ textDecoration: "none" }}>
-                <button className="btn-secondary" style={{ height: "38px", fontSize: "13px", padding: "0 16px" }}>Experience</button>
+                <button className="btn-secondary" style={{ height: "40px", fontSize: "13px", padding: "0 18px" }}>Experience</button>
               </Link>
             </div>
           </div>
 
-          {/* What I do */}
+          {/* What I do: Capability Showcase */}
           <div
-            className="flowing-card"
             style={{
-              padding: "32px",
-              background: "var(--card)",
-              borderRadius: "20px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              borderTop: "1px solid var(--line)",
+              paddingTop: "6px",
               opacity: whoVis.visible ? 1 : 0,
-              transform: whoVis.visible ? "translateY(0)" : "translateY(24px)",
+              transform: whoVis.visible ? "translateY(0)" : "translateY(20px)",
               transition: "all 0.7s ease 0.12s",
             }}
           >
-            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'Bricolage Grotesque', sans-serif", position: "relative", zIndex: 2 }}>Core capabilities</div>
-            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: "var(--ink)", margin: "0 0 20px", letterSpacing: "-0.02em", position: "relative", zIndex: 2 }}>What I do</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0", position: "relative", zIndex: 2 }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+              Core capabilities
+            </div>
+            <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(24px, 3.5vw, 30px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 16px", letterSpacing: "-0.02em" }}>
+              What I do
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               {whatIDoItems.map((item, i) => (
                 <WhatItem key={item.title} item={item} isLast={i === whatIDoItems.length - 1} />
               ))}
@@ -1079,30 +1086,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <section id="skills" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px 60px" }} className="hero-section">
-        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 150px), 1fr))", gap: "12px" }}>
+      {/* ── STATS: Integrated Architectural Metric Ribbon ── */}
+      <section id="skills" style={{ maxWidth: "980px", margin: "0 auto", padding: "0 24px 64px" }} className="hero-section">
+        <div
+          style={{
+            background: "color-mix(in srgb, var(--card) 60%, transparent)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid var(--line)",
+            borderRadius: "20px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 160px), 1fr))",
+            overflow: "hidden",
+            position: "relative",
+          }}
+          className="editorial-stats-ribbon"
+        >
           {stats.map((stat, i) => {
-            const sv = useVisible(i * 100);
+            const sv = useVisible(i * 90);
             return (
               <div
                 ref={sv.ref}
                 key={stat.label}
-                className="flowing-card"
                 style={{
-                  padding: "24px 20px",
-                  background: "var(--card)",
-                  borderRadius: "16px",
+                  padding: "26px 20px",
                   textAlign: "center",
+                  position: "relative",
+                  borderRight: i < stats.length - 1 ? "1px solid var(--line)" : "none",
                   opacity: sv.visible ? 1 : 0,
-                  transform: sv.visible ? "scale(1)" : "scale(0.95)",
-                  transition: `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`,
+                  transform: sv.visible ? "translateY(0)" : "translateY(12px)",
+                  transition: `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s`,
                 }}
+                className="stat-ribbon-col"
               >
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "34px", fontWeight: 700, color: "var(--accent)", lineHeight: 1, position: "relative", zIndex: 2 }}>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(30px, 4vw, 38px)", fontWeight: 700, color: "var(--accent)", lineHeight: 1 }}>
                   <Counter target={parseFloat(stat.value)} suffix={stat.suffix} />
                 </div>
-                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "var(--muted)", fontWeight: 500, marginTop: "6px", position: "relative", zIndex: 2 }}>{stat.label}</div>
+                <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12.5px", color: "var(--muted)", fontWeight: 500, marginTop: "8px", letterSpacing: "0.02em" }}>
+                  {stat.label}
+                </div>
               </div>
             );
           })}

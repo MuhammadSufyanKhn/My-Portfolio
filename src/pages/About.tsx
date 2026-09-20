@@ -487,19 +487,18 @@ function InterestCard({ item, index }: { item: typeof interests[0]; index: numbe
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="flowing-card interest-card"
       style={{
-        padding: "20px",
-        background: "var(--card)",
-        borderRadius: "14px",
-        transition: "all 0.3s ease",
+        padding: "20px 22px",
+        borderTop: hovered ? "2px solid var(--accent)" : "1px solid var(--line)",
+        background: hovered ? "color-mix(in srgb, var(--tint) 35%, transparent)" : "color-mix(in srgb, var(--card) 40%, transparent)",
+        borderRadius: "12px",
+        transition: "all 0.25s ease",
         opacity: visible ? 1 : 0,
         transform: visible ? (hovered ? "translateY(-3px)" : "translateY(0)") : "translateY(16px)",
-        boxShadow: hovered ? "0 8px 24px -6px rgba(194, 65, 12, 0.1)" : "0 1px 4px rgba(0,0,0,0.03)",
         cursor: "default",
       }}
     >
-      <div style={{ fontSize: "24px", marginBottom: "12px" }}>{item.icon}</div>
+      <div style={{ fontSize: "24px", marginBottom: "10px" }}>{item.icon}</div>
       <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>{item.title}</h3>
       <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
     </div>

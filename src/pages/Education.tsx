@@ -103,41 +103,62 @@ export default function Education() {
           </div>
         </div>
 
-        {/* Semester by Semester */}
+        {/* Semester Performance: Unified Track */}
         <div style={{ marginBottom: "64px" }}>
           <div ref={semHeader.ref} style={{ opacity: semHeader.visible ? 1 : 0, transform: semHeader.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease", marginBottom: "24px" }}>
             <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
               Academic progress
             </div>
             <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.02em" }}>
-              Semester Performance
+              Semester Performance Track
             </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 140px), 1fr))", gap: "12px" }}>
+
+          <div
+            style={{
+              background: "color-mix(in srgb, var(--card) 60%, transparent)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid var(--line)",
+              borderRadius: "18px",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))",
+              overflow: "hidden",
+            }}
+          >
             {semesters.map((sem, i) => (
-              <SemesterCard key={sem.num} sem={sem} index={i} />
+              <SemesterTrackItem key={sem.num} sem={sem} index={i} isLast={i === semesters.length - 1} />
             ))}
           </div>
         </div>
 
-        {/* Relevant Coursework */}
+        {/* Relevant Coursework: Clean Two-Column Directory */}
         <div style={{ marginBottom: "64px" }}>
           <div ref={courseHeader.ref} style={{ opacity: courseHeader.visible ? 1 : 0, transform: courseHeader.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease", marginBottom: "24px" }}>
             <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
               Core curriculum
             </div>
             <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.02em" }}>
-              Relevant Coursework
+              Relevant Coursework Directory
             </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 220px), 1fr))", gap: "12px" }}>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
+              gap: "0 32px",
+              borderTop: "1px solid var(--line)",
+              paddingTop: "8px",
+            }}
+          >
             {coursework.map((course, i) => (
-              <CourseworkCard key={course.name} course={course} index={i} />
+              <CourseworkRow key={course.name} course={course} index={i} />
             ))}
           </div>
         </div>
 
-        {/* Achievements */}
+        {/* Achievements: Editorial Showcase */}
         <div>
           <div ref={achHeader.ref} style={{ opacity: achHeader.visible ? 1 : 0, transform: achHeader.visible ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease", marginBottom: "24px" }}>
             <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--accent)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
@@ -147,14 +168,21 @@ export default function Education() {
               Academic Honors
             </h2>
           </div>
-          <div className="achievements-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+              gap: "20px",
+            }}
+          >
             {[
               { icon: "🎓", title: "Scholarship every semester", desc: "Awarded merit scholarships in every completed semester based on academic rank." },
               { icon: "🏆", title: "Best semester project OOP", desc: "Best Semester Project Award in Object-Oriented Programming (2nd semester)." },
               { icon: "🏆", title: "Best project in DB & OS", desc: "Best Semester Project Award in Database Systems and Operating Systems (4th semester)." },
               { icon: "✨", title: "Spark of the Event Award", desc: "Recognized for leading technical events and student workshops at SMEC." },
             ].map((ach, i) => (
-              <AchievementCard key={ach.title} ach={ach} index={i} />
+              <AchievementItem key={ach.title} ach={ach} index={i} />
             ))}
           </div>
         </div>
@@ -163,72 +191,69 @@ export default function Education() {
   );
 }
 
-function SemesterCard({ sem, index }: { sem: typeof semesters[0]; index: number }) {
-  const { ref, visible } = useVisible(index * 70);
+function SemesterTrackItem({ sem, index, isLast }: { sem: typeof semesters[0]; index: number; isLast: boolean }) {
+  const { ref, visible } = useVisible(index * 60);
 
   return (
     <div
       ref={ref}
-      className="flowing-card"
       style={{
-        padding: "16px 14px",
-        background: "var(--card)",
-        borderRadius: "14px",
+        padding: "20px 16px",
         textAlign: "center",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
-        transform: visible ? "translateY(0)" : "translateY(16px)",
+        borderRight: isLast ? "none" : "1px solid var(--line)",
+        borderBottom: "1px solid var(--line)",
+        background: sem.highlight ? "color-mix(in srgb, var(--tint) 40%, transparent)" : "transparent",
+        transition: "background 0.2s ease",
         opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(12px)",
       }}
     >
-      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "var(--muted)", marginBottom: "4px" }}>
-        {sem.num} Semester
+      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "11.5px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "4px" }}>
+        {sem.num} Sem
       </div>
-      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "22px", fontWeight: 700, color: sem.highlight ? "var(--accent)" : "var(--ink)" }}>
+      <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "24px", fontWeight: 700, color: sem.highlight ? "var(--accent)" : "var(--ink)", lineHeight: 1.1 }}>
         {sem.gpa}
       </div>
-      <div style={{ fontFamily: "'Newsreader', serif", fontSize: "11px", color: sem.highlight ? "var(--accent)" : "var(--muted)", marginTop: "2px" }}>
-        {sem.highlight ? "★ 4.00 Max" : "Completed"}
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10.5px", color: sem.highlight ? "var(--accent)" : "var(--muted)", marginTop: "6px" }}>
+        {sem.highlight ? "★ 4.00 Max" : "Distinction"}
       </div>
     </div>
   );
 }
 
-function CourseworkCard({ course, index }: { course: typeof coursework[0]; index: number }) {
-  const { ref, visible } = useVisible(index * 50);
+function CourseworkRow({ course, index }: { course: typeof coursework[0]; index: number }) {
+  const { ref, visible } = useVisible(index * 40);
 
   return (
     <div
       ref={ref}
-      className="flowing-card"
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "12px 14px",
-        background: "var(--card)",
-        borderRadius: "12px",
+        padding: "12px 6px",
+        borderBottom: "1px solid var(--line)",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(12px)",
+        transform: visible ? "translateY(0)" : "translateY(8px)",
+        transition: "all 0.4s ease",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", position: "relative", zIndex: 2 }}>
-        <span>{course.icon}</span>
-        <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <span style={{ fontSize: "16px" }}>{course.icon}</span>
+        <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "14px", fontWeight: 600, color: "var(--ink)" }}>
           {course.name}
         </span>
       </div>
       <span
         style={{
           fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: "12px",
+          fontSize: "11px",
           fontWeight: 700,
           color: "var(--accent)",
           background: "var(--tint)",
           padding: "2px 8px",
           borderRadius: "6px",
           border: "1px solid var(--line)",
-          position: "relative",
-          zIndex: 2,
         }}
       >
         {course.grade}
@@ -237,26 +262,27 @@ function CourseworkCard({ course, index }: { course: typeof coursework[0]; index
   );
 }
 
-function AchievementCard({ ach, index }: { ach: { icon: string; title: string; desc: string }; index: number }) {
-  const { ref, visible } = useVisible(index * 80);
+function AchievementItem({ ach, index }: { ach: { icon: string; title: string; desc: string }; index: number }) {
+  const { ref, visible } = useVisible(index * 70);
 
   return (
     <div
       ref={ref}
-      className="flowing-card"
       style={{
-        padding: "22px",
-        background: "var(--card)",
-        borderRadius: "16px",
+        borderLeft: "3px solid var(--accent)",
+        paddingLeft: "18px",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transform: visible ? "translateY(0)" : "translateY(14px)",
+        transition: "all 0.5s ease",
       }}
     >
-      <div style={{ fontSize: "24px", marginBottom: "10px", position: "relative", zIndex: 2 }}>{ach.icon}</div>
-      <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em", position: "relative", zIndex: 2 }}>
-        {ach.title}
-      </h3>
-      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.55, position: "relative", zIndex: 2 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+        <span style={{ fontSize: "20px" }}>{ach.icon}</span>
+        <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "15px", fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.01em" }}>
+          {ach.title}
+        </h3>
+      </div>
+      <p style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.6 }}>
         {ach.desc}
       </p>
     </div>
